@@ -1,0 +1,342 @@
+    html, body, #map, #sidebar {
+    height: 100%;
+    margin: 0px;
+    }
+    body {
+    overflow: hidden ;
+    }
+   #container {
+    height: 100%;
+    margin-top: 50px;
+    margin-right: -4px;
+    padding-bottom: 50px;
+    }
+    #map{
+    height: 100%;
+    margin: 0px;
+    padding-left: 0px !important;
+    }
+    #sidebar {  
+    border-right: 1px solid #E2E2E2;
+    background-color:#ffffff;
+    }
+    .navbar-brand {
+    padding: 8px 15px;
+    line-height: 20px;
+    }
+    .panel-group .panel {
+    margin-top: -11px;
+    overflow: auto;
+    border-radius: 0px;
+    }
+    #header-link{
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    }
+    #dvrpc-logo{
+    margin: 5px 0px 0px 0px;
+    height:30px;
+    }
+    #header-link-text{
+    font-size: 20px;
+    margin: 4px 0px 0px 10px;
+    }
+    .container-fluid{
+    z-index: 30;
+    background: #0074ad;
+    height: 60px;
+    border-bottom: 3px solid #f7f7f7;
+    }
+    .mapboxgl-ctrl-attrib.compact {
+    margin: 10px 10px 10px 10px;
+    }
+    .modal-footer {
+    padding: 5px;
+    }
+    .modal-dialog{
+    width:900px;
+    }
+    h1 {
+    font-size:22px;
+    margin:0;
+    font-weight:400;
+    line-height: 20px;
+    padding: 20px 2px;
+    }
+    a {
+    color:#404040;
+    text-decoration:none;
+    }
+    a:hover { 
+    color:#101010; 
+    }
+    .heading {
+    background:#666666;
+    border-bottom:1px solid #eee;
+    /*  min-height:60px; */
+    line-height:10px;
+    padding:0 10px;
+    color: white;
+    }
+    .clearfix { display:block; }
+    .clearfix:after {
+    content:'.';
+    display:block;
+    height:0;
+    clear:both;
+    visibility:hidden;
+    }
+    #zoomtoregion{
+    position: absolute;
+    top:160px;
+    right:6px;
+    z-index:100;
+    background-color:white;
+    color:black;
+    padding:6px;
+    border-radius:4px;
+    font-family: 'Helvetica Neue';
+    cursor: pointer;
+    font-size:12px;
+    text-decoration:none;
+    background-image: url(https://raw.githubusercontent.com/dvrpc/license-plate-survey/master/src/img/dvrpc_bug.png);
+    background-size: 27px 27px;
+    background-position: center; 
+    background-repeat: no-repeat;
+    height: 27px;
+    width: 27px;
+    }
+    #zoomtoregion:hover{
+    background-color: #ddd;
+    }
+    /* Marker styles */
+    .marker1 {
+    background-image: url('img/Retail_Blue.png');
+    background-size: cover;
+    width: 30px;
+    height: 35px;
+    cursor: pointer;
+    }
+    .marker1a {
+    background-image: url('img/EIg.png');
+    background-size: cover;
+    width: 28px;
+    height: 35px;
+    cursor: pointer;
+    }
+    .marker2 {
+    background-image: url('img/ES.png');
+    background-size: cover;
+    width: 28px;
+    height: 35px;
+    cursor: pointer;
+    } 
+    .marker3 {
+    background-image: url('img/GB.png');
+    background-size: cover;
+    width: 28px;
+    height: 35px;
+    cursor: pointer;
+    }
+    .marker4 {
+    background-image: url('img/SPG.png');
+    background-size: cover;
+    width: 30px;
+    height: 35px;
+    cursor: pointer;
+    }
+    /* popup style */
+    .mapboxgl-popup {
+    padding-bottom: 30px;
+    }
+    .mapboxgl-popup-close-button {
+    display:none;
+    }
+    .mapboxgl-popup-content {
+    font:400 15px/22px 'Source Sans Pro', 'Helvetica Neue', Sans-serif;
+    padding:0;
+    width:230px;
+    text-align: center;
+    }
+    .mapboxgl-popup-content-wrapper {
+    padding:1%;
+    }
+    .mapboxgl-popup-content h3 {
+    background:#666666;
+    color:#fff;
+    margin:0;
+    display:block;
+    padding:10px;
+    border-radius:3px 3px 0 0;
+    font-weight:700;
+    margin-top:-15px;
+    }
+    .mapboxgl-popup-content h4 {
+    margin:0;
+    display:block;
+    padding: 10px 10px 10px 10px;
+    font-weight:400;
+    margin: 0;
+    }
+    .mapboxgl-popup-content div {
+    padding:10px;
+    }
+    .mapboxgl-container .leaflet-marker-icon { 
+    cursor:pointer; 
+    }
+    .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
+    margin-top: 15px;
+    }
+    .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
+    border-bottom-color: #91c949;
+    }
+    /* Map Layers */
+    #inforesults {
+        margin: 5px 0px 0px 10px;
+        border-radius: 4px;
+        border-color: #dadada;
+        background-color: #eeeeee;
+    }
+    #howto {
+        margin-left: 14px !important;
+    }
+    .about-icon {
+    width: 35px;
+    height: 42px;
+    margin-right: 5px;
+    float:left;
+    }
+    .about-icon2 {
+    width: 38px;
+    height: 38px;
+    margin-right: 5px;
+    float:left;
+    }
+    .dvrpc_full_logo {
+    margin: 10px 15px 6px 5px;
+    float:left;
+    }
+    /* Layer Information */
+    #info-stack {
+        position: fixed;
+        z-index: 100;
+        bottom: 10px;
+        left: 10px;
+        max-height: 600px;
+        width:450px;
+        background-color: white;
+        border-radius: 4px;
+        padding: 8px;
+    }   
+    .carousel-caption {
+    right: 15%;
+    left: 15%;
+    z-index: 10;
+    padding-top: 20px;
+    padding-bottom: 5px;
+    text-align: center;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.6);
+    color: #000;
+    bottom: 1px;
+    position: absolute;
+    }
+    .carousel-control .glyphicon-chevron-right {
+    position: absolute;
+    top: 50%;
+    left: 20%;
+    z-index: 5;
+    display: inline-block;
+    }    
+    .alert-info {
+    color: black;
+    background-color: #E4E3DB ;
+    border-color: white;
+    }
+    .alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    }   
+     
+    .one{
+        color:#396ab2;
+    }
+    #box {
+    background-color:none;
+    height:50px;
+    width:100px;
+    float:right;
+    margin: 2px 10px 5px 2px;
+    background-position: center;
+    background-size: 100px 40px;
+    background-repeat: no-repeat;
+    }
+    #info{
+        padding: 10px;
+    }
+    .carousel {
+        padding:5px;
+    }
+    #resultsheader{
+    color:#333;
+    margin: 0px 10px 0px 10px;
+    font-size: 18px;
+    } 
+    .rhEL {
+     border-bottom: 8px solid #eb2226
+    }
+    .rhES {border-bottom: 8px solid #19bbb8;}
+    .rhGB {border-bottom: 8px solid #96c93d;}
+    .rhSPG {border-bottom: 8px solid #fdbf12;}
+
+    #EI_legend{
+        height:100px;
+    }
+    #ES_legend{
+        height:100px;
+    }
+    #GB_legend{
+        height:100px;
+    }
+    #SPG_legend{
+        height:100px;
+    }
+    #legend-stack {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        height: 115px;
+        margin-left: 10px;
+        background-color: white;
+        border-radius: 4px;
+        padding-right: 10px;
+    }   
+    .legend-icons img {
+      display: block;
+      margin: 5px 0px 5px 5px;
+      max-height: 100%;
+    }
+    #about_footer{
+      background-color: #b9def0; 
+      border-radius: 4px;
+      border: 1px solid transparent;
+    }
+    #about_footer p{
+        margin:0px 0px 0px 10px;
+        padding:5px;
+    }
+    .hr1
+    {
+    border-top: 1px solid #000;
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+    }
+    .labelfieldsource{
+font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+font-size: 10px;
+line-height: 1.42857;
+color: #333;
+font-style: italic;}

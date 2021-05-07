@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+       <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="description" content="version 1.0.0">
+        <meta name="author" content="DVRPC">   
+    
+        <title>DVRPC - Suburban Retail Districts</title>
+
+       <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+      <link rel="stylesheet" href="assets/css/main.css">
+      
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins)
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  -->
+
+      <!-- Upgrading the jquery and jquery UI verison with the latest CDN versions
+      <script  src="https://code.jquery.com/jquery-2.2.4.js"   integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="   crossorigin="anonymous"></script>-->
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+      <!-- Latest compiled and minified JavaScript -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+      <!--   <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> -->
+
+      <script src="assets/data/retail.js"></script>
+
+      <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.js'></script>
+      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css' rel='stylesheet' />
+    
+      <style>
+            .legend-check {
+            display: none;
+            }
+           
+      </style>
+  </head>
+  
+  <body>
+<!-- Start Main Body -->
+  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                <div class="navbar-brand">
+                    <a id="header-link" href="https://www.dvrpc.org" target="_blank">
+                    <img id="dvrpc-logo" src="assets/img/dvrpc_logo_small.png" alt="DVRPC logo"/>
+                    <p id="header-link-text">Suburban Retail Districts</p>
+                    </a>
+                </div>
+
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                    <div class="nav navbar-nav navbar-right">
+                    <button type="button" style=" margin:10px 10px 0px 4px;float:right;color:#2e5c95;background-color:#d9dadc;" class="btn btn-sm"<a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" onclick="$('#aboutModal').modal('show'); return false;"><i class="fa fa-info-circle" style="color:#2e5c95"></i>&nbsp;&nbsp;<b>About</b></a>
+                    </button>
+                    </div>
+                </div>
+
+            </div>
+    </div>
+ 
+
+<div class="row" id="container">
+
+    <div class="col-sm-6 col-lg-6" id="sidebar" style="padding: 10px; overflow: auto;">
+        <div class="panel-group">
+                   <!-- Legend -->
+          <div id="legend-stack">
+            <div class="legend-icons" value="EI"  id="EI">
+              <label>
+              <input type="checkbox" checked id="EI" class="legend-check" name="layerTCDI">
+              <img id="EI_legend" src="assets/img/legend/EI.png" alt="Energy Innovation logo" class="legend-button" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-title="Click to toggle 2015 Projects"/>
+              </label>
+            </div>  
+            <div class="legend-icons" value="ES"  id="ES">
+              <label>
+              <input type="checkbox" checked id="ES" class="legend-check" name="layerTCDI">
+              <img id="ES_legend" src="assets/img/legend/ES.png" alt="Energy Storage logo"class="legend-button" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-title="Click to toggle 2015 Projects"/>
+              </label>
+            </div> 
+            <div class="legend-icons" value="GB"  id="GB">
+              <label>
+              <input type="checkbox" checked id="GB" class="legend-check" name="layerTCDI">
+              <img id="GB_legend" src="assets/img/legend/GB.png" alt="Green Building logo"class="legend-button" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-title="Click to toggle 2015 Projects"/>
+              </label>
+            </div> 
+            <div class="legend-icons" value="SPG"  id="SPG">
+              <label>
+              <input type="checkbox" checked id="SPG" class="legend-check" name="layerTCDI">
+              <img id="SPG_legend" src="assets/img/legend/SPG.png" alt="Solar Power Generator logo"class="legend-button" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-title="Click to toggle 2015 Projects"/>
+              </label>
+            </div>  
+        </div> 
+        <!-- End Legend -->
+             <div id="inforesults" class="panel panel-primary">
+                 <!-- <div class="panel-heading">
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion_" href="">
+                          <font color="white"><strong>Project Info</strong></font>
+                      </a>
+                  </div> -->
+              <div id="overlay-layers" class="panel-collapse collapse in">
+                  <div id="box" > </div>                 
+                  <div id="resultsheader" ></div>
+                  <div id='info' class='info'></div>
+                  <div id="carousel-example-generic" class="carousel" data-ride="carousel"></div>
+              </div>
+            </div>
+
+         </div> 
+
+        <div id="howto" class="alert alert-info alert-block nomobile" style="margin-top:10px;">
+            <button class="close" data-dismiss="alert" type="button">×</button>
+            <h3 style="margin: 0;">Navigating the Data</h3>
+            <p>This map showcases four categories of projects in the DVRPC region that reduce energy use and greenhouse gas emissions. Click on a project to display detailed information, pictures, and some of the ways projects are reducing energy use and greenhouse gas emissions.</p>
+            <p><b>DVRPC is actively seeking additions to this map!</b> Please contact Adam Beam (<a class="one" href="mailto:abeam@dvrpc.org"> abeam@dvrpc.org </a>) if you are aware of a project to be considered for inclusion. In addition, please contact Adam if you are the owner or operator of a project on this map and would like to correct or update information, or if you would like the project removed. <br><br>Data for these locations were compiled by DVRPC through various online sources.</p>
+        </div>
+
+    </div>
+    
+        <!-- Map -->
+    <div class="col-sm-6 col-lg-6" id="map" style="overflow:hidden"></div>
+
+</div>      
+<!-- Zoom -->
+      </div>
+        <a href='javascript:void(0);' id='zoomtoregion'></a>
+</div>
+            <!-- About Modal -->
+        <div class="modal fade" id="aboutModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Delaware Valley Suburban Retail Districts</h4>
+                        </div>
+                        <div class="modal-body">
+                             <ul id="aboutTabs" class="nav nav-tabs">
+                                <li class="active"><a href="#about" data-toggle="tab"><i class="icon-info-sign"></i>&nbsp;About</a></li> 
+                                <li><a href="#contact" data-toggle="tab"><i class="icon-exclamation-sign"></i>&nbsp;Contact</a></li>
+                                <li><a href="#disclaimer" data-toggle="tab"><i class="icon-exclamation-sign"></i>&nbsp;Disclaimer</a></li>
+                            </ul>
+                            <div id="aboutTabsContent" class="tab-content" style="padding-top: 10px;">
+                                <div class="tab-pane fade active in" id="about">
+                                     <div><p>Through the Strategies for Older Suburbs work program, staff compiled information about 71 suburban downtown retail districts in an effort to learn what elements were common among successful older suburban retail districts. The information provided through this web application is the culmination of field work and research done by DVRPC staff. The information about each downtown's retail mix was collected between January and April 2013. Retail elements included in this analysis include: management structure, sidewalk width, walkscore, vacancy rate, parking options, anchor institutions, AADTs, Streetscape, national tenancy, lease rents, historic districts, household income, transit accessibility, residential population, events, open space, retail mix, and blocks included for analysis.</p> 
+                                     </div> 
+                                     <div id="about_footer"><p><b>DVRPC is actively seeking additions to this map!</b> Please contact Adam Beam at <a href="mailto:abeam@dvrpc.org" class="one">abeam@dvrpc.org</a>  if you are aware of a project to be considered for inclusion on this map. In addition, please contact Adam if you are the owner or operator of a project on this map and would like to correct or update information, or if you would like the project removed. <br><br>
+                                      Data for these locations were compiled by DVRPC through various online sources.</p>
+                                    </div>                                 
+                                </div>
+                                <div class="tab-pane fade" id="contact"> 
+                                     <p>
+                                        <h4>For more information, contact:</h4>
+                                            <address>
+                                            Adam Beam, Research Analyst, Office of Energy and Climate Change Initiatives<br/>
+                                            <a href="mailto:abeam@dvrpc.org" class="one">abeam@dvrpc.org</a><br/>
+                                            (215) 238-2830
+                                            </address>
+                                        </p>  
+                                </div>
+                                <div class="tab-pane fade" id="disclaimer"> 
+                                      <img src="https://www.dvrpc.org/img/homepage/dvrpclogo70px.png" alt="Solar Power Generator logo" class="dvrpc_full_logo"/><p style="margin: -5px 0px 0px 45px;display:block"><span><span>This web page is a public resource of general information. The Delaware Valley Regional Planning Commission (DVRPC) makes no warranty, 
+                                        representation, or guarantee as to the content, sequence, accuracy, timeliness, or completeness of any of the spatial data or database 
+                                        information provided herein. DVRPC and partner state, local, and other agencies shall assume no liability for errors, omissions, or 
+                                        inaccuracies in the information provided regardless of how caused; or any decision made or action taken or not taken by any person relying 
+                                        on any information or data furnished within.</span></p>
+                                        <p>For more information, visit <a href="https://www.dvrpc.org/Policies/" target="_blank" class="one">https://www.dvrpc.org/Policies/</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+  
+<script src="assets/js/app.js"></script>
+<script src="assets/js/numeral.js"></script>
+
+<script>var _gaq=[['_setAccount','UA-9825778-1'],['_trackPageview']];(function(d){var g=d.createElement('script'),s=d.scripts[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document))</script>
+
+<!-- End Main Body -->
+  </body>
+</html>
