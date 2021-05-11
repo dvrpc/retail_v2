@@ -1,7 +1,7 @@
-    var retail;
+    var retail, districts, d2;
     var geojson;
 
-  $('#aboutModal').modal('show');
+  // $('#aboutModal').modal('show');
 
   mapboxgl.accessToken = 'pk.eyJ1IjoiY3J2YW5wb2xsYXJkIiwiYSI6ImNqMHdvdnd5MTAwMWEycXBocm4zbXVjZm8ifQ.3zjbFccILu6mL7cOTtp40A';
 
@@ -57,6 +57,45 @@ map.on('load', function () {
             ]
         });
 
+        map.addLayer({
+            "id": "d2",
+            "type": "line",
+            "source": {
+                "type": 'geojson',
+                "data": districts
+            },
+            "layout": {},
+             "paint": {
+                'line-width': 2,
+                'line-color': '#0078ae'
+            }
+             /*  paint: {
+                "line-color": [ 'case',
+               ['boolean', ['feature-state', 'click'], false],
+                '#FFFF00', '#0078ae'
+               ],
+                "line-width": [ 'case',
+               ['boolean', ['feature-state', 'click'], false],
+                5, 3
+               ]
+             }
+             */
+        });
+
+        map.addLayer({
+            "id": 'districts',
+            "type": 'fill',
+            "source": {
+                "type": 'geojson',
+                "data": districts
+            },
+            "layout": {},
+            "paint": {
+               'fill-outline-color': '#0078ae',
+               'fill-color': 'rgba(0, 120, 174,0.35)'
+            }   
+        });
+
          map.addLayer({
             "id": "retail",
             "type": "symbol",
@@ -88,63 +127,246 @@ map.on('load', function () {
             })
 
             el.addEventListener('click', function() {
+                var props = marker.properties;
+                // get all the elements with class "marker2"
+            /*    var x = document.getElementsByClassName("marker2");
+                var i;
+                for (i = 0; i < x.length; i++) {
+                x[i].className = "marker1"; // set "marker" as the class for each of those elements
+                }
+                // at this point all markers are back to the original state
+
+                // now you set the class of the current clicked marker
+                this.className = 'marker2'; //don't use the variable "el", it's out of the scope and can change, "this" is the current clicked element
+            */
             //  window.alert(marker.properties.name);
             //   console.log(marker.properties);
-            if (marker.properties.bio1 === undefined){ var BIO1 = ' '  ;}
-            else { var BIO1 = '<hr class="hr1"><B>Description:</B> '+ marker.properties.bio1;}
-            if (marker.properties.bio2 === undefined){ var BIO2 = ' '  ;}
-            else { var BIO2 = '&nbsp;'+ marker.properties.bio2;}
-            if (marker.properties.bio3 === undefined){ var BIO3 = ' '  ;}
-            else { var BIO3 = '&nbsp;'+ marker.properties.bio3;}
-            if (marker.properties.bio4 === undefined){ var BIO4 = ' '  ;}
-            else { var BIO4 = '&nbsp;'+ marker.properties.bio4;}
+            if (marker.properties.CONCAT === undefined){ var CONCAT = "<div class='hidden'></div>"  ;}
+            else { var CONCAT = '<span class="label label-default">' + marker.properties.CONCAT +'</span>';}
+            
+            if (marker.properties.CENTER === 'No'){ var CENTER = "<div class='hidden'></div>"  ;}
+            else { var CENTER = '<span class="label label-default">Center</span>';}
 
-           var info ="<H4>"+ marker.properties.name + "</h4>";
+            if (marker.properties.CTOWN === 'No'){ var CTOWN = "<div class='hidden'></div>"  ;}
+            else { var CTOWN = '<span class="label label-default">Classic Town</span>';}
 
-           var content = '<B>Contact Name:</B> '+ marker.properties.cname
-               // +'<br><B>Title:</B> '+ marker.properties.ctitle
-                +'<br><B>Phone:</B> '+ marker.properties.cphone
-               // +'<br><B>Email:</B> '+ marker.properties.cemail
-                + BIO1
-                + BIO2
-                + BIO3
-                + BIO4
-            ;
+            if (marker.properties.HDIST === 'n/e'){ var HDIST = "<div class='hidden'></div>"  ;}
+            else { var HDIST = '<span class="label label-default"> Historic District (NRHP)</span>';}
 
-            if (marker.properties.photo1 === undefined){ var PHOTO1= " "  ;}
-            else { var PHOTO1 = "<div class='carousel-inner'>"+"<div class='item active'><img src='"+ (marker.properties.photo1) +"' alt='property photo'></div>";}
-            if (marker.properties.photo2 !== undefined){ PHOTO1 += "<div class='item'><img src='"+ (marker.properties.photo2) + "' alt='property photo'></div>";}
-            if (marker.properties.photo3 !== undefined){ PHOTO1 += "<div class='item'><img src='"+ (marker.properties.photo3) + "' alt='property photo'></div>";}
-            if (marker.properties.photo4 !== undefined){ PHOTO1 += "<div class='item'><img src='"+ (marker.properties.photo4) + "' alt='property photo'></div>";}
-            if (marker.properties.photo1 !== undefined){ PHOTO1 += "</div>";}
-            if (marker.properties.photo2 !== undefined){ PHOTO1 += " <a class='left carousel-control' href='#carousel-example-generic' data-slide='prev'>"+"<span class='glyphicon glyphicon-chevron-left'></span>"
-            +" </a>"+" <a class='right carousel-control' href='#carousel-example-generic' data-slide='next'>"+
-            "<span class='glyphicon glyphicon-chevron-right'></span>"+"</a>" ;}
-            //      if (props.Photo_Cred===undefined){ var Photo_Cred = " "  ;}
-            //      else { var Photo_Cred = "<div class='labelfieldsource'>"+ (props.Photo_Cred) +  "</div>";}
-            var  content2 = PHOTO1
-                     //   + Photo_Cred
-           
+            if (marker.properties.TRANSIT === 'No'){ var TRANSIT = "<div class='hidden'></div>" ;}
+            else { var TRANSIT = '<span class="label label-default">Transit-Oriented</span>';}
+            
+           var info ="<h3 style='margin-top:0;'><span>"+ marker.properties.District +"</span><br/><small><span>"+ marker.properties.RDISTCROSS +"</span>, <span></span> County, <span>"+ marker.properties.STATE +"</span></small></h3>"
+            + CONCAT
+            + CENTER
+            + CTOWN
+            + HDIST
+            + TRANSIT
+           ;
+
+           var content1 = "<h3 class='data-heading'>Transit and Accessibility</h3>"
+           +"<span class='data-info'>Number of Blocks: </span><span class='data-value'> "+ marker.properties.DTRETAIL +"</span>"
+           +"<br><span class='data-info'>Maximum Sidewalk Width: </span><span class='data-value'> "+ marker.properties.MAXSWW +"</span>"
+           +"<br><span class='data-info'>Maximum Cartway Width: </span><span class='data-value'> "+ marker.properties.MAXCARTW +"</span>"
+           +"<br><span class='data-info'>Walk Score: </span><span class='data-value'> "+ marker.properties.WSCORE +"</span>"
+           +"<br><span class='data-info'>Transit: </span><span class='data-value'> "+ marker.properties.TRANSIT +"</span>"
+           +"<br><span class='data-info'>Bus Routes: </span><span class='data-value'> "+ marker.properties.BUSROUTE +"</span>"
+           +"<br><span class='data-info'>Parking: </span><span class='data-value'> "+ marker.properties.PARKING +"</span>"
+           ;
+           if (marker.properties.BID === null){ var BID = "<div class='hidden'></div>"  ;}
+           else { var BID = "<span class='data-info'>Business Improvement District: </span><span class='data-value'> "+ marker.properties.BID +"</span><br>";}
+
+           var content2 = "<h3 class='data-heading'>Demographic (within 1/2 mile)</h3>"
+           +"<span class='data-info'>Population: </span><span class='data-value'> "+ numeral(marker.properties.POPHALF).format('(0,0)') +"</span>"
+           +"<br><span class='data-info'>Households: </span><span class='data-value'> "+ numeral(marker.properties.HHHALF).format('(0,0)') +"</span>"
+           +"<br><span class='data-info'>Median Household Income: </span><span class='data-value'> "+ numeral(marker.properties.MEDHHQ).format('($0,0)') +"</span>"
+           +"<h3 class='data-heading'>Management Structure</h3>" 
+           + BID
+           +"<span class='data-info'>Chamber of Commerce: </span><span class='data-value'> "+ marker.properties.CHAMCOM +"</span><br>"
+           +"<span class='data-info'>Business Association: </span><span class='data-value'> "+ marker.properties.BUSASC +"</span><br>"
+           +"<span class='data-info'>Merchants Association: </span><span class='data-value'> "+ marker.properties.MERCHASC +"</span><br>"
+           +"<span class='data-info'>Main Street: </span><span class='data-value'> "+ marker.properties.MAINST +"</span><br>"
+           +"<span class='data-info'>Zoning: </span><span class='data-value'> "+ marker.properties.ZONING +"</span>" 
+           +"<h3 class='data-heading'>Traffic Counts</h3>" 
+           +"<span class='data-info'>Count Location: </span><span class='data-value'> "+ marker.properties.COUNTLOC +"</span>"
+           +"<br><span class='data-info'>Center Point: </span><span class='data-value'> "+ marker.properties.CENTERPT +"</span>"
+           +"<br><span class='data-info'>AADT: </span><span class='data-value'> "+ marker.properties.AADT +"</span>"
+           +"<br><span class='data-info'>Date: </span><span class='data-value'> "+ marker.properties.DATE +"</span>" 
+           ;
             document.getElementById('resultsheader').innerHTML = info;
-            document.getElementById('resultsheader').className = 'rhEL';   
-            document.getElementById('info').innerHTML = content;
-            document.getElementById('carousel-example-generic').innerHTML = content2;
-            $('.carousel').carousel('pause');
+           // document.getElementById('resultsheader').className = 'rhEL';   
 
+            document.getElementById('info1').innerHTML = content1;
+            document.getElementById('info2').innerHTML = content2;
+        
             map.flyTo({
             center: marker.geometry.coordinates,
             pitch: 20,
-            speed: 0.5,
-            zoom: 12
+            speed: 0.7,
+            zoom: 15
                 });
-            });
+// charts
+  Retail = [props.CIVIC, props.CULT, props.FB, props.GAFO, props.NGS, props.NONREOFF, props.RESIDE, props.VACANT];
+  Retail2 = [props.CIVIC, props.CULT, props.FB, props.GAFO, props.NGS, props.NONREOFF, props.RESIDE, props.VACANT];
+  
+  updateRetailChart(Retail); 
+  updateRetailChart2(Retail2);   
+          
+  function updateRetailChart(Values){
+    var RetailChart = {
+        chart: {
+            renderTo: 'Chart1',
+            type:'pie',
+            plotBackgroundColor: null,
+            plotBorderWidth: 0, //null,
+            plotShadow: true,
+            height: 200,
+            width: 300,
+            colors: ['#FFFF00', '#FFA77F','#FF0000','#BEE8FF','#AA66CD','#686868','#FFBEBE','#A80000']
+        },
+        title: {
+          text: null
+        }, 
+        plotOptions: {
+          pie: {
+            //  allowPointSelect: true,
+            cursor: 'pointer',
+            point:{
+              events : {
+                legendItemClick: function(e){
+                e.preventDefault();
+                }
+                }
+            },
+            dataLabels: {
+              //   enabled: false
+                enabled:true,
+                style: '{text-align: center}',
+                verticalAlign: 'middle',
+                distance: 5,
+                format: '<span>{point.percentage:.0f} %</span>',
+                filter: {
+                property:'percentage',
+                operator: '>',
+                value: '8'
+                },
+            },
+            showInLegend: false
+            }
+          },
+        tooltip: {
+            formatter:function(){
+              //  return '<b>'+Highcharts.numberFormat(this.point.y,0,',',',')+' Acres</b><br/>';
+                return '<b>'+this.point.name +'</b><br/>'+Highcharts.numberFormat(this.percentage, 2)+' %';
+            }
+        },
+        credits: {
+          enabled: false
+        },
+        series: [{
+          name:'Total',
+          id: 'Values',
+          innerSize: '40%',
+          colors: ['#FFFF00', '#FFA77F','#FF0000','#BEE8FF','#AA66CD','#686868','#FFBEBE','#A80000'],
+          data: []
+        }]
+    };    
+    var Labels = ["Civic", "Cultural","Food & Beverage","GAFO","NG & S","Office","Residential","Vacant"],
+    counData = [];
+    for (var i = 0; i < Values.length; i++){
+                counData.push({
+                    name: Labels[i],
+                    y: Values[i]})
+            }
+    RetailChart.series[0].data = counData;
+    var chart2 = new Highcharts.Chart(RetailChart)
+    }
+  // start second chart
+  function updateRetailChart2(Values){
+    var RetailChart2 = {
+        chart: {
+            renderTo: 'Chart2',
+            type:'pie',
+            plotBackgroundColor: null,
+            plotBorderWidth: 0, //null,
+            plotShadow: true,
+            height: 200,
+            width: 300,
+            colors: ['#FFFF00', '#FFA77F','#FF0000','#BEE8FF','#AA66CD','#686868','#FFBEBE','#A80000']
+        },
+        title: {
+          text: null
+        }, 
+        plotOptions: {
+          pie: {
+            //  allowPointSelect: true,
+            cursor: 'pointer',
+            point:{
+              events : {
+                legendItemClick: function(e){
+                e.preventDefault();
+                }
+                }
+            },
+            dataLabels: {
+              //   enabled: false
+                enabled:true,
+                style: '{text-align: center}',
+                verticalAlign: 'middle',
+                distance: 5,
+                format: '<span>{point.percentage:.0f} %</span>',
+                filter: {
+                property:'percentage',
+                operator: '>',
+                value: '8'
+                },
+            },
+            showInLegend: false
+            }
+          },
+      /*  legend: {
+          title: {
+              text: '<span style="text-align:center;font-size: 9px; color: #666; font-weight: normal">Retail Mix 2015</span>',
+              style: {
+                    fontStyle: 'italic'
+              }
+            },
+          layout:'horizontal'
+        }, */
+        tooltip: {
+            formatter:function(){
+              //  return '<b>'+Highcharts.numberFormat(this.point.y,0,',',',')+' Acres</b><br/>';
+                return '<b>'+this.point.name +'</b><br/>'+Highcharts.numberFormat(this.percentage, 2)+' %';
+            }
+        },
+        credits: {
+          enabled: false
+        },
+        series: [{
+          name:'Total',
+          id: 'Values',
+          innerSize: '40%',
+          colors: ['#FFFF00', '#FFA77F','#FF0000','#BEE8FF','#AA66CD','#686868','#FFBEBE','#A80000'],
+          data: []
+        }]
+    };    
+    var Labels = ["Civic", "Cultural","Food & Beverage","GAFO","NG & S","Office","Residential","Vacant"],
+    counData = [];
+    for (var i = 0; i < Values.length; i++){
+                counData.push({
+                    name: Labels[i],
+                    y: Values[i]})
+            }
+    RetailChart2.series[0].data = counData;
+    var chart4 = new Highcharts.Chart(RetailChart2)
+    }  
+            
+          
+        });
 
-            new mapboxgl.Marker(el)
-                .setLngLat(marker.geometry.coordinates)
-                .addTo(map);
+        new mapboxgl.Marker(el)
+        .setLngLat(marker.geometry.coordinates)
+        .addTo(map);
         });
 
     });
-  
-
-

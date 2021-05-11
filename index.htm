@@ -10,15 +10,15 @@
     
         <title>DVRPC - Suburban Retail Districts</title>
 
-       <!-- Latest compiled and minified CSS -->
+        <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
         <!-- Optional theme -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
 
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
-      <link rel="stylesheet" href="assets/css/main.css">
+        <link rel="stylesheet" href="assets/css/main.css">
       
       <!-- jQuery (necessary for Bootstrap's JavaScript plugins)
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  -->
@@ -29,21 +29,16 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
       <!-- Latest compiled and minified JavaScript -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
-
-      <!--   <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> -->
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 
       <script src="assets/data/retail.js"></script>
+      <script src="assets/data/districts.js"></script>
 
       <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.js'></script>
       <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css' rel='stylesheet' />
     
-      <style>
-            .legend-check {
-            display: none;
-            }
-           
-      </style>
+    <style>
+    </style>
   </head>
   
   <body>
@@ -82,34 +77,6 @@
 
     <div class="col-sm-6 col-lg-6" id="sidebar" style="padding: 10px; overflow: auto;">
         <div class="panel-group">
-                   <!-- Legend -->
-          <div id="legend-stack">
-            <div class="legend-icons" value="EI"  id="EI">
-              <label>
-              <input type="checkbox" checked id="EI" class="legend-check" name="layerTCDI">
-              <img id="EI_legend" src="assets/img/legend/EI.png" alt="Energy Innovation logo" class="legend-button" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-title="Click to toggle 2015 Projects"/>
-              </label>
-            </div>  
-            <div class="legend-icons" value="ES"  id="ES">
-              <label>
-              <input type="checkbox" checked id="ES" class="legend-check" name="layerTCDI">
-              <img id="ES_legend" src="assets/img/legend/ES.png" alt="Energy Storage logo"class="legend-button" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-title="Click to toggle 2015 Projects"/>
-              </label>
-            </div> 
-            <div class="legend-icons" value="GB"  id="GB">
-              <label>
-              <input type="checkbox" checked id="GB" class="legend-check" name="layerTCDI">
-              <img id="GB_legend" src="assets/img/legend/GB.png" alt="Green Building logo"class="legend-button" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-title="Click to toggle 2015 Projects"/>
-              </label>
-            </div> 
-            <div class="legend-icons" value="SPG"  id="SPG">
-              <label>
-              <input type="checkbox" checked id="SPG" class="legend-check" name="layerTCDI">
-              <img id="SPG_legend" src="assets/img/legend/SPG.png" alt="Solar Power Generator logo"class="legend-button" data-placement="bottom" data-toggle="tooltip" data-trigger="hover" data-title="Click to toggle 2015 Projects"/>
-              </label>
-            </div>  
-        </div> 
-        <!-- End Legend -->
              <div id="inforesults" class="panel panel-primary">
                  <!-- <div class="panel-heading">
                       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion_" href="">
@@ -119,19 +86,42 @@
               <div id="overlay-layers" class="panel-collapse collapse in">
                   <div id="box" > </div>                 
                   <div id="resultsheader" ></div>
-                  <div id='info' class='info'></div>
-                  <div id="carousel-example-generic" class="carousel" data-ride="carousel"></div>
               </div>
             </div>
+           <!-- Chart Section--> 
+            <span>
+                <div id="Chart1" style="display:inline-block;"></div>    
+                <div id="Chart2" style="display:inline-block;"></div> 
+            </span>
+            <div id="chart-legend">
+            <span>
+                <i class="fa fa-circle legend-icons civic"></i>Civic
+                <i class="fa fa-circle legend-icons cultural"></i>Cultural
+                <i class="fa fa-circle legend-icons fb"></i>Food & Beverage
+                <i class="fa fa-circle legend-icons gafo"></i>GAFO
+                <i class="fa fa-circle legend-icons ngs"></i>NG & S
+              </span>
+              <br>
+              <span>
+                <i class="fa fa-circle legend-icons office"></i>Office
+                <i class="fa fa-circle legend-icons res"></i>Residential
+                <i class="fa fa-circle legend-icons vacant"></i>Vacant 
+              </span>
+            </div>
 
+            <div id="data-info-section" >
+            <div id='info1' class='info1'></div>
+            <div id='info2' class='info2'></div>
+            </div>
          </div> 
 
-        <div id="howto" class="alert alert-info alert-block nomobile" style="margin-top:10px;">
+      <!--   <div id="howto" class="alert alert-info alert-block nomobile" style="margin-top:10px;">
             <button class="close" data-dismiss="alert" type="button">×</button>
             <h3 style="margin: 0;">Navigating the Data</h3>
             <p>This map showcases four categories of projects in the DVRPC region that reduce energy use and greenhouse gas emissions. Click on a project to display detailed information, pictures, and some of the ways projects are reducing energy use and greenhouse gas emissions.</p>
             <p><b>DVRPC is actively seeking additions to this map!</b> Please contact Adam Beam (<a class="one" href="mailto:abeam@dvrpc.org"> abeam@dvrpc.org </a>) if you are aware of a project to be considered for inclusion. In addition, please contact Adam if you are the owner or operator of a project on this map and would like to correct or update information, or if you would like the project removed. <br><br>Data for these locations were compiled by DVRPC through various online sources.</p>
         </div>
+        -->
 
     </div>
     
@@ -189,7 +179,7 @@
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
 
-  
+<script src="http://code.highcharts.com/highcharts.js"></script>  
 <script src="assets/js/app.js"></script>
 <script src="assets/js/numeral.js"></script>
 
