@@ -1,9 +1,7 @@
     var retail, districts, d2;
     var geojson;
 
-  // $('#aboutModal').modal('show');
-
-  mapboxgl.accessToken = 'pk.eyJ1IjoiY3J2YW5wb2xsYXJkIiwiYSI6ImNqMHdvdnd5MTAwMWEycXBocm4zbXVjZm8ifQ.3zjbFccILu6mL7cOTtp40A';
+    mapboxgl.accessToken = 'pk.eyJ1IjoiY3J2YW5wb2xsYXJkIiwiYSI6ImNqMHdvdnd5MTAwMWEycXBocm4zbXVjZm8ifQ.3zjbFccILu6mL7cOTtp40A';
 
   // This adds the map
     var map = new mapboxgl.Map({
@@ -118,7 +116,7 @@ map.on('load', function () {
             el.addEventListener('mouseenter',function(){
             var coordinates = marker.geometry.coordinates.slice();
             popup.setLngLat(coordinates)
-            .setHTML('<h4>'+ marker.properties.District+'</h4><p style="border-bottom: 8px solid #42708A;"</p>')
+            .setHTML('<h4>'+ marker.properties.DISTRICT +'</h4><p style="border-bottom: 8px solid #42708A;"</p>')
             .addTo(map);
             })
 
@@ -156,7 +154,7 @@ map.on('load', function () {
             if (marker.properties.TRANSIT === 'No'){ var TRANSIT = "<div class='hidden'></div>" ;}
             else { var TRANSIT = '<span class="label label-default">Transit-Oriented</span>';}
             
-           var info ="<h3 style='margin-top:0;'><span>"+ marker.properties.District +"</span><br/><small><span>"+ marker.properties.RDISTCROSS +"</span>, <span></span> County, <span>"+ marker.properties.STATE +"</span></small></h3>"
+           var info ="<h3 style='margin-top:0;'><span>"+ marker.properties.DISTRICT +"</span><br/><small><span>"+ marker.properties.RDISTCROSS +"</span>, <span></span> County, <span>"+ marker.properties.STATE +"</span></small></h3>"
             + CONCAT
             + CENTER
             + CTOWN
@@ -173,20 +171,35 @@ map.on('load', function () {
            +"<br><span class='data-info'>Bus Routes: </span><span class='data-value'> "+ marker.properties.BUSROUTE +"</span>"
            +"<br><span class='data-info'>Parking: </span><span class='data-value'> "+ marker.properties.PARKING +"</span>"
            ;
-           if (marker.properties.BID === null){ var BID = "<div class='hidden'></div>"  ;}
+           if (marker.properties.BID === undefined){ var BID = "<div class='hidden'></div>"  ;}
            else { var BID = "<span class='data-info'>Business Improvement District: </span><span class='data-value'> "+ marker.properties.BID +"</span><br>";}
-
+          
+           if (marker.properties.CHAMCOM === undefined){ var CHAMCOM = "<div class='hidden'></div>"  ;}
+           else { var CHAMCOM = "<span class='data-info'>Chamber of Commerce: </span><span class='data-value'> "+ marker.properties.CHAMCOM +"</span><br>";}
+          
+           if (marker.properties.BUSASC === undefined){ var BUSASC = "<div class='hidden'></div>"  ;}
+           else { var BUSASC = "<span class='data-info'>Business Association: </span><span class='data-value'> "+ marker.properties.BUSASC +"</span><br>";}
+          
+           if (marker.properties.MERCHASC === undefined){ var MERCHASC = "<div class='hidden'></div>"  ;}
+           else { var MERCHASC = "<span class='data-info'>Merchants Association: </span><span class='data-value'> "+ marker.properties.MERCHASC +"</span><br>";}
+          
+           if (marker.properties.MAINST === undefined){ var MAINST = "<div class='hidden'></div>"  ;}
+           else { var MAINST = "<span class='data-info'>Main Street: </span><span class='data-value'> "+ marker.properties.MAINST +"</span><br>";}
+          
+           if (marker.properties.ZONING === undefined){ var ZONING = "<div class='hidden'></div>"  ;}
+           else { var ZONING = "<span class='data-info'>Zoning: </span><span class='data-value'> "+ marker.properties.ZONING +"</span>" ;}
+               
            var content2 = "<h3 class='data-heading'>Demographic (within 1/2 mile)</h3>"
-           +"<span class='data-info'>Population: </span><span class='data-value'> "+ numeral(marker.properties.POPHALF).format('(0,0)') +"</span>"
-           +"<br><span class='data-info'>Households: </span><span class='data-value'> "+ numeral(marker.properties.HHHALF).format('(0,0)') +"</span>"
-           +"<br><span class='data-info'>Median Household Income: </span><span class='data-value'> "+ numeral(marker.properties.MEDHHQ).format('($0,0)') +"</span>"
+           +"<span class='data-info'>Population: </span><span class='data-value'> "+ numeral(marker.properties.POP).format('(0,0)') +"</span>"
+           +"<br><span class='data-info'>Households: </span><span class='data-value'> "+ numeral(marker.properties.HH).format('(0,0)') +"</span>"
+           +"<br><span class='data-info'>Median Household Income: </span><span class='data-value'> "+ numeral(marker.properties.MEDHH).format('($0,0)') +"</span>"
            +"<h3 class='data-heading'>Management Structure</h3>" 
            + BID
-           +"<span class='data-info'>Chamber of Commerce: </span><span class='data-value'> "+ marker.properties.CHAMCOM +"</span><br>"
-           +"<span class='data-info'>Business Association: </span><span class='data-value'> "+ marker.properties.BUSASC +"</span><br>"
-           +"<span class='data-info'>Merchants Association: </span><span class='data-value'> "+ marker.properties.MERCHASC +"</span><br>"
-           +"<span class='data-info'>Main Street: </span><span class='data-value'> "+ marker.properties.MAINST +"</span><br>"
-           +"<span class='data-info'>Zoning: </span><span class='data-value'> "+ marker.properties.ZONING +"</span>" 
+           + CHAMCOM
+           + BUSASC
+           + MERCHASC
+           + MAINST
+           + ZONING
            +"<h3 class='data-heading'>Traffic Counts</h3>" 
            +"<span class='data-info'>Count Location: </span><span class='data-value'> "+ marker.properties.COUNTLOC +"</span>"
            +"<br><span class='data-info'>Center Point: </span><span class='data-value'> "+ marker.properties.CENTERPT +"</span>"
@@ -207,8 +220,8 @@ map.on('load', function () {
                 });
 // charts
   Retail = [props.CIVIC, props.CULT, props.FB, props.GAFO, props.NGS, props.NONREOFF, props.RESIDE, props.VACANT];
-  Retail2 = [props.CIVIC, props.CULT, props.FB, props.GAFO, props.NGS, props.NONREOFF, props.RESIDE, props.VACANT];
-  
+  Retail2 = [props.CIVIC20, props.CULTURAL20, props.FB20, props.GAFO20, props.NGS20, props.OFFICE20, props.RES20, props.VACANT20,props.EXP20,props.HOSP20,props.CONSTR20,props.INST20];
+
   updateRetailChart(Retail); 
   updateRetailChart2(Retail2);   
           
@@ -220,12 +233,12 @@ map.on('load', function () {
             plotBackgroundColor: null,
             plotBorderWidth: 0, //null,
             plotShadow: true,
-            height: 200,
+            height: 220,
             width: 300,
-            colors: ['#FFFF00', '#FFA77F','#FF0000','#BEE8FF','#AA66CD','#686868','#FFBEBE','#A80000']
+            colors: ['#8ec63f', '#5bc5cf','#eb555c','#ca1820','#ef2e37','#0c877b','#fbb040','#A80000']
         },
         title: {
-          text: null
+          text:'2013'
         }, 
         plotOptions: {
           pie: {
@@ -267,7 +280,7 @@ map.on('load', function () {
           name:'Total',
           id: 'Values',
           innerSize: '40%',
-          colors: ['#FFFF00', '#FFA77F','#FF0000','#BEE8FF','#AA66CD','#686868','#FFBEBE','#A80000'],
+          colors: ['#8ec63f', '#5bc5cf','#eb555c','#ca1820','#ef2e37','#0c877b','#fbb040','#bdd2ff'],
           data: []
         }]
     };    
@@ -290,24 +303,24 @@ map.on('load', function () {
             plotBackgroundColor: null,
             plotBorderWidth: 0, //null,
             plotShadow: true,
-            height: 200,
+            height: 220,
             width: 300,
-            colors: ['#FFFF00', '#FFA77F','#FF0000','#BEE8FF','#AA66CD','#686868','#FFBEBE','#A80000']
+            colors: ['#8ec63f', '#5bc5cf','#eb555c','#ca1820','#ef2e37','#0c877b','#fbb040','#bdd2ff','#eb555c','#f08085','#878787','#da7b27']
         },
         title: {
-          text: null
+          text: '2020'
         }, 
         plotOptions: {
           pie: {
             //  allowPointSelect: true,
             cursor: 'pointer',
             point:{
-              events : {
-                legendItemClick: function(e){
-                e.preventDefault();
-                }
-                }
-            },
+                events : {
+                  legendItemClick: function(e){
+                  e.preventDefault();
+                  }
+                  }
+              },
             dataLabels: {
               //   enabled: false
                 enabled:true,
@@ -346,11 +359,11 @@ map.on('load', function () {
           name:'Total',
           id: 'Values',
           innerSize: '40%',
-          colors: ['#FFFF00', '#FFA77F','#FF0000','#BEE8FF','#AA66CD','#686868','#FFBEBE','#A80000'],
+          colors: ['#8ec63f', '#5bc5cf','#eb555c','#ca1820','#ef2e37','#0c877b','#fbb040','#bdd2ff','#eb555c','#f08085','#878787','#da7b27'],
           data: []
         }]
     };    
-    var Labels = ["Civic", "Cultural","Food & Beverage","GAFO","NG & S","Office","Residential","Vacant"],
+    var Labels = ["Civic", "Cultural","Food & Beverage","GAFO","NG & S","Office","Residential","Vacant","Experimental", "HOSP", "Construction","Institutional"],
     counData = [];
     for (var i = 0; i < Values.length; i++){
                 counData.push({
