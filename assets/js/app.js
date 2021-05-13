@@ -373,8 +373,7 @@ map.on('load', function () {
     RetailChart2.series[0].data = counData;
     var chart4 = new Highcharts.Chart(RetailChart2)
     }  
-            
-          
+             
         });
 
         new mapboxgl.Marker(el)
