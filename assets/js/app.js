@@ -1,6 +1,8 @@
     var retail, districts, d2;
     var geojson;
 
+
+
     mapboxgl.accessToken = 'pk.eyJ1IjoiY3J2YW5wb2xsYXJkIiwiYSI6ImNqMHdvdnd5MTAwMWEycXBocm4zbXVjZm8ifQ.3zjbFccILu6mL7cOTtp40A';
 
   // This adds the map
@@ -27,12 +29,24 @@
         });
     });
 
-  //  map.on('click', function (e) {
-     //   alert("hello");
-    //    $('#info').html('');
-    //    $('#carousel-example-generic').html('');
-   // });
+//    map.once('click', function (e) {
+   //    alert("hello");
+   //    $('#info').html('');
 
+  //  });
+  function clickHandler(e) {
+  //  alert("hello");
+    $("#map").toggleClass("col-sm-6 col-lg-6 col-sm-12 col-lg-12");
+    var sidebarViz = $("#sidebar").css("display");
+    if (sidebarViz == "block") {
+        $("#sidebar").css("display", "none");
+    } else {
+        $("#sidebar").css("display", "block");
+    };
+    $(window.map).resize();
+    return false;
+  }
+  
 map.on('load', function () {
 
         map.addLayer({
@@ -124,8 +138,11 @@ map.on('load', function () {
             popup.remove();
             })
 
+            el.addEventListener('click',clickHandler)
+
             el.addEventListener('click', function() {
                 var props = marker.properties;
+               
                 // get all the elements with class "marker2"
             /*    var x = document.getElementsByClassName("marker2");
                 var i;
@@ -375,7 +392,7 @@ map.on('load', function () {
     }  
              
         });
-
+     
         new mapboxgl.Marker(el)
         .setLngLat(marker.geometry.coordinates)
         .addTo(map);
