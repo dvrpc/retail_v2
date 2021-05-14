@@ -33,13 +33,14 @@ document.getElementById("zoomtoregion").addEventListener("click", function () {
 //    $('#info').html('');
 
 //  });
-function clickHandler(e) {
-  //  alert("hello");
-  $("#map").toggleClass("col-sm-6 col-lg-6 col-sm-12 col-lg-12");
+
+function handleSidebarDisplay(e) {
+  // If the sidebar is not display=block ...
+  // ... set the sidebar display to block and resize the map div
+
   var sidebarViz = $("#sidebar").css("display");
-  if (sidebarViz == "block") {
-    $("#sidebar").css("display", "none");
-  } else {
+  if (sidebarViz !== "block") {
+    $("#map").toggleClass("col-sm-6 col-lg-6 col-sm-12 col-lg-12");
     $("#sidebar").css("display", "block");
   }
   $(window.map).resize();
@@ -137,7 +138,7 @@ map.on("load", function () {
       popup.remove();
     });
 
-    el.addEventListener("click", clickHandler);
+    el.addEventListener("click", handleSidebarDisplay);
 
     el.addEventListener("click", function () {
       var props = marker.properties;
