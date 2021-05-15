@@ -1,6 +1,8 @@
 var retail, districts, d2;
 var geojson;
 
+var retailSearch = [];
+
 mapboxgl.accessToken =
   "pk.eyJ1IjoiY3J2YW5wb2xsYXJkIiwiYSI6ImNqMHdvdnd5MTAwMWEycXBocm4zbXVjZm8ifQ.3zjbFccILu6mL7cOTtp40A";
 
@@ -48,6 +50,7 @@ function handleSidebarDisplay(e) {
 }
 
 map.on("load", function () {
+    console.log(retailSearch);
   map.addLayer({
     id: "county",
     type: "line",
@@ -122,6 +125,14 @@ map.on("load", function () {
       closeOnClick: false,
     });
 
+    retailSearch.push({
+        name:  marker.properties.DISTRICT,
+        source: "Master",
+        id: marker.id
+       // id: L.stamp(layer),
+   //     bounds: marker.getBounds()
+    });
+
     el.addEventListener("mouseenter", function () {
       var coordinates = marker.geometry.coordinates.slice();
       popup
@@ -156,35 +167,56 @@ map.on("load", function () {
             */
       //  window.alert(marker.properties.name);
       //   console.log(marker.properties);
-      if (marker.properties.CONCAT === undefined) {
-        var CONCAT = "<div class='hidden'></div>";
+      if (marker.properties.BREW === 0) {
+        var BREW = "<div class='hidden'></div>";
       } else {
-        var CONCAT =
-          '<span class="label label-default">' +
-          marker.properties.CONCAT +
-          "</span>";
+        var BREW ='<span class="label label-default">Brewery</span>';
       }
 
-      if (marker.properties.CENTER === "No") {
-        var CENTER = "<div class='hidden'></div>";
+      if (marker.properties.CIRCUIT === 0) {
+        var CIRCUIT = "<div class='hidden'></div>";
       } else {
-        var CENTER = '<span class="label label-default">Center</span>';
+        var CIRCUIT = '<span class="label label-default">The Circuit Trails</span>';
       }
 
-      if (marker.properties.CTOWN === "No") {
+      if (marker.properties.CLASSIC === 0) {
         var CTOWN = "<div class='hidden'></div>";
       } else {
         var CTOWN = '<span class="label label-default">Classic Town</span>';
       }
 
-      if (marker.properties.HDIST === "n/e") {
+      if (marker.properties.COLLEGE === 0) {
+        var COLLEGE = "<div class='hidden'></div>";
+      } else {
+        var COLLEGE = '<span class="label label-default">College</span>';
+      }
+
+      if (marker.properties.CORE === 0) {
+        var CORE = "<div class='hidden'></div>";
+      } else {
+        var CORE = '<span class="label label-default">Core City</span>';
+      }
+
+      if (marker.properties.EXPAND === 0) {
+        var EXPAND = "<div class='hidden'></div>";
+      } else {
+        var EXPAND = '<span class="label label-default">Expanding</span>';
+      }
+
+      if (marker.properties.HIST === 0) {
         var HDIST = "<div class='hidden'></div>";
       } else {
         var HDIST =
-          '<span class="label label-default"> Historic District (NRHP)</span>';
+          '<span class="label label-default">Historic District (NRHP)</span>';
       }
 
-      if (marker.properties.TRANSIT === "No") {
+      if (marker.properties.OPP === 0) {
+        var OPP = "<div class='hidden'></div>";
+      } else {
+        var OPP = '<span class="label label-default">Opportunity Zones</span>';
+      }
+
+      if (marker.properties.TRANSIT_1 === 0) {
         var TRANSIT = "<div class='hidden'></div>";
       } else {
         var TRANSIT =
@@ -199,10 +231,14 @@ map.on("load", function () {
         "</span>, <span></span> County, <span>" +
         marker.properties.STATE +
         "</span></small></h3>" +
-        CONCAT +
-        CENTER +
+        BREW +
+        CIRCUIT +
         CTOWN +
+        COLLEGE +
+        CORE +
+        EXPAND +
         HDIST +
+        OPP +
         TRANSIT;
       var content1 =
         "<h3 class='data-heading'>Transit and Accessibility</h3>" +

@@ -251,6 +251,7 @@
     color:#333;
     margin: 0px 10px 7px 10px;
     font-size: 18px;
+    word-break:break-all;
     } 
     .rhEL {
      border-bottom: 8px solid #0078ae
@@ -311,82 +312,83 @@
     color: #333;
     font-style: italic;
     }
-/* Charts */
-.chart-legend-heading{
-    font-size: 16px;
-    font-weight: bold;
-    margin: auto;
-}
-#chart1-title{
-    text-align: center;
-}
-#chart-legend{
-    text-align: center;
-}
-#chart-legend-icons{
-    display: inline-block;
-}
-#chart-legend-icons-bottom{
-    display: inline-block;
-    border-bottom: 1px solid #ccc;
-    margin: 0 0 10px;
-    padding: 5px 0;
-}
-.legend-icons {
-    display: inline-block;
-    line-height: 25px;
-    width: 25px;
-    height: 15px;
-    text-align: center;
-  }
-  .civic{
-    color:rgb(142,198,63)
-   /* #8ec63f */
-  }
-  .cultural{
-    color: rgb(91,198,207);
-    /* #5bc5cf */
-  }
-  .fb {
-    color:rgb(235,85,92);
-    /* #eb555c */
-  }
-  .gafo {
-    color:rgb(202,24,32);
-    /* #ca1820 */
-  }
-  .ngs {
-    color:rgb(239,46,55);
-    /* #ef2e37 */
-  }
-  .office{
-    color:rgb(12,135,123);
-    /* #0c877b */
-  }
-  .res{
-    color:rgb(251,176,64);
-    /* #fbb040 */
-  }
-  .vacant{
-    color:rgb(189,210,255);
-    /* #bdd2ff */
-  }
-  .construction{
-      color:#878787;
-  }
-  .institutional{
-      color:#da7b27;
-  }
-  .experimental{
-      color:#eb555c;
-  }
-  .hosp{
-      color:#f08085;
-  }
-  input {
-    width: 100%;
-    padding: 0.5em 0.5em;
-    font-size: 1.2em;
-    border-radius: 3px;
-    border: 1px solid #D9D9D9;
-  }
+    /* Charts */
+    .chart-legend-heading{
+        font-size: 16px;
+        font-weight: bold;
+        margin: auto;
+    }
+    #chart1-title{
+        text-align: center;
+    }
+    #chart-legend{
+        text-align: center;
+    }
+    #chart-legend-icons{
+        display: inline-block;
+    }
+    #chart-legend-icons-bottom{
+        display: inline-block;
+        border-bottom: 1px solid #ccc;
+        margin: 0 0 10px;
+        padding: 5px 0;
+    }
+    .legend-icons {
+        display: inline-block;
+        line-height: 25px;
+        width: 25px;
+        height: 15px;
+        text-align: center;
+    }
+    .civic{
+        color:rgb(142,198,63)
+    /* #8ec63f */
+    }
+    .cultural{
+        color: rgb(91,198,207);
+        /* #5bc5cf */
+    }
+    .fb {
+        color:rgb(235,85,92);
+        /* #eb555c */
+    }
+    .gafo {
+        color:rgb(202,24,32);
+        /* #ca1820 */
+    }
+    .ngs {
+        color:rgb(239,46,55);
+        /* #ef2e37 */
+    }
+    .office{
+        color:rgb(12,135,123);
+        /* #0c877b */
+    }
+    .res{
+        color:rgb(251,176,64);
+        /* #fbb040 */
+    }
+    .vacant{
+        color:rgb(189,210,255);
+        /* #bdd2ff */
+    }
+    .construction{
+        color:#878787;
+    }
+    .institutional{
+        color:#da7b27;
+    }
+    .experimental{
+        color:#eb555c;
+    }
+    .hosp{
+        color:#f08085;
+    }
+    input {
+        width: 100%;
+        padding: 0.5em 0.5em;
+        font-size: 1.2em;
+        border-radius: 3px;
+        border: 1px solid #D9D9D9;
+    }
+    ul.a {list-style-type: circle;}
