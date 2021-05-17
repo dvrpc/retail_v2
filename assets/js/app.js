@@ -51,7 +51,8 @@ function handleSidebarDisplay(e) {
 
 map.on("load", function () {
     console.log(retailSearch);
-  map.addLayer({
+ 
+    map.addLayer({
     id: "county",
     type: "line",
     source: {
@@ -127,10 +128,9 @@ map.on("load", function () {
 
     retailSearch.push({
         name:  marker.properties.DISTRICT,
-        source: "Master",
-        id: marker.id
-       // id: L.stamp(layer),
-   //     bounds: marker.getBounds()
+        source: "Retail",
+        id: marker.id,
+       bounds: marker.geometry.coordinates,
     });
 
     el.addEventListener("mouseenter", function () {
@@ -624,5 +624,6 @@ map.on("load", function () {
     });
 
     new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).addTo(map);
-  });
 });
+});
+

@@ -384,11 +384,17 @@
     .hosp{
         color:#f08085;
     }
-    input {
-        width: 100%;
-        padding: 0.5em 0.5em;
-        font-size: 1.2em;
-        border-radius: 3px;
-        border: 1px solid #D9D9D9;
+    ul.a {list-style-type: circle;
     }
-    ul.a {list-style-type: circle;}
+    .input-group-addon {
+        background-color: #66ABD1;
+        border: none;
+        border-radius: 0px;
+    }
+    .form-control {
+        border-radius: 0px;
+    }
+    .input-group {
+        width: 200px;
+        margin: 10px;
+    }
