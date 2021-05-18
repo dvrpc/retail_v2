@@ -30,12 +30,6 @@ document.getElementById("zoomtoregion").addEventListener("click", function () {
   });
 });
 
-//    map.once('click', function (e) {
-//    alert("hello");
-//    $('#info').html('');
-
-//  });
-
 function handleSidebarDisplay(e) {
   // If the sidebar is not display=block ...
   // ... set the sidebar display to block and resize the map div
