@@ -1,5 +1,6 @@
 var retail, districts, d2;
 var geojson;
+const searchbox = document.getElementById('search')
 
 var retailSearch = [];
 
@@ -44,7 +45,6 @@ function handleSidebarDisplay(e) {
 }
 
 map.on("load", function () {
-    console.log(retailSearch);
  
     map.addLayer({
     id: "county",
@@ -621,3 +621,18 @@ map.on("load", function () {
 });
 });
 
+// add typeahead
+const populateOptions = arr => {
+  const datalist = document.getElementById('retail-districts-list')
+  const frag = document.createDocumentFragment()
+
+  arr.forEach(el => {
+    const option = document.createElement('option')
+    option.value = el.name
+    frag.appendChild(option)
+  })
+
+  datalist.appendChild(frag)
+}
+
+populateOptions(retailSearch)
