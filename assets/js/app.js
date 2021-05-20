@@ -120,18 +120,6 @@ map.on("load", function () {
       closeOnClick: false,
     });
 
-    // retailSearch.push({
-    //     name:  marker.properties.DISTRICT,
-    //     source: "Retail",
-    //     id: marker.id,
-    //    bounds: marker.geometry.coordinates,
-    // });
-
-    // retailSearch.push({
-    //   name: marker.properties.DISTRICT,
-    //   marker: marker
-    // })
-
     retailSearch[marker.properties.DISTRICT] = marker
 
     el.addEventListener("mouseenter", function () {
