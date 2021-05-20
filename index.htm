@@ -59,21 +59,22 @@
                 <div class="collapse navbar-collapse" id="navbar-collapse-1">
                     <div class="nav navbar-nav navbar-right">
 
-                    <button type="button" style=" margin:10px 10px 0px 4px;float:right;color:#2e5c95;background-color:#d9dadc;" class="btn btn-sm"<a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" onclick="$('#aboutModal').modal('show'); return false;"><i class="fa fa-info-circle" style="color:#2e5c95"></i>&nbsp;&nbsp;<b>About</b></a>
-                    </button>
-                    <!-- <div class="input-group search-container">
-                        <input id="searchbox" type="text" placeholder="Search by district" class="form-control">
-                    </div> -->
-                    <form id="search">
-                        <label class="input-group search-container">
-                            Search by district:
-                            <input list="retail-districts-list" id="searchbox" name="searchbox" />
+                        <form id="search" class="search-container">
+                            <label class="input-group">
+                                Search by district:
+                                <input list="retail-districts-list" id="searchbox" name="searchbox" />
+        
+                                <datalist id="retail-districts-list"></datalist>
+                            </label>
     
-                            <datalist id="retail-districts-list"></datalist>
-                        </label>
-                        
-                        <button type="submit">search</button>
-                    </form>
+                            <button type="submit" class="btn btn-submit">search</button>
+                        </form>
+
+                        <button type="button" style=" margin:10px 10px 0px 4px;float:right;color:#2e5c95;background-color:#d9dadc;" class="btn btn-sm"<a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" onclick="$('#aboutModal').modal('show'); return false;"><i class="fa fa-info-circle" style="color:#2e5c95"></i>&nbsp;&nbsp;<b>About</b></a>
+                        </button>
+                        <!-- <div class="input-group search-container">
+                            <input id="searchbox" type="text" placeholder="Search by district" class="form-control">
+                        </div> -->
 
                     </div>
                    

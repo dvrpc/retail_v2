@@ -1,6 +1,6 @@
 var retail, districts, d2;
 var geojson;
-const searchbox = document.getElementById('search')
+const searchForm = document.getElementById('search')
 
 var retailSearch = [];
 
@@ -619,6 +619,8 @@ map.on("load", function () {
 
     new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).addTo(map);
 });
+  
+  populateOptions(retailSearch)
 });
 
 // add typeahead
@@ -634,5 +636,3 @@ const populateOptions = arr => {
 
   datalist.appendChild(frag)
 }
-
-populateOptions(retailSearch)
