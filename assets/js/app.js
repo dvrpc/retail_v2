@@ -150,7 +150,7 @@ map.on("load", function () {
       popup.remove();
     });
 
-    el.addEventListener("click", () => {
+    el.addEventListener("click", function() {
       handleSidebarDisplay()
       handleDistrict(marker, map)
     })
@@ -160,7 +160,7 @@ map.on("load", function () {
   
   populateOptions(retailSearch)
 
-  searchForm.onsubmit = e => {
+  searchForm.onsubmit = function(e) {
     e.preventDefault()
     const input = e.target.children[0].children[0]
     const searched = input.value
@@ -177,7 +177,8 @@ map.on("load", function () {
   }
 });
 
-const handleDistrict = (marker, map) => {
+// pull click event into standalone function in order to apply to both form submit and map click
+const handleDistrict = function (marker, map) {
   var props = marker.properties;
 
   // get all the elements with class "marker2"
@@ -650,11 +651,11 @@ const handleDistrict = (marker, map) => {
 }
 
 // add typeahead
-const populateOptions = obj => {
+const populateOptions = function (obj) {
   const datalist = document.getElementById('retail-districts-list')
   const frag = document.createDocumentFragment()
 
-  Object.keys(obj).forEach(el => {
+  Object.keys(obj).forEach(function(el) {
     const option = document.createElement('option')
     option.value = el
     frag.appendChild(option)
