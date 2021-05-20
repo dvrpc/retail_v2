@@ -161,56 +161,56 @@ map.on("load", function () {
             */
       //  window.alert(marker.properties.name);
       //   console.log(marker.properties);
-      if (marker.properties.BREW === 0) {
+      if (props.BREW === 0) {
         var BREW = "<div class='hidden'></div>";
       } else {
         var BREW ='<span class="label label-default">Brewery</span>';
       }
 
-      if (marker.properties.CIRCUIT === 0) {
+      if (props.CIRCUIT === 0) {
         var CIRCUIT = "<div class='hidden'></div>";
       } else {
         var CIRCUIT = '<span class="label label-default">The Circuit Trails</span>';
       }
 
-      if (marker.properties.CLASSIC === 0) {
+      if (props.CLASSIC === 0) {
         var CTOWN = "<div class='hidden'></div>";
       } else {
         var CTOWN = '<span class="label label-default">Classic Town</span>';
       }
 
-      if (marker.properties.COLLEGE === 0) {
+      if (props.COLLEGE === 0) {
         var COLLEGE = "<div class='hidden'></div>";
       } else {
         var COLLEGE = '<span class="label label-default">College</span>';
       }
 
-      if (marker.properties.CORE === 0) {
+      if (props.CORE === 0) {
         var CORE = "<div class='hidden'></div>";
       } else {
         var CORE = '<span class="label label-default">Core City</span>';
       }
 
-      if (marker.properties.EXPAND === 0) {
+      if (props.EXPAND === 0) {
         var EXPAND = "<div class='hidden'></div>";
       } else {
         var EXPAND = '<span class="label label-default">Expanding</span>';
       }
 
-      if (marker.properties.HIST === 0) {
+      if (props.HIST === 0) {
         var HDIST = "<div class='hidden'></div>";
       } else {
         var HDIST =
           '<span class="label label-default">Historic District (NRHP)</span>';
       }
 
-      if (marker.properties.OPP === 0) {
+      if (props.OPP === 0) {
         var OPP = "<div class='hidden'></div>";
       } else {
         var OPP = '<span class="label label-default">Opportunity Zones</span>';
       }
 
-      if (marker.properties.TRANSIT_1 === 0) {
+      if (props.TRANSIT_1 === 0) {
         var TRANSIT = "<div class='hidden'></div>";
       } else {
         var TRANSIT =
@@ -219,11 +219,11 @@ map.on("load", function () {
 
       var info =
         "<h3 style='margin-top:0;'><span>" +
-        marker.properties.DISTRICT +
+        props.DISTRICT +
         "</span><br/><small><span>" +
-        marker.properties.RDISTCROSS +
+        props.RDISTCROSS +
         "</span>, <span></span> County, <span>" +
-        marker.properties.STATE +
+        props.STATE +
         "</span></small></h3>" +
         BREW +
         CIRCUIT +
@@ -237,90 +237,90 @@ map.on("load", function () {
       var content1 =
         "<h3 class='data-heading'>Transit and Accessibility</h3>" +
         "<span class='data-info'>Number of Blocks: </span><span class='data-value'> " +
-        marker.properties.DTRETAIL +
+        props.DTRETAIL +
         "</span>" +
         "<br><span class='data-info'>Maximum Sidewalk Width: </span><span class='data-value'> " +
-        marker.properties.MAXSWW +
+        props.MAXSWW +
         "</span>" +
         "<br><span class='data-info'>Maximum Cartway Width: </span><span class='data-value'> " +
-        marker.properties.MAXCARTW +
+        props.MAXCARTW +
         "</span>" +
         "<br><span class='data-info'>Walk Score: </span><span class='data-value'> " +
-        marker.properties.WSCORE +
+        props.WSCORE +
         "</span>" +
         "<br><span class='data-info'>Transit: </span><span class='data-value'> " +
-        marker.properties.TRANSIT +
+        props.TRANSIT +
         "</span>" +
         "<br><span class='data-info'>Bus Routes: </span><span class='data-value'> " +
-        marker.properties.BUSROUTE +
+        props.BUSROUTE +
         "</span>" +
         "<br><span class='data-info'>Parking: </span><span class='data-value'> " +
-        marker.properties.PARKING +
+        props.PARKING +
         "</span>";
-      if (marker.properties.BID === undefined) {
+      if (props.BID === undefined) {
         var BID = "<div class='hidden'></div>";
       } else {
         var BID =
           "<span class='data-info'>Business Improvement District: </span><span class='data-value'> " +
-          marker.properties.BID +
+          props.BID +
           "</span><br>";
       }
 
-      if (marker.properties.CHAMCOM === undefined) {
+      if (props.CHAMCOM === undefined) {
         var CHAMCOM = "<div class='hidden'></div>";
       } else {
         var CHAMCOM =
           "<span class='data-info'>Chamber of Commerce: </span><span class='data-value'> " +
-          marker.properties.CHAMCOM +
+          props.CHAMCOM +
           "</span><br>";
       }
 
-      if (marker.properties.BUSASC === undefined) {
+      if (props.BUSASC === undefined) {
         var BUSASC = "<div class='hidden'></div>";
       } else {
         var BUSASC =
           "<span class='data-info'>Business Association: </span><span class='data-value'> " +
-          marker.properties.BUSASC +
+          props.BUSASC +
           "</span><br>";
       }
 
-      if (marker.properties.MERCHASC === undefined) {
+      if (props.MERCHASC === undefined) {
         var MERCHASC = "<div class='hidden'></div>";
       } else {
         var MERCHASC =
           "<span class='data-info'>Merchants Association: </span><span class='data-value'> " +
-          marker.properties.MERCHASC +
+          props.MERCHASC +
           "</span><br>";
       }
 
-      if (marker.properties.MAINST === undefined) {
+      if (props.MAINST === undefined) {
         var MAINST = "<div class='hidden'></div>";
       } else {
         var MAINST =
           "<span class='data-info'>Main Street: </span><span class='data-value'> " +
-          marker.properties.MAINST +
+          props.MAINST +
           "</span><br>";
       }
 
-      if (marker.properties.ZONING === undefined) {
+      if (props.ZONING === undefined) {
         var ZONING = "<div class='hidden'></div>";
       } else {
         var ZONING =
           "<span class='data-info'>Zoning: </span><span class='data-value'> " +
-          marker.properties.ZONING +
+          props.ZONING +
           "</span>";
       }
 
       var content2 =
         "<h3 class='data-heading'>Demographic (within 1/2 mile)</h3>" +
         "<span class='data-info'>Population: </span><span class='data-value'> " +
-        numeral(marker.properties.POP).format("(0,0)") +
+        numeral(props.POP).format("(0,0)") +
         "</span>" +
         "<br><span class='data-info'>Households: </span><span class='data-value'> " +
-        numeral(marker.properties.HH).format("(0,0)") +
+        numeral(props.HH).format("(0,0)") +
         "</span>" +
         "<br><span class='data-info'>Median Household Income: </span><span class='data-value'> " +
-        numeral(marker.properties.MEDHH).format("($0,0)") +
+        numeral(props.MEDHH).format("($0,0)") +
         "</span>" +
         "<h3 class='data-heading'>Management Structure</h3>" +
         BID +
@@ -331,16 +331,16 @@ map.on("load", function () {
         ZONING +
         "<h3 class='data-heading'>Traffic Counts</h3>" +
         "<span class='data-info'>Count Location: </span><span class='data-value'> " +
-        marker.properties.COUNTLOC +
+        props.COUNTLOC +
         "</span>" +
         "<br><span class='data-info'>Center Point: </span><span class='data-value'> " +
-        marker.properties.CENTERPT +
+        props.CENTERPT +
         "</span>" +
         "<br><span class='data-info'>AADT: </span><span class='data-value'> " +
-        marker.properties.AADT +
+        props.AADT +
         "</span>" +
         "<br><span class='data-info'>Date: </span><span class='data-value'> " +
-        marker.properties.DATE +
+        props.DATE +
         "</span>";
       document.getElementById("resultsheader").innerHTML = info;
       // document.getElementById('resultsheader').className = 'rhEL';
@@ -635,4 +635,10 @@ const populateOptions = arr => {
   })
 
   datalist.appendChild(frag)
+}
+
+searchForm.onsubmit = e => {
+  console.log('e is ', e)
+  handleSidebarDisplay()
+  
 }
