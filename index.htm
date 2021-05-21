@@ -57,14 +57,23 @@
                 </div>
              
                 <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                    <div class="nav navbar-nav navbar-right">
-
-                    <button type="button" style=" margin:10px 10px 0px 4px;float:right;color:#2e5c95;background-color:#d9dadc;" class="btn btn-sm"<a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" onclick="$('#aboutModal').modal('show'); return false;"><i class="fa fa-info-circle" style="color:#2e5c95"></i>&nbsp;&nbsp;<b>About</b></a>
+                    <button type="button" class="btn about-btn" onclick="$('#aboutModal').modal('show'); return false;" data-toggle="collapse" data-target=".navbar-collapse.in">
+                        <i class="fa fa-info-circle" style="color:#2e5c95"></i>&nbsp;&nbsp;<b>About</b>
                     </button>
-                    <div class="input-group search-container">
-                        <input id="searchbox" type="text" placeholder="Search by district" class="form-control">
-                    </div>
 
+                    <div class="nav navbar-nav navbar-right">
+                        <div class="input-group search-container">
+                            <form id="search">
+                                <label>
+                                    Search by district:
+                                    <input list="retail-districts-list" id="searchbox" name="searchbox" />
+            
+                                    <datalist id="retail-districts-list"></datalist>
+                                </label>
+        
+                                <button type="submit" class="btn">search</button>
+                            </form>
+                        </div>
                     </div>
                    
                 </div>
