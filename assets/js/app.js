@@ -4,6 +4,7 @@ const searchForm = document.getElementById('search')
 
 var retailSearch = {};
 
+
 mapboxgl.accessToken =
   "pk.eyJ1IjoiY3J2YW5wb2xsYXJkIiwiYSI6ImNqMHdvdnd5MTAwMWEycXBocm4zbXVjZm8ifQ.3zjbFccILu6mL7cOTtp40A";
 
@@ -45,7 +46,7 @@ function handleSidebarDisplay(e) {
 }
 
 map.on("load", function () {
- 
+
     map.addLayer({
     id: "county",
     type: "line",
@@ -637,13 +638,12 @@ const handleDistrict = function (marker, map) {
     var chart4 = new Highcharts.Chart(RetailChart2);
   }
 }
-
 // add typeahead
 const populateOptions = function (obj) {
   const datalist = document.getElementById('retail-districts-list')
   const frag = document.createDocumentFragment()
-
-  Object.keys(obj).forEach(function(el) {
+  
+  Object.keys(obj).sort((a, b) => a > b).forEach(function(el) {
     const option = document.createElement('option')
     option.value = el
     frag.appendChild(option)
