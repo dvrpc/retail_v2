@@ -4,7 +4,6 @@ const searchForm = document.getElementById('search')
 
 var retailSearch = {};
 
-
 mapboxgl.accessToken =
   "pk.eyJ1IjoiY3J2YW5wb2xsYXJkIiwiYSI6ImNqMHdvdnd5MTAwMWEycXBocm4zbXVjZm8ifQ.3zjbFccILu6mL7cOTtp40A";
 
@@ -32,7 +31,7 @@ document.getElementById("zoomtoregion").addEventListener("click", function () {
   });
 });
 
-function handleSidebarDisplay(e) {
+function handleSidebarDisplay() {
   // If the sidebar is not display=block ...
   // ... set the sidebar display to block and resize the map div
 
@@ -46,8 +45,16 @@ function handleSidebarDisplay(e) {
 }
 
 map.on("load", function () {
+ // add map events here (click, mousemove, etc)
 
-    map.addLayer({
+     // Create a popup, but don't add it to the map yet.
+  var popup = new mapboxgl.Popup({
+      className: "station-popup",
+      closeButton: false,
+      closeOnClick: false
+  });
+
+  map.addLayer({
     id: "county",
     type: "line",
     source: {
@@ -88,7 +95,7 @@ map.on("load", function () {
              */
   });
 
-  map.addLayer({
+map.addLayer({
     id: "districts",
     type: "fill",
     source: {
@@ -100,89 +107,119 @@ map.on("load", function () {
       "fill-outline-color": "#0078ae",
       "fill-color": "rgba(0, 120, 174,0.35)",
     },
-  });
-
-  map.addLayer({
-    id: "retail",
-    type: "symbol",
-    source: {
-      type: "geojson",
-      data: retail,
-    },
-  });
-
-  retail.features.forEach(function (marker) {
-    var el = document.createElement("div");
-    el.className = "marker1";
-    el.style.backgroundImage = "assets/img/Retail_Blue.png";
-
-    var popup = new mapboxgl.Popup({
-      closeButton: false,
-      closeOnClick: false,
-    });
-
-    retailSearch[marker.properties.DISTRICT] = marker
-
-    el.addEventListener("mouseenter", function () {
-      var coordinates = marker.geometry.coordinates.slice();
-      popup
-        .setLngLat(coordinates)
-        .setHTML(
-          "<h4>" +
-            marker.properties.DISTRICT +
-            '</h4><p style="border-bottom: 8px solid #42708A;"</p>'
-        )
-        .addTo(map);
-    });
-
-    el.addEventListener("mouseleave", function () {
-      popup.remove();
-    });
-
-    el.addEventListener("click", function() {
-      handleSidebarDisplay()
-      handleDistrict(marker, map)
-    })
-
-    new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).addTo(map);
 });
-  
-  populateOptions(retailSearch)
+ // When the map loads, add the data from the USGS earthquake API as a source
+map.addSource('retail', {
+  'type': 'geojson',
+  'data':retail, // Use the sevenDaysAgo variable to only retrieve quakes from the past week
+  'generateId': true // This ensures that all features have unique IDs
+});
 
-  searchForm.onsubmit = function(e) {
-    e.preventDefault()
-    const input = e.target.children[0].children[0]
-    const searched = input.value
-    const marker = retailSearch[searched]
+map.addLayer({
+    id: "retailp",
+    type: "circle",
+    source:'retail',
+    layout: {
+      "visibility":"visible"
+       },
+    paint: {
+      'circle-radius': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        9,6
+        ],
+        'circle-stroke-color': '#e5e5e5',
+        'circle-stroke-width': .5,
+        'circle-color': '#4575b4'
+      }
+});
+var districtID = null;
 
-    if(!marker) {
-      alert('Please select a value from the dropdown list')
-      input.value = ''
-      return
+map.on('mousemove', 'retailp', (marker) => {
+    map.getCanvas().style.cursor = 'pointer';
+    var coordinates = marker.features[0].geometry.coordinates.slice();
+    var description = '<h3>'+ marker.features[0].properties.DISTRICT+'</h3>';
+
+    popup.setLngLat(coordinates).setHTML(description).addTo(map);
+    if (marker.features.length > 0) {
+      // When the mouse moves over the retail-viz layer, update the
+      // feature state for the feature under the mouse
+      if (districtID) {
+        map.removeFeatureState({
+          source: 'retail',
+          id: districtID
+        });
+      }
+
+      districtID = marker.features[0].id;
+
+      map.setFeatureState(
+        {
+          source: 'retail',
+          id: districtID
+        },
+        {
+          hover: true
+        }
+      );
     }
+});
 
+  // When the mouse leaves the retail-viz layer, update the
+  // feature state of the previously hovered feature
+map.on('mouseleave', 'retailp', function () {
+    if (districtID) {
+      map.setFeatureState(
+        {
+          source: 'retail',
+          id: districtID
+        },
+        {
+          hover: false
+        }
+      );
+    }
+    districtID = null;
+
+    // Reset the cursor style
+    map.getCanvas().style.cursor = '';
+    popup.remove();
+});
+
+retail.features.forEach(function (marker) {
+  retailSearch[marker.properties.DISTRICT] = marker
+});
+
+map.on('click','retailp', (marker) => {
+ 
     handleSidebarDisplay()
     handleDistrict(marker, map)
+});  
+
+
+searchForm.onsubmit = function (e) {
+  e.preventDefault()
+  const input = e.target.children[0].children[0]
+  const searched = input.value
+  const marker = retailSearch[searched]
+
+  if(!marker) {
+    alert('Please select a value from the dropdown list')
+    input.value = ''
+    return
   }
-});
+
+  handleSidebarDisplay()
+//   alert(searched);
+  handleDistrict (marker, map)
+}
 
 // pull click event into standalone function in order to apply to both form submit and map click
 const handleDistrict = function (marker, map) {
-  var props = marker.properties;
+ // var props = marker.properties;
+  console.log(marker.features[0].properties);
+  var props = marker.features[0].properties;
 
-  // get all the elements with class "marker2"
-  /*    var x = document.getElementsByClassName("marker2");
-            var i;
-            for (i = 0; i < x.length; i++) {
-            x[i].className = "marker1"; // set "marker" as the class for each of those elements
-            }
-            // at this point all markers are back to the original state
-
-            // now you set the class of the current clicked marker
-            this.className = 'marker2'; //don't use the variable "el", it's out of the scope and can change, "this" is the current clicked element
-        */
-  //  window.alert(marker.properties.name);
-  //   console.log(marker.properties);
   if (props.BREW === 0) {
     var BREW = "<div class='hidden'></div>";
   } else {
@@ -371,7 +408,7 @@ const handleDistrict = function (marker, map) {
   document.getElementById("info2").innerHTML = content2;
 
   map.flyTo({
-    center: marker.geometry.coordinates,
+    center: marker.features[0].geometry.coordinates,
     pitch: 20,
     speed: 0.7,
     zoom: 15,
@@ -566,7 +603,7 @@ const handleDistrict = function (marker, map) {
           showInLegend: false,
         },
       },
-      /*  legend: {
+     legend: {
       title: {
           text: '<span style="text-align:center;font-size: 9px; color: #666; font-weight: normal">Retail Mix 2015</span>',
           style: {
@@ -574,7 +611,7 @@ const handleDistrict = function (marker, map) {
           }
         },
       layout:'horizontal'
-    }, */
+    }, 
       tooltip: {
         formatter: function () {
           //  return '<b>'+Highcharts.numberFormat(this.point.y,0,',',',')+' Acres</b><br/>';
@@ -651,3 +688,96 @@ const populateOptions = function (obj) {
 
   datalist.appendChild(frag)
 }
+
+populateOptions(retailSearch)
+
+}); 
+/*
+  retail.features.forEach(function (marker) {
+    var el = document.createElement("div");
+    el.className = "marker1";
+    el.style.backgroundImage = "assets/img/Retail_Blue.png";
+
+    var popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+    });
+
+    retailSearch[marker.properties.DISTRICT] = marker
+
+    el.addEventListener("mouseenter", function () {
+      var coordinates = marker.geometry.coordinates.slice();
+      popup
+        .setLngLat(coordinates)
+        .setHTML(
+          "<h4>" +
+            marker.properties.DISTRICT +
+            '</h4><p style="border-bottom: 8px solid #42708A;"</p>'
+        )
+        .addTo(map);
+    });
+
+    el.addEventListener("mouseleave", function () {
+      popup.remove();
+    });
+
+    el.addEventListener("click", function() {
+   //   handleSidebarDisplay()
+      handleDistrict(marker, map)
+    })
+
+    new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates);
+});
+  
+  populateOptions(retailSearch)
+
+  searchForm.onsubmit = function(e) {
+    e.preventDefault()
+    const input = e.target.children[0].children[0]
+    const searched = input.value
+    const marker = retailSearch[searched]
+
+    if(!marker) {
+      alert('Please select a value from the dropdown list')
+      input.value = ''
+      return
+    }
+
+    handleSidebarDisplay()
+    handleDistrict(marker, map)
+  }
+});
+
+// pull click event into standalone function in order to apply to both form submit and map click
+const handleDistrict = function (marker, map) {
+  var props = marker.properties;
+
+  // get all the elements with class "marker2"
+      var x = document.getElementsByClassName("marker2");
+            var i;
+            for (i = 0; i < x.length; i++) {
+            x[i].className = "marker1"; // set "marker" as the class for each of those elements
+            }
+            // at this point all markers are back to the original state
+
+            // now you set the class of the current clicked marker
+            this.className = 'marker2'; //don't use the variable "el", it's out of the scope and can change, "this" is the current clicked element
+      
+  //  window.alert(marker.properties.name);
+  //   console.log(marker.properties);
+})
+
+// add typeahead
+const populateOptions = function (obj) {
+  const datalist = document.getElementById('retail-districts-list')
+  const frag = document.createDocumentFragment()
+  
+  Object.keys(obj).sort((a, b) => a > b).forEach(function(el) {
+    const option = document.createElement('option')
+    option.value = el
+    frag.appendChild(option)
+  })
+
+  datalist.appendChild(frag)
+}
+  */

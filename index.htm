@@ -17,9 +17,10 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
-        <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+        <link rel="stylesheet" type="text/css" href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css">
       
+        <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
         <!-- Latest compiled and minified JavaScript -->
@@ -28,8 +29,7 @@
         <script src="assets/data/retail.js"></script>
         <script src="assets/data/districts.js"></script>
 
-        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.js'></script>
-        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css' rel='stylesheet' />
+        <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
         
     <style>
     </style>
@@ -48,18 +48,23 @@
                     </button>
 
                 <div class="navbar-brand">
-                    <a id="header-link" href="https://www.dvrpc.org" target="_blank">
-                    <img id="dvrpc-logo" src="assets/img/dvrpc_logo_small.png" alt="DVRPC logo"/>
-                    <p id="header-link-text">Suburban Retail Districts</p>
-                    </a>
+                    <div class="wrapper">
+                        <a id="header-link" href="https://www.dvrpc.org" target="_blank">
+                            <img id="dvrpc-logo" src="assets/img/dvrpc_logo_small.png" alt="DVRPC logo"/>
+                            <p id="header-link-text">Suburban Retail Districts</p>
+                            </a>
+                            <button type="button" class="btn about-btn" onclick="$('#aboutModal').modal('show'); return false;" data-toggle="collapse" data-target=".navbar-collapse.in">
+                                <i class="fa fa-info-circle" style="color:#2e5c95"></i>&nbsp;&nbsp;<b>About</b>
+                            </button>
+                    </div>
+                       
+                
                 </div>
 
                 </div>
              
                 <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                    <button type="button" class="btn about-btn" onclick="$('#aboutModal').modal('show'); return false;" data-toggle="collapse" data-target=".navbar-collapse.in">
-                        <i class="fa fa-info-circle" style="color:#2e5c95"></i>&nbsp;&nbsp;<b>About</b>
-                    </button>
+                 
 
                     <div class="nav navbar-nav navbar-right">
                         <div class="input-group search-container">

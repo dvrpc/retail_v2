@@ -5,6 +5,17 @@
     body {
     overflow: hidden ;
     }
+    :root {
+        --theme-dvrpc: #0078ae;
+        --theme-dark: #505a5e;
+        --theme-access2:rgba(0, 120, 174,0.7);
+    
+        --wrapper-padding: 10px;
+        --wrapper-padding-double: 20px;
+    
+        --border-radius: 4px;
+        --box-shadow: 1px 2px 3px rgba(0,0,0,0.3);
+    }
    #container {
     height: 100%;
     margin-top: 50px;
@@ -39,6 +50,11 @@
     margin: 5px 0px 0px 0px;
     height:30px;
     }
+    .wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center
+      }
     #header-link-text{
     font-size: 20px;
     margin: 4px 0px 0px 10px;
@@ -49,9 +65,7 @@
     height: 60px;
     border-bottom: 3px solid #f7f7f7;
     }
-    .mapboxgl-ctrl-attrib.compact {
-    margin: 10px 10px 10px 10px;
-    }
+ 
     .modal-footer {
     padding: 5px;
     }
@@ -119,66 +133,43 @@
     height: 35px;
     cursor: pointer;
     }
-    .marker2 {
-    background-image: url('img/Retail_Red.png');
-    background-size: cover;
-    width: 28px;
-    height: 35px;
-    cursor: pointer;
-    }
-    /* popup style */
-    .mapboxgl-popup {
-    padding-bottom: 30px;
-    }
-    .mapboxgl-popup-close-button {
-    display:none;
-    }
+    /* mapbox and popup style */
     .mapboxgl-popup-content {
-    font:400 15px/22px 'Source Sans Pro', 'Helvetica Neue', Sans-serif;
-    padding:0;
-    width:180px;
+        padding: var(--wrapper-padding-double) var(--wrapper-padding);
+        height: 70px;
+    }
+    .popup-span {
+        display: block;
+    }
+    .popup-span:not(:last-of-type) {
+        border-bottom: 1px dotted var(--theme-dark);
+    }
+    .mapboxgl-popup .station-popup .mapboxgl-popup-anchor-bottom{
+        min-height: 20px;
+    }
+    .station-popup .mapboxgl-popup-content {
+        background-color: var(--theme-access2);
+    }
+    .station-popup .mapboxgl-popup-tip {
+        border-top-color: var(--theme-access2);
+      }
+    .mapboxgl-popup-content h3 {
+    /*  background:#666666; */
+    margin: 0;
+    display: block;
+    padding: 10px;
+    border-radius: 3px 3px 0 0;
+    font-weight: bold;
+    font-size: 18px;
+    color:#ffffff;
+    margin-top: -15px;
     text-align: center;
     }
-    .mapboxgl-popup-content-wrapper {
-    padding:1%;
+    .mapboxgl-popup-tip{
+      border-bottom-color: #0074ad;  
     }
-    .mapboxgl-popup-content h3 {
-    background:#666666;
-    color:#fff;
-    margin:0;
-    display:block;
-    padding:10px;
-    border-radius:3px 3px 0 0;
-    font-weight:700;
-    margin-top:-15px;
-    }
-    .mapboxgl-popup-content h4 {
-    margin:0;
-    display:block;
-    padding: 10px 10px 10px 10px;
-    font-weight:400;
-    margin: 0;
-    }
-    .mapboxgl-popup-content div {
-    padding:10px;
-    }
-    .mapboxgl-container .leaflet-marker-icon { 
-    cursor:pointer; 
-    }
-    .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
-    margin-top: 15px;
-    }
-    .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
-    border-bottom-color: #91c949;
-    }
+
     /* Map Layers */
-    #inforesults {
-        margin: 5px 0px 5px 10px;
-        border-radius: 4px;
-        border-color: #dadada;
-        background-color: #DFE9F1;
-        overflow: hidden;
-    }
     #howto {
         margin-left: 14px !important;
     }
@@ -196,20 +187,17 @@
     }
     .dvrpc_full_logo {
     margin: 10px 15px 6px 5px;
-    float:left;
+    display: flex;
     }
     /* Layer Information */
-    #info-stack {
-        position: fixed;
-        z-index: 100;
-        bottom: 10px;
-        left: 10px;
-        max-height: 600px;
-        width:450px;
-        background-color: white;
+    #inforesults {
+        margin: 5px 0px 5px 10px;
         border-radius: 4px;
-        padding: 8px;
-    }   
+        border-color: #dadada;
+        background-color: #DFE9F1;
+        overflow: hidden;
+    }
+  
     .alert-info {
     color: black;
     background-color: #E4E3DB ;
@@ -399,7 +387,6 @@
     }
     .about-btn {
         margin:10px 10px 0px 10px;
-        float:right;
         color:#2e5c95;
         background-color:#d9dadc;
     }
