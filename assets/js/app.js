@@ -186,14 +186,15 @@ map.on('mouseleave', 'retailp', function () {
     popup.remove();
 });
 
-retail.features.forEach(function (marker) {
-  retailSearch[marker.properties.DISTRICT] = marker
+retail.features.forEach(function (geojsonrow) {
+  retailSearch[geojsonrow.properties.DISTRICT] = geojsonrow
 });
 
 map.on('click','retailp', (marker) => {
- 
+    var props = marker.features[0].properties;
+    var coordinates = marker.features[0].geometry.coordinates;
     handleSidebarDisplay()
-    handleDistrict(marker, map)
+    handleDistrict(props,coordinates,map)
 });  
 
 
@@ -201,24 +202,25 @@ searchForm.onsubmit = function (e) {
   e.preventDefault()
   const input = e.target.children[0].children[0]
   const searched = input.value
-  const marker = retailSearch[searched]
+  var marker = retailSearch[searched]
 
   if(!marker) {
     alert('Please select a value from the dropdown list')
     input.value = ''
     return
   }
-
+  var props = marker.properties;
+  var coordinates = marker.geometry.coordinates;
   handleSidebarDisplay()
 //   alert(searched);
-  handleDistrict (marker, map)
+  handleDistrict (props,coordinates, map)
 }
 
 // pull click event into standalone function in order to apply to both form submit and map click
-const handleDistrict = function (marker, map) {
+const handleDistrict = function (props,coordinates,map) {
  // var props = marker.properties;
-  console.log(marker.features[0].properties);
-  var props = marker.features[0].properties;
+ // console.log(marker.features[0].properties);
+ // var props = marker.features[0].properties;
 
   if (props.BREW === 0) {
     var BREW = "<div class='hidden'></div>";
@@ -408,7 +410,7 @@ const handleDistrict = function (marker, map) {
   document.getElementById("info2").innerHTML = content2;
 
   map.flyTo({
-    center: marker.features[0].geometry.coordinates,
+    center: coordinates,
     pitch: 20,
     speed: 0.7,
     zoom: 15,
