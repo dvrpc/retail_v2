@@ -8,8 +8,9 @@
     :root {
         --theme-dvrpc: #0078ae;
         --theme-dark: #505a5e;
-        --theme-access2:rgba(0, 120, 174,0.7);
-    
+        --theme-retail: #39398e;
+        --theme-retail2:rgba(251,176,64,0.8);
+
         --wrapper-padding: 10px;
         --wrapper-padding-double: 20px;
     
@@ -61,7 +62,7 @@
     }
     .container-fluid{
     z-index: 30;
-    background: #0074ad;
+    background: var(--theme-retail);
     height: 60px;
     border-bottom: 3px solid #f7f7f7;
     }
@@ -148,10 +149,10 @@
         min-height: 20px;
     }
     .station-popup .mapboxgl-popup-content {
-        background-color: var(--theme-access2);
+        background-color: var(--theme-retail2);
     }
     .station-popup .mapboxgl-popup-tip {
-        border-top-color: var(--theme-access2);
+        border-top-color: var(--theme-retail2);
       }
     .mapboxgl-popup-content h3 {
     /*  background:#666666; */
@@ -257,11 +258,11 @@
         color: #333;
     }
     .data-info {
-        font-size:medium;
-    }
-    .data-value{
         font-size: small;
         color: #999;
+    }
+    .data-value{
+        font-size:medium;
     }
     #legend-stack {
         display: flex;
@@ -300,7 +301,7 @@
     color: #333;
     font-style: italic;
     }
-    /* Charts */
+/* Charts */
     .chart-legend-heading{
         font-size: 16px;
         font-weight: bold;
@@ -314,6 +315,7 @@
     }
     #chart-legend-icons{
         display: inline-block;
+        font-weight:bold;
     }
     #chart-legend-icons-bottom{
         display: inline-block;
@@ -321,6 +323,13 @@
         margin: 0 0 10px;
         padding: 5px 0;
     }
+    #Chart1{
+        display:inline-block;
+    }
+    #Chart2{
+        display:inline-block;
+    }
+/* Legends */
     .legend-icons {
         display: inline-block;
         line-height: 25px;

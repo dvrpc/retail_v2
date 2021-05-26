@@ -3,7 +3,7 @@ var geojson;
 const searchForm = document.getElementById('search')
 
 var retailSearch = {};
-
+var clickedStateId = null;
 mapboxgl.accessToken =
   "pk.eyJ1IjoiY3J2YW5wb2xsYXJkIiwiYSI6ImNqMHdvdnd5MTAwMWEycXBocm4zbXVjZm8ifQ.3zjbFccILu6mL7cOTtp40A";
 
@@ -78,11 +78,11 @@ map.on("load", function () {
       data: districts,
     },
     layout: {},
-    paint: {
-      "line-width": 2,
-      "line-color": "#0078ae",
-    },
-    /*  paint: {
+   // paint: {
+   //   "line-width": 2,
+  //    "line-color": "#0078ae",
+  //  },
+      paint: {
                 "line-color": [ 'case',
                ['boolean', ['feature-state', 'click'], false],
                 '#FFFF00', '#0078ae'
@@ -92,7 +92,7 @@ map.on("load", function () {
                 5, 3
                ]
              }
-             */
+
   });
 
 map.addLayer({
@@ -104,9 +104,14 @@ map.addLayer({
     },
     layout: {},
     paint: {
-      "fill-outline-color": "#0078ae",
-      "fill-color": "rgba(0, 120, 174,0.35)",
-    },
+      "fill-outline-color": "#39398e",
+      "fill-color": "rgba(57, 57, 142,0.35)"
+    //  "fill-color": [ 'case',
+    //           ['boolean', ['feature-state', 'click'], false],
+    //           "rgba(0, 120, 174,0.9)", "rgba(0, 120, 174,0.35)"
+    //           ]
+              
+    }
 });
  // When the map loads, add the data from the USGS earthquake API as a source
 map.addSource('retail', {
@@ -130,7 +135,11 @@ map.addLayer({
         ],
         'circle-stroke-color': '#e5e5e5',
         'circle-stroke-width': .5,
-        'circle-color': '#4575b4'
+        'circle-color': [
+          'case',
+          ['boolean', ['feature-state', 'hover'], false],
+          '#fbb040','#39398e'
+          ],
       }
 });
 var districtID = null;
@@ -191,6 +200,7 @@ retail.features.forEach(function (geojsonrow) {
 });
 
 map.on('click','retailp', (marker) => {
+    // mapbox function calling of geojson properties
     var props = marker.features[0].properties;
     var coordinates = marker.features[0].geometry.coordinates;
     handleSidebarDisplay()
@@ -202,26 +212,26 @@ searchForm.onsubmit = function (e) {
   e.preventDefault()
   const input = e.target.children[0].children[0]
   const searched = input.value
-  var marker = retailSearch[searched]
+  const marker = retailSearch[searched]
 
   if(!marker) {
     alert('Please select a value from the dropdown list')
     input.value = ''
     return
   }
+  // non-mapbox function calling the geojson properties and coordinates that get pushed to the handleDisctrict function
   var props = marker.properties;
   var coordinates = marker.geometry.coordinates;
   handleSidebarDisplay()
-//   alert(searched);
   handleDistrict (props,coordinates, map)
 }
 
 // pull click event into standalone function in order to apply to both form submit and map click
+// added 2 parameters props and coordinates to handle the different approaches to working with GeoJson features
 const handleDistrict = function (props,coordinates,map) {
  // var props = marker.properties;
  // console.log(marker.features[0].properties);
  // var props = marker.features[0].properties;
-
   if (props.BREW === 0) {
     var BREW = "<div class='hidden'></div>";
   } else {
@@ -262,7 +272,7 @@ const handleDistrict = function (props,coordinates,map) {
     var HDIST = "<div class='hidden'></div>";
   } else {
     var HDIST =
-      '<span class="label label-default">Historic District (NRHP)</span>';
+      '<span class="label label-default">Historic</span>';
   }
 
   if (props.OPP === 0) {
@@ -286,6 +296,7 @@ const handleDistrict = function (props,coordinates,map) {
     "</span>, <span></span> County, <span>" +
     props.STATE +
     "</span></small></h3>" +
+    "<h4 style=''>District Typologies</h4>"+
     BREW +
     CIRCUIT +
     CTOWN +
@@ -296,7 +307,7 @@ const handleDistrict = function (props,coordinates,map) {
     OPP +
     TRANSIT;
   var content1 =
-    "<h3 class='data-heading'>Transit and Accessibility</h3>" +
+    "<h3 class='data-heading'>Accessibility and Demographics (within 1/2 mile) as of 2013</h3>" +
     "<span class='data-info'>Number of Blocks: </span><span class='data-value'> " +
     props.DTRETAIL +
     "</span>" +
@@ -317,7 +328,20 @@ const handleDistrict = function (props,coordinates,map) {
     "</span>" +
     "<br><span class='data-info'>Parking: </span><span class='data-value'> " +
     props.PARKING +
-    "</span>";
+    "</span>"+
+//    "<h3 class='data-heading'>Demographic (within 1/2 mile)</h3>" +
+    "<br><span class='data-info'>Population: </span><span class='data-value'> " +
+    numeral(props.POP).format("(0,0)") +
+    "</span>" +
+    "<br><span class='data-info'>Households: </span><span class='data-value'> " +
+    numeral(props.HH).format("(0,0)") +
+    "</span>" +
+    "<br><span class='data-info'>Median Household Income: </span><span class='data-value'> " +
+    numeral(props.MEDHH).format("($0,0)") +
+    "</span>"
+    ;
+// remove Management and Counts
+/*  
   if (props.BID === undefined) {
     var BID = "<div class='hidden'></div>";
   } else {
@@ -326,7 +350,6 @@ const handleDistrict = function (props,coordinates,map) {
       props.BID +
       "</span><br>";
   }
-
   if (props.CHAMCOM === undefined) {
     var CHAMCOM = "<div class='hidden'></div>";
   } else {
@@ -373,16 +396,7 @@ const handleDistrict = function (props,coordinates,map) {
   }
 
   var content2 =
-    "<h3 class='data-heading'>Demographic (within 1/2 mile)</h3>" +
-    "<span class='data-info'>Population: </span><span class='data-value'> " +
-    numeral(props.POP).format("(0,0)") +
-    "</span>" +
-    "<br><span class='data-info'>Households: </span><span class='data-value'> " +
-    numeral(props.HH).format("(0,0)") +
-    "</span>" +
-    "<br><span class='data-info'>Median Household Income: </span><span class='data-value'> " +
-    numeral(props.MEDHH).format("($0,0)") +
-    "</span>" +
+   
     "<h3 class='data-heading'>Management Structure</h3>" +
     BID +
     CHAMCOM +
@@ -403,13 +417,14 @@ const handleDistrict = function (props,coordinates,map) {
     "<br><span class='data-info'>Date: </span><span class='data-value'> " +
     props.DATE +
     "</span>";
+    */
   document.getElementById("resultsheader").innerHTML = info;
-  // document.getElementById('resultsheader').className = 'rhEL';
 
   document.getElementById("info1").innerHTML = content1;
-  document.getElementById("info2").innerHTML = content2;
+ // document.getElementById("info2").innerHTML = content2;
 
   map.flyTo({
+    // created a parameter that pulls the lat/long values from the geojson
     center: coordinates,
     pitch: 20,
     speed: 0.7,
@@ -451,7 +466,7 @@ const handleDistrict = function (props,coordinates,map) {
         type: "pie",
         plotBackgroundColor: null,
         plotBorderWidth: 0, //null,
-        plotShadow: true,
+        plotShadow: false,
         height: 220,
         width: 300,
         colors: [
@@ -489,7 +504,7 @@ const handleDistrict = function (props,coordinates,map) {
             filter: {
               property: "percentage",
               operator: ">",
-              value: "8",
+              value: ".5",
             },
           },
           showInLegend: false,
@@ -532,9 +547,9 @@ const handleDistrict = function (props,coordinates,map) {
     var Labels = [
         "Civic",
         "Cultural",
-        "Food & Beverage",
+        "F&B",
         "GAFO",
-        "NG & S",
+        "NG&S",
         "Office",
         "Residential",
         "Vacant",
@@ -557,7 +572,7 @@ const handleDistrict = function (props,coordinates,map) {
         type: "pie",
         plotBackgroundColor: null,
         plotBorderWidth: 0, //null,
-        plotShadow: true,
+        plotShadow: false,
         height: 220,
         width: 300,
         colors: [
@@ -599,13 +614,13 @@ const handleDistrict = function (props,coordinates,map) {
             filter: {
               property: "percentage",
               operator: ">",
-              value: "8",
+              value: ".5",
             },
           },
           showInLegend: false,
         },
       },
-     legend: {
+  /*   legend: {
       title: {
           text: '<span style="text-align:center;font-size: 9px; color: #666; font-weight: normal">Retail Mix 2015</span>',
           style: {
@@ -614,6 +629,7 @@ const handleDistrict = function (props,coordinates,map) {
         },
       layout:'horizontal'
     }, 
+  */  
       tooltip: {
         formatter: function () {
           //  return '<b>'+Highcharts.numberFormat(this.point.y,0,',',',')+' Acres</b><br/>';
@@ -655,13 +671,13 @@ const handleDistrict = function (props,coordinates,map) {
     var Labels = [
         "Civic",
         "Cultural",
-        "Food & Beverage",
+        "F&B",
         "GAFO",
-        "NG & S",
+        "NG&S",
         "Office",
         "Residential",
         "Vacant",
-        "Experimental",
+        "EXP",
         "HOSP",
         "Construction",
         "Institutional",
@@ -694,92 +710,3 @@ const populateOptions = function (obj) {
 populateOptions(retailSearch)
 
 }); 
-/*
-  retail.features.forEach(function (marker) {
-    var el = document.createElement("div");
-    el.className = "marker1";
-    el.style.backgroundImage = "assets/img/Retail_Blue.png";
-
-    var popup = new mapboxgl.Popup({
-      closeButton: false,
-      closeOnClick: false,
-    });
-
-    retailSearch[marker.properties.DISTRICT] = marker
-
-    el.addEventListener("mouseenter", function () {
-      var coordinates = marker.geometry.coordinates.slice();
-      popup
-        .setLngLat(coordinates)
-        .setHTML(
-          "<h4>" +
-            marker.properties.DISTRICT +
-            '</h4><p style="border-bottom: 8px solid #42708A;"</p>'
-        )
-        .addTo(map);
-    });
-
-    el.addEventListener("mouseleave", function () {
-      popup.remove();
-    });
-
-    el.addEventListener("click", function() {
-   //   handleSidebarDisplay()
-      handleDistrict(marker, map)
-    })
-
-    new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates);
-});
-  
-  populateOptions(retailSearch)
-
-  searchForm.onsubmit = function(e) {
-    e.preventDefault()
-    const input = e.target.children[0].children[0]
-    const searched = input.value
-    const marker = retailSearch[searched]
-
-    if(!marker) {
-      alert('Please select a value from the dropdown list')
-      input.value = ''
-      return
-    }
-
-    handleSidebarDisplay()
-    handleDistrict(marker, map)
-  }
-});
-
-// pull click event into standalone function in order to apply to both form submit and map click
-const handleDistrict = function (marker, map) {
-  var props = marker.properties;
-
-  // get all the elements with class "marker2"
-      var x = document.getElementsByClassName("marker2");
-            var i;
-            for (i = 0; i < x.length; i++) {
-            x[i].className = "marker1"; // set "marker" as the class for each of those elements
-            }
-            // at this point all markers are back to the original state
-
-            // now you set the class of the current clicked marker
-            this.className = 'marker2'; //don't use the variable "el", it's out of the scope and can change, "this" is the current clicked element
-      
-  //  window.alert(marker.properties.name);
-  //   console.log(marker.properties);
-})
-
-// add typeahead
-const populateOptions = function (obj) {
-  const datalist = document.getElementById('retail-districts-list')
-  const frag = document.createDocumentFragment()
-  
-  Object.keys(obj).sort((a, b) => a > b).forEach(function(el) {
-    const option = document.createElement('option')
-    option.value = el
-    frag.appendChild(option)
-  })
-
-  datalist.appendChild(frag)
-}
-  */
