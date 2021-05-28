@@ -9,8 +9,10 @@
         --theme-dvrpc: #0078ae;
         --theme-dark: #505a5e;
         --theme-retail: #39398e;
-        --theme-retail2:rgba(251,176,64,0.8);
-
+        --theme-reatil-lite: #EBEBF3 ;
+        --theme-retail2:rgba(173,0,116,0.8);
+        --theme-retail3:rgba(251,176,64,0.8);
+ 
         --wrapper-padding: 10px;
         --wrapper-padding-double: 20px;
     
@@ -191,14 +193,6 @@
     display: flex;
     }
     /* Layer Information */
-    #inforesults {
-        margin: 5px 0px 5px 10px;
-        border-radius: 4px;
-        border-color: #dadada;
-        background-color: #DFE9F1;
-        overflow: hidden;
-    }
-  
     .alert-info {
     color: black;
     background-color: #E4E3DB ;
@@ -213,20 +207,34 @@
     .one{
         color:#396ab2;
     }
-    #box {
-    background-color:none;
-    height:50px;
-    width:100px;
-    float:right;
-    margin: 2px 10px 5px 2px;
-    background-position: center;
-    background-size: 100px 40px;
-    background-repeat: no-repeat;
-    }
-    #info1{
+    .infoLeft {
         padding: 10px;
         width:50%;
+        height: 100%;
         display:inline-block;
+        background-color: var(--theme-reatil-lite);
+    }
+    #dt-section{
+        display: block;
+        width: 350px;
+        word-wrap: break-word;
+        white-space: normal;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+    }
+    #resultsHeader {
+        color:#333;
+        font-size: 18px;
+        word-break:break-all;
+        margin: 5px 0px 5px 10px;
+        border-radius: 4px;
+        border-color: #dadada;
+        background-color: var(--theme-reatil-lite);
+        overflow: hidden;
+        border-bottom: 1px solid #ccc;
+    }
+    #info1{
+        margin: 5px 0px 5px 10px;
     }
     #info2{
         padding: 10px;
@@ -235,23 +243,15 @@
     }
     .hidden {
         display: none;
-        }        
-    #resultsheader{
-    color:#333;
-    margin: 0px 10px 7px 10px;
-    font-size: 18px;
-    word-break:break-all;
-    } 
-    .rhEL {
-     border-bottom: 8px solid #0078ae
-    }
+    }        
     .label {
         font-weight: normal;
         margin: 3px;
+        display: inline-block;
     }
     .data-heading{
         font-size: 16px;
-        border-bottom: 1px solid #ccc;
+       /* border-bottom: 1px solid #ccc; */
         font-weight: bold;
         margin: 0 0 10px;
         padding: 5px 0;
@@ -263,21 +263,6 @@
     }
     .data-value{
         font-size:medium;
-    }
-    #legend-stack {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        height: 115px;
-        margin-left: 10px;
-        background-color: white;
-        border-radius: 4px;
-        padding-right: 10px;
-    }   
-    .legend-icons img {
-      display: block;
-      margin: 5px 0px 5px 5px;
-      max-height: 100%;
     }
     #about_footer{
       background-color: #b9def0; 
@@ -312,6 +297,8 @@
     }
     #chart-legend{
         text-align: center;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
     }
     #chart-legend-icons{
         display: inline-block;
@@ -325,6 +312,7 @@
     }
     #Chart1{
         display:inline-block;
+        border-bottom: 1px solid #ccc;
     }
     #Chart2{
         display:inline-block;
@@ -346,16 +334,24 @@
         /* #5bc5cf */
     }
     .fb {
-        color:rgb(235,85,92);
-        /* #eb555c */
+        color:#f29195;
+        /* rgb(242, 145, 149) */
     }
     .gafo {
-        color:rgb(202,24,32);
-        /* #ca1820 */
+        color:#eb555c;
+        /* rgb(235, 85, 92)*/
     }
     .ngs {
-        color:rgb(239,46,55);
-        /* #ef2e37 */
+        color:#90565c;
+        /* rgb(144, 86, 92) */
+    }
+    .experimental{
+        color:#fad5d6;
+        /* rgb(250,213,214) */
+    }
+    .hosp{
+        color:#bc565c;
+        /* rgb(188, 86, 92)*/
     }
     .office{
         color:rgb(12,135,123);
@@ -375,12 +371,7 @@
     .institutional{
         color:#da7b27;
     }
-    .experimental{
-        color:#eb555c;
-    }
-    .hosp{
-        color:#f08085;
-    }
+   
     ul.a {list-style-type: circle;
     }
     .input-group-addon {

@@ -37,7 +37,7 @@ function handleSidebarDisplay() {
 
   var sidebarViz = $("#sidebar").css("display");
   if (sidebarViz !== "block") {
-    $("#map").toggleClass("col-sm-6 col-lg-6 col-sm-12 col-lg-12");
+    $("#map").toggleClass("col-sm-4 col-lg-4 col-sm-12 col-lg-12");
     $("#sidebar").css("display", "block");
   }
   $(window.map).resize();
@@ -70,30 +70,7 @@ map.on("load", function () {
     filter: ["==", "dvrpc", "Yes"],
   });
 
-  map.addLayer({
-    id: "d2",
-    type: "line",
-    source: {
-      type: "geojson",
-      data: districts,
-    },
-    layout: {},
-   // paint: {
-   //   "line-width": 2,
-  //    "line-color": "#0078ae",
-  //  },
-      paint: {
-                "line-color": [ 'case',
-               ['boolean', ['feature-state', 'click'], false],
-                '#FFFF00', '#0078ae'
-               ],
-                "line-width": [ 'case',
-               ['boolean', ['feature-state', 'click'], false],
-                5, 3
-               ]
-             }
 
-  });
 
 map.addLayer({
     id: "districts",
@@ -113,6 +90,29 @@ map.addLayer({
               
     }
 });
+   // When the map loads, add the data from the USGS earthquake API as a source
+   map.addSource('d2', {
+    'type': 'geojson',
+    'data':d2, // Use the sevenDaysAgo variable to only retrieve quakes from the past week
+    'generateId': true // This ensures that all features have unique IDs
+  });
+  
+    map.addLayer({
+      id: "d2",
+      type: "line",
+      source: "d2",
+      layout: {},
+      paint: {
+        "line-color": [ 'case',
+        ['boolean', ['feature-state', 'click'], false],
+        '#FFD662', '#0078ae'
+        ],
+        "line-width": [ 'case',
+        ['boolean', ['feature-state', 'click'], false],
+        5, 3
+        ]
+      }
+    });
  // When the map loads, add the data from the USGS earthquake API as a source
 map.addSource('retail', {
   'type': 'geojson',
@@ -138,12 +138,15 @@ map.addLayer({
         'circle-color': [
           'case',
           ['boolean', ['feature-state', 'hover'], false],
-          '#fbb040','#39398e'
+        //  '#fbb040',
+          '#ad0074',
+          '#39398e'
           ],
       }
 });
-var districtID = null;
 
+var districtID = null;
+var polygonID = null;
 map.on('mousemove', 'retailp', (marker) => {
     map.getCanvas().style.cursor = 'pointer';
     var coordinates = marker.features[0].geometry.coordinates.slice();
@@ -172,6 +175,7 @@ map.on('mousemove', 'retailp', (marker) => {
         }
       );
     }
+   
 });
 
   // When the mouse leaves the retail-viz layer, update the
@@ -203,6 +207,23 @@ map.on('click','retailp', (marker) => {
     // mapbox function calling of geojson properties
     var props = marker.features[0].properties;
     var coordinates = marker.features[0].geometry.coordinates;
+    if (marker.features.length > 0) {
+      if(polygonID) { // Need to change this
+          map.removeFeatureState({
+              source: 'd2',
+              id: polygonID
+          });
+      }
+
+      polygonID = marker.features[0].id; // Get generated ID
+
+      map.setFeatureState({
+          source: 'd2',
+          id: polygonID
+      }, {
+          click: true
+      });
+  }
     handleSidebarDisplay()
     handleDistrict(props,coordinates,map)
 });  
@@ -292,11 +313,13 @@ const handleDistrict = function (props,coordinates,map) {
     "<h3 style='margin-top:0;'><span>" +
     props.DISTRICT +
     "</span><br/><small><span>" +
-    props.RDISTCROSS +
+    props.COUNTY +
     "</span>, <span></span> County, <span>" +
     props.STATE +
-    "</span></small></h3>" +
-    "<h4 style=''>District Typologies</h4>"+
+    "</span></small></h3>" 
+    ;
+  var content1 =
+  "<div id='dt-section'><h4 style=''>District Typologies</h4>"+
     BREW +
     CIRCUIT +
     CTOWN +
@@ -305,10 +328,9 @@ const handleDistrict = function (props,coordinates,map) {
     EXPAND +
     HDIST +
     OPP +
-    TRANSIT;
-  var content1 =
-    "<h3 class='data-heading'>Accessibility and Demographics (within 1/2 mile) as of 2013</h3>" +
-    "<span class='data-info'>Number of Blocks: </span><span class='data-value'> " +
+    TRANSIT+
+    "</div><span><span class='data-heading'>Accessibility and Demographics</span><br>(within 1/2 mile) as of 2013</span>" +
+    "<br><span class='data-info'>Number of Blocks: </span><span class='data-value'> " +
     props.DTRETAIL +
     "</span>" +
     "<br><span class='data-info'>Maximum Sidewalk Width: </span><span class='data-value'> " +
@@ -418,7 +440,7 @@ const handleDistrict = function (props,coordinates,map) {
     props.DATE +
     "</span>";
     */
-  document.getElementById("resultsheader").innerHTML = info;
+  document.getElementById("resultsHeader").innerHTML = info;
 
   document.getElementById("info1").innerHTML = content1;
  // document.getElementById("info2").innerHTML = content2;
@@ -444,14 +466,14 @@ const handleDistrict = function (props,coordinates,map) {
   Retail2 = [
     props.CIVIC20,
     props.CULTURAL20,
+    props.EXP20,
     props.FB20,
     props.GAFO20,
+    props.HOSP20,
     props.NGS20,
     props.OFFICE20,
     props.RES20,
     props.VACANT20,
-    props.EXP20,
-    props.HOSP20,
     props.CONSTR20,
     props.INST20,
   ];
@@ -467,17 +489,17 @@ const handleDistrict = function (props,coordinates,map) {
         plotBackgroundColor: null,
         plotBorderWidth: 0, //null,
         plotShadow: false,
-        height: 220,
-        width: 300,
+        height: 250,
+        width: 370,
         colors: [
           "#8ec63f",
           "#5bc5cf",
+          "#f29195",
           "#eb555c",
-          "#ca1820",
-          "#ef2e37",
+          "#90565c",
           "#0c877b",
           "#fbb040",
-          "#A80000",
+          "#bdd2ff"
         ],
       },
       title: {
@@ -533,12 +555,12 @@ const handleDistrict = function (props,coordinates,map) {
           colors: [
             "#8ec63f",
             "#5bc5cf",
+            "#f29195",
             "#eb555c",
-            "#ca1820",
-            "#ef2e37",
+            "#90565c",
             "#0c877b",
             "#fbb040",
-            "#bdd2ff",
+            "#bdd2ff"
           ],
           data: [],
         },
@@ -552,7 +574,7 @@ const handleDistrict = function (props,coordinates,map) {
         "NG&S",
         "Office",
         "Residential",
-        "Vacant",
+        "Vacant"
       ],
       counData = [];
     for (var i = 0; i < Values.length; i++) {
@@ -573,21 +595,21 @@ const handleDistrict = function (props,coordinates,map) {
         plotBackgroundColor: null,
         plotBorderWidth: 0, //null,
         plotShadow: false,
-        height: 220,
-        width: 300,
+        height: 250,
+        width: 370,
         colors: [
           "#8ec63f",
           "#5bc5cf",
+          "#fad5d6",    
+          "#f29195",
           "#eb555c",
-          "#ca1820",
-          "#ef2e37",
+          "#bc565c",   
+          "#90565c",
           "#0c877b",
           "#fbb040",
           "#bdd2ff",
-          "#eb555c",
-          "#f08085",
           "#878787",
-          "#da7b27",
+          "#da7b27"
         ],
       },
       title: {
@@ -653,16 +675,16 @@ const handleDistrict = function (props,coordinates,map) {
           colors: [
             "#8ec63f",
             "#5bc5cf",
+            "#fad5d6",    
+            "#f29195",
             "#eb555c",
-            "#ca1820",
-            "#ef2e37",
+            "#bc565c",   
+            "#90565c",
             "#0c877b",
             "#fbb040",
             "#bdd2ff",
-            "#eb555c",
-            "#f08085",
             "#878787",
-            "#da7b27",
+            "#da7b27"
           ],
           data: [],
         },
@@ -671,16 +693,16 @@ const handleDistrict = function (props,coordinates,map) {
     var Labels = [
         "Civic",
         "Cultural",
+        "EXP",
         "F&B",
         "GAFO",
+        "HOSP",
         "NG&S",
         "Office",
         "Residential",
         "Vacant",
-        "EXP",
-        "HOSP",
         "Construction",
-        "Institutional",
+        "Institutional"
       ],
       counData = [];
     for (var i = 0; i < Values.length; i++) {
