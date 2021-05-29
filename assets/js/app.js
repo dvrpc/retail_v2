@@ -4,6 +4,13 @@ const searchForm = document.getElementById('search')
 
 var retailSearch = {};
 var clickedStateId = null;
+
+function legendraw3(element) {
+  //   e.preventDefault()
+ // event.preventDefault()
+ $("#CATModal").modal("show");
+} 
+
 mapboxgl.accessToken =
   "pk.eyJ1IjoiY3J2YW5wb2xsYXJkIiwiYSI6ImNqMHdvdnd5MTAwMWEycXBocm4zbXVjZm8ifQ.3zjbFccILu6mL7cOTtp40A";
 
@@ -207,25 +214,15 @@ map.on('click','retailp', (marker) => {
     // mapbox function calling of geojson properties
     var props = marker.features[0].properties;
     var coordinates = marker.features[0].geometry.coordinates;
-    if (marker.features.length > 0) {
-      if(polygonID) { // Need to change this
-          map.removeFeatureState({
-              source: 'd2',
-              id: polygonID
-          });
-      }
+    var FID = marker.features[0].id;
 
-      polygonID = marker.features[0].id; // Get generated ID
-
-      map.setFeatureState({
-          source: 'd2',
-          id: polygonID
-      }, {
-          click: true
-      });
-  }
-    handleSidebarDisplay()
-    handleDistrict(props,coordinates,map)
+    if (props.RD_Year == '2021') {
+      alert ("nope");
+    } else {
+      handleSidebarDisplay()
+      handleDistrict(props,coordinates,map)
+      handleHighlight(FID)
+    }
 });  
 
 
@@ -233,18 +230,45 @@ searchForm.onsubmit = function (e) {
   e.preventDefault()
   const input = e.target.children[0].children[0]
   const searched = input.value
-  const marker = retailSearch[searched]
-
-  if(!marker) {
+  const location = retailSearch[searched]
+  if(!location) {
     alert('Please select a value from the dropdown list')
     input.value = ''
     return
   }
+ 
   // non-mapbox function calling the geojson properties and coordinates that get pushed to the handleDisctrict function
-  var props = marker.properties;
-  var coordinates = marker.geometry.coordinates;
+  var props = location.properties;
+  var coordinates = location.geometry.coordinates;
+  var FID = location.id;
+  if(props.RD_Year == '2021'){
+    alert ('NOPE')
+    return false;
+  }
+
   handleSidebarDisplay()
   handleDistrict (props,coordinates, map)
+  handleHighlight(FID)
+}
+
+const handleHighlight = function (FID){
+ // console.log(FID);
+  if (FID > 0) {
+    if(polygonID) { // Need to change this
+        map.removeFeatureState({
+            source: 'd2',
+            id: polygonID
+        });
+    }
+   // polygonID = marker.features[0].id; // Get generated ID
+    polygonID = FID;
+    map.setFeatureState({
+        source: 'd2',
+        id: polygonID
+    }, {
+        click: true
+    });
+}
 }
 
 // pull click event into standalone function in order to apply to both form submit and map click
@@ -330,7 +354,7 @@ const handleDistrict = function (props,coordinates,map) {
     OPP +
     TRANSIT+
     "</div><span><span class='data-heading'>Accessibility and Demographics</span><br>(within 1/2 mile) as of 2013</span>" +
-    "<br><span class='data-info'>Number of Blocks: </span><span class='data-value'> " +
+    "<br><br><span class='data-info'>Number of Blocks: </span><span class='data-value'> " +
     props.DTRETAIL +
     "</span>" +
     "<br><span class='data-info'>Maximum Sidewalk Width: </span><span class='data-value'> " +
@@ -489,8 +513,8 @@ const handleDistrict = function (props,coordinates,map) {
         plotBackgroundColor: null,
         plotBorderWidth: 0, //null,
         plotShadow: false,
-        height: 250,
-        width: 370,
+       // height: 250,
+      //  width: 370,
         colors: [
           "#8ec63f",
           "#5bc5cf",
@@ -595,8 +619,8 @@ const handleDistrict = function (props,coordinates,map) {
         plotBackgroundColor: null,
         plotBorderWidth: 0, //null,
         plotShadow: false,
-        height: 250,
-        width: 370,
+      //  height: (9 / 16 * 100) + '%',
+      //  width: 75,
         colors: [
           "#8ec63f",
           "#5bc5cf",
