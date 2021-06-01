@@ -90,45 +90,51 @@
  
 
 <div class="row" id="container">
-    <div class="col-sm-8 col-md-8 col-lg-8" id="sidebar" style="padding: 10px; overflow: auto;display: none;">
+    <div class="col-sm-6 col-md-6 col-lg-6" id="sidebar">
         <div class="panel-group">
-            <div id="data-info-section" style="display:table-row;">
-
+            <div id="data-info-section">
  <!-- Info Section-->                
                 <div class='infoLeft' style="height:100vh;">
-                    <div id='resultsHeader'></div>    
+                    <div id='resultsHeader'></div>   
+                    <div id="chart-legend">
+                        <h3 class='chart-legend-heading'><i class='glyphicon glyphicon-info-sign' id='info-icon' onclick='legendraw3()'></i>Categories of Uses</h3>
+                        <span id="chart-legend-icons">
+                            <i class="fa fa-circle legend-icons civic"></i>Civic
+                            <i class="fa fa-circle legend-icons cultural"></i>Cultural
+                            <i class="fa fa-circle legend-icons construction"></i>Construction
+                            <i class="fa fa-circle legend-icons institutional"></i>Institutional
+                            <br>
+                            <i class="fa fa-circle legend-icons office"></i>Office
+                            <i class="fa fa-circle legend-icons res"></i>Residential
+                            <i class="fa fa-circle legend-icons vacant"></i>Vacant 
+                        </span>
+                        <br>
+                        <span>
+                            <b>Retail Types:</b>
+                            <i class="fa fa-circle legend-icons experimental"></i>EXP
+                            <i class="fa fa-circle legend-icons fb"></i>F&B
+                            <i class="fa fa-circle legend-icons gafo"></i>GAFO
+                            <i class="fa fa-circle legend-icons hosp"></i>HOSP
+                            <i class="fa fa-circle legend-icons ngs"></i>NG&S
+                        </span>
+                        </div>
+                        <div class='chart-wrapper'>       
+                        <h2 class='chart-subheader'>2020</h2> 
+                        <div id="Chart2"></div> 
+                        </div> 
+
+                        <div class='chart-wrapper'>     
+                        <h2 class='chart-subheader'>2013</h2>  
+                        <div id="Chart1"></div>   
+                        </div> 
+
                     <div id='info1' class='info1'></div>
                 </div>
 
 <!-- Chart Section--> 
                 <div id='info2' class='info2'>
 
-                <div id="chart-legend">
-                <h3 class='chart-legend-heading'><i class='glyphicon glyphicon-info-sign' id='info-icon' onclick='legendraw3()'></i>Categories of Uses</h3>
-                <span id="chart-legend-icons">
-                    <i class="fa fa-circle legend-icons civic"></i>Civic
-                    <i class="fa fa-circle legend-icons cultural"></i>Cultural
-                    <i class="fa fa-circle legend-icons construction"></i>Construction
-                    <br>
-                    <i class="fa fa-circle legend-icons institutional"></i>Institutional
-                    <i class="fa fa-circle legend-icons office"></i>Office
-                    <i class="fa fa-circle legend-icons res"></i>Residential
-                    <i class="fa fa-circle legend-icons vacant"></i>Vacant 
-                </span>
-                <br>
-                <span>
-                    <b>Retail Types:</b><br>
-                    <i class="fa fa-circle legend-icons experimental"></i>EXP
-                    <i class="fa fa-circle legend-icons fb"></i>F&B
-                    <i class="fa fa-circle legend-icons gafo"></i>GAFO
-                    <i class="fa fa-circle legend-icons hosp"></i>HOSP
-                    <i class="fa fa-circle legend-icons ngs"></i>NG&S
-                </span>
-                </div>
-                    <span>
-                        <div id="Chart1"></div>    
-                        <div id="Chart2"></div> 
-                    </span>    
+                 
                 </div>
 
             </div>

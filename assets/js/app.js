@@ -44,7 +44,7 @@ function handleSidebarDisplay() {
 
   var sidebarViz = $("#sidebar").css("display");
   if (sidebarViz !== "block") {
-    $("#map").toggleClass("col-sm-4 col-lg-4 col-sm-12 col-lg-12");
+    $("#map").toggleClass("col-sm-6 col-lg-6 col-sm-12 col-lg-12");
     $("#sidebar").css("display", "block");
   }
   $(window.map).resize();
@@ -334,16 +334,14 @@ const handleDistrict = function (props,coordinates,map) {
   }
 
   var info =
-    "<h3 style='margin-top:0;'><span>" +
+    "<div id='d-name'><h3 style='margin-top:0;'>" +
     props.DISTRICT +
-    "</span><br/><small><span>" +
+    "</span><small><span> " +
     props.COUNTY +
     "</span>, <span></span> County, <span>" +
     props.STATE +
-    "</span></small></h3>" 
-    ;
-  var content1 =
-  "<div id='dt-section'><h4 style=''>District Typologies</h4>"+
+    "</span></small></h3></div>"+
+    "<div id='dt-section'><h4 style=''>District Typologies</h4>"+
     BREW +
     CIRCUIT +
     CTOWN +
@@ -353,8 +351,11 @@ const handleDistrict = function (props,coordinates,map) {
     HDIST +
     OPP +
     TRANSIT+
-    "</div><span><span class='data-heading'>Accessibility and Demographics</span><br>(within 1/2 mile) as of 2013</span>" +
-    "<br><br><span class='data-info'>Number of Blocks: </span><span class='data-value'> " +
+    "</div>" 
+    ;
+  var content1 =
+  "<span class='data-heading-title'><span class='data-heading'>Accessibility and Demographics</span><br>(within 1/2 mile) as of 2013</span>" +
+    "<span class='data-info'>Number of Blocks: </span><span class='data-value'> " +
     props.DTRETAIL +
     "</span>" +
     "<br><span class='data-info'>Maximum Sidewalk Width: </span><span class='data-value'> " +
@@ -513,7 +514,7 @@ const handleDistrict = function (props,coordinates,map) {
         plotBackgroundColor: null,
         plotBorderWidth: 0, //null,
         plotShadow: false,
-       // height: 250,
+        height: 300,
       //  width: 370,
         colors: [
           "#8ec63f",
@@ -527,7 +528,7 @@ const handleDistrict = function (props,coordinates,map) {
         ],
       },
       title: {
-        text: "2013",
+        text: "",
       },
       plotOptions: {
         pie: {
@@ -619,7 +620,7 @@ const handleDistrict = function (props,coordinates,map) {
         plotBackgroundColor: null,
         plotBorderWidth: 0, //null,
         plotShadow: false,
-      //  height: (9 / 16 * 100) + '%',
+         height: 300,
       //  width: 75,
         colors: [
           "#8ec63f",
@@ -637,7 +638,7 @@ const handleDistrict = function (props,coordinates,map) {
         ],
       },
       title: {
-        text: "2020",
+        text: "",
       },
       plotOptions: {
         pie: {
