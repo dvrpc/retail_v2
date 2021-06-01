@@ -338,7 +338,7 @@ const handleDistrict = function (props,coordinates,map) {
     props.DISTRICT +
     "</span><small><span> " +
     props.COUNTY +
-    "</span>, <span></span> County, <span>" +
+    "</span><span></span> County, <span>" +
     props.STATE +
     "</span></small></h3></div>"+
     "<div id='dt-section'><h4 style=''>District Typologies</h4>"+
@@ -354,8 +354,7 @@ const handleDistrict = function (props,coordinates,map) {
     "</div>" 
     ;
   var content1 =
-  "<span class='data-heading-title'><span class='data-heading'>Accessibility and Demographics</span><br>(within 1/2 mile) as of 2013</span>" +
-    "<span class='data-info'>Number of Blocks: </span><span class='data-value'> " +
+   "<span class='data-info'>Number of Blocks: </span><span class='data-value'> " +
     props.DTRETAIL +
     "</span>" +
     "<br><span class='data-info'>Maximum Sidewalk Width: </span><span class='data-value'> " +
