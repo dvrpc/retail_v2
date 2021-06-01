@@ -217,8 +217,15 @@ map.on('click','retailp', (marker) => {
     var FID = marker.features[0].id;
 
     if (props.RD_Year == '2021') {
-      alert ("nope");
+     // alert ("nope");
+      $("#chart2013").css("display", "none");
+      $("#data-wrapper").css("display", "none");
+      handleSidebarDisplay()
+      handleDistrict(props,coordinates,map)
+      handleHighlight(FID)
     } else {
+      $("#chart2013").css("display", "block");
+      $("#data-wrapper").css("display", "block");
       handleSidebarDisplay()
       handleDistrict(props,coordinates,map)
       handleHighlight(FID)
@@ -231,6 +238,7 @@ searchForm.onsubmit = function (e) {
   const input = e.target.children[0].children[0]
   const searched = input.value
   const location = retailSearch[searched]
+  
   if(!location) {
     alert('Please select a value from the dropdown list')
     input.value = ''
@@ -241,14 +249,21 @@ searchForm.onsubmit = function (e) {
   var props = location.properties;
   var coordinates = location.geometry.coordinates;
   var FID = location.id;
-  if(props.RD_Year == '2021'){
-    alert ('NOPE')
-    return false;
-  }
 
-  handleSidebarDisplay()
-  handleDistrict (props,coordinates, map)
-  handleHighlight(FID)
+  if (props.RD_Year == '2021') {
+     // alert ("nope");
+      $("#chart2013").css("display", "none");
+      $("#data-wrapper").css("display", "none");
+      handleSidebarDisplay()
+      handleDistrict(props,coordinates,map)
+      handleHighlight(FID)
+    } else {
+      $("#chart2013").css("display", "block");
+      $("#data-wrapper").css("display", "block");
+      handleSidebarDisplay()
+      handleDistrict(props,coordinates,map)
+      handleHighlight(FID)
+    }
 }
 
 const handleHighlight = function (FID){
@@ -286,7 +301,7 @@ const handleDistrict = function (props,coordinates,map) {
   if (props.CIRCUIT === 0) {
     var CIRCUIT = "<div class='hidden'></div>";
   } else {
-    var CIRCUIT = '<span class="label label-default">The Circuit Trails</span>';
+    var CIRCUIT = '<span class="label label-default">Circuit</span>';
   }
 
   if (props.CLASSIC === 0) {
@@ -323,7 +338,7 @@ const handleDistrict = function (props,coordinates,map) {
   if (props.OPP === 0) {
     var OPP = "<div class='hidden'></div>";
   } else {
-    var OPP = '<span class="label label-default">Opportunity Zones</span>';
+    var OPP = '<span class="label label-default">Opportunity</span>';
   }
 
   if (props.TRANSIT_1 === 0) {
@@ -353,38 +368,36 @@ const handleDistrict = function (props,coordinates,map) {
     TRANSIT+
     "</div>" 
     ;
-  var content1 =
-   "<span class='data-info'>Number of Blocks: </span><span class='data-value'> " +
+  var content1 = "<div class='data-row'><span class='data-info'>Number of Blocks </span><span class='data-value'> " +
     props.DTRETAIL +
-    "</span>" +
-    "<br><span class='data-info'>Maximum Sidewalk Width: </span><span class='data-value'> " +
+    "</span></div>" +
+    "<br><div class='data-row'><span class='data-info'>Maximum Sidewalk Width (ft) </span><span class='data-value'> " +
     props.MAXSWW +
-    "</span>" +
-    "<br><span class='data-info'>Maximum Cartway Width: </span><span class='data-value'> " +
+    "</span></div>" +
+    "<br><div class='data-row'><span class='data-info'>Maximum Cartway Width (ft) </span><span class='data-value'> " +
     props.MAXCARTW +
-    "</span>" +
-    "<br><span class='data-info'>Walk Score: </span><span class='data-value'> " +
+    "</span></div>" +
+    "<br><div class='data-row'><span class='data-info'>Walk Score® </span><span class='data-value'> " +
     props.WSCORE +
-    "</span>" +
-    "<br><span class='data-info'>Transit: </span><span class='data-value'> " +
+    "</span></div>" +
+    "<br><div class='data-row'><span class='data-info'>Transit </span><span class='data-value'> " +
     props.TRANSIT +
-    "</span>" +
-    "<br><span class='data-info'>Bus Routes: </span><span class='data-value'> " +
+    "</span></div>" +
+    "<br><div class='data-row'><span class='data-info'>Bus Route(s) </span><span class='data-value'> " +
     props.BUSROUTE +
-    "</span>" +
-    "<br><span class='data-info'>Parking: </span><span class='data-value'> " +
+    "</span></div>" +
+    "<br><div class='data-row'><span class='data-info'>Parking </span><span class='data-value'> " +
     props.PARKING +
-    "</span>"+
-//    "<h3 class='data-heading'>Demographic (within 1/2 mile)</h3>" +
-    "<br><span class='data-info'>Population: </span><span class='data-value'> " +
+    "</span></div>" +
+    "<br><div class='data-row'><span class='data-info'>Population </span><span class='data-value'> " +
     numeral(props.POP).format("(0,0)") +
-    "</span>" +
-    "<br><span class='data-info'>Households: </span><span class='data-value'> " +
+    "</span></div>" +
+    "<br><div class='data-row'><span class='data-info'>Households </span><span class='data-value'> " +
     numeral(props.HH).format("(0,0)") +
-    "</span>" +
-    "<br><span class='data-info'>Median Household Income: </span><span class='data-value'> " +
+    "</span></div>" +
+    "<br><div class='data-row-last'><span class='data-info'>Median Household Income </span><span class='data-value'> " +
     numeral(props.MEDHH).format("($0,0)") +
-    "</span>"
+    "</span></div>" 
     ;
 // remove Management and Counts
 /*  
