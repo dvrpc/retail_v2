@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "../../../Aerial_Imagery_Index"
+		},
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../sidewalk-data-viz-master"
+		},
+		{
+			"path": "../../../AccessScore"
+		},
+		{
+			"path": "../../../RideScore"
+		},
+		{
+			"path": "../../../TOD"
+		}
+	]
+}

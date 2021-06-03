@@ -131,14 +131,7 @@
     #zoomtoregion:hover{
     background-color: #ddd;
     }
-    /* Marker styles */
-    .marker1 {
-    background-image: url('img/Retail_Blue.png');
-    background-size: cover;
-    width: 30px;
-    height: 35px;
-    cursor: pointer;
-    }
+
     /* mapbox and popup style */
     .mapboxgl-popup-content {
         padding: var(--wrapper-padding-double) var(--wrapper-padding);
@@ -269,8 +262,7 @@
     }
     .data-info {
         font-size: small;
-        color:#808080;
-        
+        color:#808080;  
     }
     .data-value{
         font-size:medium;
@@ -473,4 +465,73 @@
         border: 1px solid transparent;
         border-radius: 4px;
         color: initial;
+    }
+    @media print {
+        .navbar, #map, footer, .print {
+            display: none;
+        }
+
+        #sidebar {
+            width: 100%;
+            background: transparent;
+            color:black;
+        }
+    
+        body, #sidebar {
+            padding: 0;
+            overflow: visible;
+        }
+        .legend-icons {
+            display: inline-block;
+            line-height: 25px;
+            width: 25px;
+            height: 15px;
+            text-align: center;
+        }
+        .civic{
+            color:rgb(142,198,63)
+        /* #8ec63f */
+        }
+        .cultural{
+            color: rgb(91,198,207);
+            /* #5bc5cf */
+        }
+        .fb {
+            color:#f29195;
+            /* rgb(242, 145, 149) */
+        }
+        .gafo {
+            color:#eb555c;
+            /* rgb(235, 85, 92)*/
+        }
+        .ngs {
+            color:#90565c;
+            /* rgb(144, 86, 92) */
+        }
+        .experimental{
+            color:#fad5d6;
+            /* rgb(250,213,214) */
+        }
+        .hosp{
+            color:#bc565c;
+            /* rgb(188, 86, 92)*/
+        }
+        .office{
+            color:rgb(12,135,123);
+            /* #0c877b */
+        }
+        .res{
+            color:rgb(251,176,64);
+            /* #fbb040 */
+        }
+        .vacant{
+            color:rgb(189,210,255);
+            /* #bdd2ff */
+        }
+        .construction{
+            color:#878787;
+        }
+        .institutional{
+            color:#da7b27;
+        }
     }

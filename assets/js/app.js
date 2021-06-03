@@ -1,15 +1,39 @@
-var retail, districts, d2;
+// var retail, districts, d2;
 var geojson;
 const searchForm = document.getElementById('search')
 
 var retailSearch = {};
 var clickedStateId = null;
 
-function legendraw3(element) {
-  //   e.preventDefault()
- // event.preventDefault()
+function PrintElem(elem)
+{
+    var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+    mywindow.document.write('<html><head><title>' + document.title  + '</title>');
+    mywindow.document.write('<link href="../css/main.css" rel="stylesheet" media="print">');
+    mywindow.document.write('<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" media="print">');
+    mywindow.document.write('</head><body >');
+    mywindow.document.write('<h1>' + document.title  + '</h1>');
+    mywindow.document.write(document.getElementById("sidebar").innerHTML);
+   // mywindow.document.write(document.getElementById(elem).innerHTML);
+    mywindow.document.write('</body></html>');
+
+    mywindow.document.close(); // necessary for IE >= 10
+    mywindow.focus(); // necessary for IE >= 10*/
+  
+    setTimeout(function () {
+      mywindow.print();
+      mywindow.close();
+      }, 1000)
+      return true;
+}
+
+function catShow() {
  $("#CATModal").modal("show");
 } 
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiY3J2YW5wb2xsYXJkIiwiYSI6ImNqMHdvdnd5MTAwMWEycXBocm4zbXVjZm8ifQ.3zjbFccILu6mL7cOTtp40A";
@@ -51,10 +75,21 @@ function handleSidebarDisplay() {
   return false;
 }
 
-map.on("load", function () {
- // add map events here (click, mousemove, etc)
+fetch('https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson')
+  .then(response => response.json())
+  .then (data => {
+    var retail = data;
+    retail.features.forEach(function (geojsonrow) {
+      retailSearch[geojsonrow.properties.DISTRICT] = geojsonrow
+    });
+  });
+ // .then(data => console.log(data));
+ console.log(retailSearch);
 
-     // Create a popup, but don't add it to the map yet.
+map.on("load", function () {
+// add map events here (click, mousemove, etc)
+
+// Create a popup, but don't add it to the map yet.
   var popup = new mapboxgl.Popup({
       className: "station-popup",
       closeButton: false,
@@ -77,30 +112,25 @@ map.on("load", function () {
     filter: ["==", "dvrpc", "Yes"],
   });
 
-
-
 map.addLayer({
     id: "districts",
     type: "fill",
     source: {
       type: "geojson",
-      data: districts,
+      'data':'https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail/FeatureServer/2/query?where=1%3D1&outFields=*&outSR=4326&f=geojson'
+   //   data: districts,
     },
     layout: {},
     paint: {
       "fill-outline-color": "#39398e",
-      "fill-color": "rgba(57, 57, 142,0.35)"
-    //  "fill-color": [ 'case',
-    //           ['boolean', ['feature-state', 'click'], false],
-    //           "rgba(0, 120, 174,0.9)", "rgba(0, 120, 174,0.35)"
-    //           ]
-              
+      "fill-color": "rgba(57, 57, 142,0.35)"       
     }
 });
    // When the map loads, add the data from the USGS earthquake API as a source
    map.addSource('d2', {
     'type': 'geojson',
-    'data':d2, // Use the sevenDaysAgo variable to only retrieve quakes from the past week
+    'data':'https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail/FeatureServer/1/query?where=1%3D1&outFields=*&outSR=4326&f=geojson',
+    //'data':d2, // Use the sevenDaysAgo variable to only retrieve quakes from the past week
     'generateId': true // This ensures that all features have unique IDs
   });
   
@@ -123,16 +153,17 @@ map.addLayer({
  // When the map loads, add the data from the USGS earthquake API as a source
 map.addSource('retail', {
   'type': 'geojson',
-  'data':retail, // Use the sevenDaysAgo variable to only retrieve quakes from the past week
+  //'data':retail, 
+  'data':'https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson',
   'generateId': true // This ensures that all features have unique IDs
 });
 
 map.addLayer({
-    id: "retailp",
-    type: "circle",
+    id: 'retail',
+    type: 'circle',
     source:'retail',
     layout: {
-      "visibility":"visible"
+      'visibility':'visible'
        },
     paint: {
       'circle-radius': [
@@ -154,7 +185,7 @@ map.addLayer({
 
 var districtID = null;
 var polygonID = null;
-map.on('mousemove', 'retailp', (marker) => {
+map.on('mousemove', 'retail', (marker) => {
     map.getCanvas().style.cursor = 'pointer';
     var coordinates = marker.features[0].geometry.coordinates.slice();
     var description = '<h3>'+ marker.features[0].properties.DISTRICT+'</h3>';
@@ -187,7 +218,7 @@ map.on('mousemove', 'retailp', (marker) => {
 
   // When the mouse leaves the retail-viz layer, update the
   // feature state of the previously hovered feature
-map.on('mouseleave', 'retailp', function () {
+map.on('mouseleave', 'retail', function () {
     if (districtID) {
       map.setFeatureState(
         {
@@ -206,16 +237,14 @@ map.on('mouseleave', 'retailp', function () {
     popup.remove();
 });
 
-retail.features.forEach(function (geojsonrow) {
-  retailSearch[geojsonrow.properties.DISTRICT] = geojsonrow
-});
 
-map.on('click','retailp', (marker) => {
+
+map.on('click','retail', (marker) => {
     // mapbox function calling of geojson properties
     var props = marker.features[0].properties;
     var coordinates = marker.features[0].geometry.coordinates;
     var FID = marker.features[0].id;
-
+    console.log(FID);
     if (props.RD_Year == '2021') {
      // alert ("nope");
       $("#chart2013").css("display", "none");
@@ -249,6 +278,7 @@ searchForm.onsubmit = function (e) {
   var props = location.properties;
   var coordinates = location.geometry.coordinates;
   var FID = location.id;
+  console.log(FID);
 
   if (props.RD_Year == '2021') {
      // alert ("nope");
@@ -267,7 +297,7 @@ searchForm.onsubmit = function (e) {
 }
 
 const handleHighlight = function (FID){
- // console.log(FID);
+
   if (FID > 0) {
     if(polygonID) { // Need to change this
         map.removeFeatureState({
@@ -284,6 +314,7 @@ const handleHighlight = function (FID){
         click: true
     });
 }
+console.log(polygonID);
 }
 
 // pull click event into standalone function in order to apply to both form submit and map click

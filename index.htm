@@ -26,9 +26,9 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 
-        <script src="assets/data/retail.js"></script>
-        <script src="assets/data/districts.js"></script>
-        <script src="assets/data/d2.js"></script>
+       <!-- <script src="assets/data/retail.js"></script> -->
+        <!-- <script src="assets/data/districts.js"></script> -->
+        <!-- <script src="assets/data/d2.js"></script> -->
 
 
         <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
@@ -57,6 +57,9 @@
                             </a>
                             <button type="button" class="btn about-btn" onclick="$('#aboutModal').modal('show'); return false;" data-toggle="collapse" data-target=".navbar-collapse.in">
                                 <i class="fa fa-info-circle" style="color:#2e5c95"></i>&nbsp;&nbsp;<b>About</b>
+                            </button>
+                            <button type="button" class="btn about-btn" onclick="PrintElem();" data-toggle="collapse" data-target=".navbar-collapse.in">
+                                <i class="fa fa-info-circle" style="color:#2e5c95"></i>&nbsp;&nbsp;<b>Print</b>
                             </button>
                     </div>
                        
@@ -97,7 +100,9 @@
                 <div class='infoLeft' style="height:100vh;">
                     <div id='resultsHeader'></div>   
                     <div id="chart-legend">
-                        <h3 class='chart-legend-heading'><i class='glyphicon glyphicon-info-sign' id='info-icon' onclick='legendraw3()'></i>Categories of Uses</h3>
+                        <h3 class='chart-legend-heading'>
+                            <i class='glyphicon glyphicon-info-sign' id='info-icon' data-toggle='tooltip' title='Category Info' onclick='catShow()'></i>
+                        Categories of Uses</h3>
                         <span id="chart-legend-icons">
                             <i class="fa fa-circle legend-icons civic"></i>Civic
                             <i class="fa fa-circle legend-icons cultural"></i>Cultural
