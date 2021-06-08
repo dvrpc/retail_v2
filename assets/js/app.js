@@ -33,6 +33,7 @@ function catShow() {
 } 
 $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();   
+  $("#aboutModal").modal("show");
 });
 
 mapboxgl.accessToken =

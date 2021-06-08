@@ -186,7 +186,7 @@
     }
     .dvrpc_full_logo {
     margin: 10px 15px 6px 5px;
-    display: flex;
+    float:left;
     }
     /* Layer Information */
     .alert-info {
