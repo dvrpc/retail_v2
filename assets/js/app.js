@@ -277,8 +277,8 @@ searchForm.onsubmit = function (e) {
   // non-mapbox function calling the geojson properties and coordinates that get pushed to the handleDisctrict function
   var props = location.properties;
   var coordinates = location.geometry.coordinates;
-  var FID = location.id;
-  console.log(FID);
+  var FID = props.RETAIL_ID;
+ // console.log(FID);
 
   if (props.RD_Year == '2021') {
      // alert ("nope");
@@ -286,13 +286,13 @@ searchForm.onsubmit = function (e) {
       $("#data-wrapper").css("display", "none");
       handleSidebarDisplay()
       handleDistrict(props,coordinates,map)
-      handleHighlight(FID)
+      handleHighlight(FID-1)
     } else {
       $("#chart2013").css("display", "block");
       $("#data-wrapper").css("display", "block");
       handleSidebarDisplay()
       handleDistrict(props,coordinates,map)
-      handleHighlight(FID)
+      handleHighlight(FID-1)
     }
 }
 
@@ -314,7 +314,7 @@ const handleHighlight = function (FID){
         click: true
     });
 }
-console.log(polygonID);
+// console.log(polygonID);
 }
 
 // pull click event into standalone function in order to apply to both form submit and map click
@@ -430,88 +430,8 @@ const handleDistrict = function (props,coordinates,map) {
     numeral(props.MEDHH).format("($0,0)") +
     "</span></div>" 
     ;
-// remove Management and Counts
-/*  
-  if (props.BID === undefined) {
-    var BID = "<div class='hidden'></div>";
-  } else {
-    var BID =
-      "<span class='data-info'>Business Improvement District: </span><span class='data-value'> " +
-      props.BID +
-      "</span><br>";
-  }
-  if (props.CHAMCOM === undefined) {
-    var CHAMCOM = "<div class='hidden'></div>";
-  } else {
-    var CHAMCOM =
-      "<span class='data-info'>Chamber of Commerce: </span><span class='data-value'> " +
-      props.CHAMCOM +
-      "</span><br>";
-  }
-
-  if (props.BUSASC === undefined) {
-    var BUSASC = "<div class='hidden'></div>";
-  } else {
-    var BUSASC =
-      "<span class='data-info'>Business Association: </span><span class='data-value'> " +
-      props.BUSASC +
-      "</span><br>";
-  }
-
-  if (props.MERCHASC === undefined) {
-    var MERCHASC = "<div class='hidden'></div>";
-  } else {
-    var MERCHASC =
-      "<span class='data-info'>Merchants Association: </span><span class='data-value'> " +
-      props.MERCHASC +
-      "</span><br>";
-  }
-
-  if (props.MAINST === undefined) {
-    var MAINST = "<div class='hidden'></div>";
-  } else {
-    var MAINST =
-      "<span class='data-info'>Main Street: </span><span class='data-value'> " +
-      props.MAINST +
-      "</span><br>";
-  }
-
-  if (props.ZONING === undefined) {
-    var ZONING = "<div class='hidden'></div>";
-  } else {
-    var ZONING =
-      "<span class='data-info'>Zoning: </span><span class='data-value'> " +
-      props.ZONING +
-      "</span>";
-  }
-
-  var content2 =
-   
-    "<h3 class='data-heading'>Management Structure</h3>" +
-    BID +
-    CHAMCOM +
-    BUSASC +
-    MERCHASC +
-    MAINST +
-    ZONING +
-    "<h3 class='data-heading'>Traffic Counts</h3>" +
-    "<span class='data-info'>Count Location: </span><span class='data-value'> " +
-    props.COUNTLOC +
-    "</span>" +
-    "<br><span class='data-info'>Center Point: </span><span class='data-value'> " +
-    props.CENTERPT +
-    "</span>" +
-    "<br><span class='data-info'>AADT: </span><span class='data-value'> " +
-    props.AADT +
-    "</span>" +
-    "<br><span class='data-info'>Date: </span><span class='data-value'> " +
-    props.DATE +
-    "</span>";
-    */
   document.getElementById("resultsHeader").innerHTML = info;
-
   document.getElementById("info1").innerHTML = content1;
- // document.getElementById("info2").innerHTML = content2;
 
   map.flyTo({
     // created a parameter that pulls the lat/long values from the geojson
@@ -585,9 +505,9 @@ const handleDistrict = function (props,coordinates,map) {
             },
           },
           dataLabels: {
-            //   enabled: false
+        //   enabled: false
             enabled: true,
-            style: "{text-align: center}",
+         //   style: "{text-align: center}",
             verticalAlign: "middle",
             distance: 5,
             format: "<span>{point.percentage:.0f} %</span>",
@@ -697,7 +617,7 @@ const handleDistrict = function (props,coordinates,map) {
           dataLabels: {
             //   enabled: false
             enabled: true,
-            style: "{text-align: center}",
+          //  style: "{text-align: center}",
             verticalAlign: "middle",
             distance: 5,
             format: "<span>{point.percentage:.0f} %</span>",
