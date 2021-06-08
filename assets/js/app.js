@@ -281,7 +281,7 @@ map.on('click','retail', (marker) => {
     var props = marker.features[0].properties;
     var coordinates = marker.features[0].geometry.coordinates;
     var FID = marker.features[0].id;
-    console.log(FID);
+  //  console.log(FID);
     if (props.RD_Year == '2021') {
      // alert ("nope");
       $("#chart2013").css("display", "none");
