@@ -1,5 +1,14 @@
 
 @media print {
+    *, :after, :before {
+
+        color: #000!important;
+        text-shadow: none!important;
+        background: 0 0!important;
+        -webkit-box-shadow: none!important;
+        box-shadow: none!important;
+
+}
     :root {
         --theme-dvrpc: #0078ae;
         --theme-dark: #505a5e;
