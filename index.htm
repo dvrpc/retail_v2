@@ -20,6 +20,7 @@
         <link rel="stylesheet" type="text/css" href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css">
       
         <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/print.css">
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -51,10 +52,10 @@
                             <p id="header-link-text">Retail Districts of Greater Philadelphia</p>
                             </a>
                             <button type="button" class="btn about-btn" onclick="$('#aboutModal').modal('show'); return false;" data-toggle="collapse" data-target=".navbar-collapse.in">
-                                <i class="fa fa-info-circle" style="color:#2e5c95"></i>&nbsp;&nbsp;<b>About</b>
+                                <i class="fa fa-info-circle" style="color:#39398e"></i>&nbsp;&nbsp;<b>About</b>
                             </button>
                             <button type="button" class="btn about-btn" onclick="PrintElem();" data-toggle="collapse" data-target=".navbar-collapse.in">
-                                <i class="fa fa-info-circle" style="color:#2e5c95"></i>&nbsp;&nbsp;<b>Print</b>
+                                <i class="fa fa-info-circle" style="color:#39398e"></i>&nbsp;&nbsp;<b>Print</b>
                             </button> 
                     </div>
                        
@@ -111,22 +112,22 @@
                         <br>
                         <span>
                             <b>Retail Types:</b>
-                            <i class="fa fa-circle legend-icons experiential"></i>Experiential (EXP)
-                            <i class="fa fa-circle legend-icons fb"></i>Food and Beverage (F&B)
+                            <i class="fa fa-circle legend-icons experiential"></i>Experiential
+                            <i class="fa fa-circle legend-icons fb"></i>Food and Beverage
                             <br>
-                            <i class="fa fa-circle legend-icons gafo"></i>General Merchandise, Apparel, Furnishings, and Other (GAFO)
-                            <i class="fa fa-circle legend-icons hosp"></i>Hospitality (HOSP)
+                            <i class="fa fa-circle legend-icons gafo"></i>General Merchandise, Apparel, Furnishings, and Other
+                            <i class="fa fa-circle legend-icons hosp"></i>Hospitality
                             <br>
-                            <i class="fa fa-circle legend-icons ngs"></i>Neighborhood Goods and Services (NG&S)
+                            <i class="fa fa-circle legend-icons ngs"></i>Neighborhood Goods and Services
                         </span>
                         </div>
                         <div class='chart-wrapper'>       
-                        <h3 class='chart-subheader'>Mix of Uses and Retail Types (2020)</h3> 
+                        <h3 class='chart-subheader'>2020 Mix of Uses and Retail Types</h3> 
                         <div id="Chart2"></div> 
                         </div> 
 
                         <div class='chart-wrapper' id='chart2013'>     
-                        <h3 class='chart-subheader'>Mix of Uses and Retail Types (2013)</h3>  
+                        <h3 class='chart-subheader'>2013 Mix of Uses and Retail Types</h3>  
                         <div id="Chart1"></div>   
                         </div> 
 
@@ -164,15 +165,15 @@
                             </ul>
                             <div id="aboutTabsContent" class="tab-content" style="padding-top: 10px;">
                                 <div class="tab-pane fade active in" id="about">
-                                     <div><p>In 2013, staff compiled information about 71 suburban downtown retail districts in an effort to learn what elements were common among successful older suburban retail districts. 
+                                     <div><p class="about-one">In 2013, staff compiled information about 71 suburban downtown retail districts in an effort to learn what elements were common among successful older suburban retail districts. 
                                          The information about each downtown's retail mix was collected between January and April 2013. 
-                                         Retail elements included in this analysis were: sidewalk width, Walk Score®, vacancy rate, parking options, streetscape, street width, National Register of Historic Places, household income, transit accessibility, residential population, use and retail type mix, and blocks included for analysis.</p> 
+                                         Retail elements included in this analysis were: sidewalk width, <a href="https://www.walkscore.com/" target="_new" class="one">Walk Score®</a>, vacancy rate, parking options, streetscape, street width, National Register of Historic Places, household income, transit accessibility, residential population, use and retail type mix, and blocks included for analysis.</p> 
                                     <p>An update to DVRPC’s 2013 inventory of use and retail type mix was conducted from January through December 2020. As part of this effort, one retail district was added from each of the region’s four Core Cities: Camden, Chester, Philadelphia, and Trenton. 
                                         Additionally, nine different district typologies were identified, with many downtowns having several typologies:</p> 
                                     <ul class="a">
                                         <li><b>Brewery – </b>have at least one craft brewery located within the district boundaries.</li>
                                         <li><b>Circuit – </b>have one or more of the region’s Circuit Trails within ¼ mile of the district. </li>
-                                        <li><b>Classic – </b>were previously part of the Classic Towns program.</li>
+                                        <li><b>Classic – </b>were previously part of the <a href="https://www.dvrpc.org/ClassicTowns/" target="_new" class="one">Classic Towns</a> program.</li>
                                         <li><b>Core – </b>are located in one of the region’s four Core Cities.</li>
                                         <li><b>College – </b>have a large, academic campus within ½ mile of the district.</li>
                                         <li><b>Expanding – </b>boundaries were expanded in response to relatively significant development activity that occurred at the periphery of the district since 2013.</li>
@@ -186,11 +187,13 @@
                                             Spencer Gober | Senior Planner, Office of Community and Economic Development<br/>
                                             <a href="mailto:sgober@dvrpc.org" class="one">sgober@dvrpc.org</a><br/>
                                             </address>
-                                        <a href="https://drive.google.com/file/d/1YkRyS25oFpPShhs1ZhY_W1dGD_LHQwbG/view?usp=sharing" target="_new"><i class="glyphicon glyphicon-download-alt"></i>&nbsp;&nbsp;Download Spreadsheet <small style="opacity:0.6">[0.1 MB xls]</small></a>
-                                        </p>  
-                                        <hr>
+                                        <a href="https://drive.google.com/file/d/1YkRyS25oFpPShhs1ZhY_W1dGD_LHQwbG/view?usp=sharing" target="_new"><i class="glyphicon glyphicon-download-alt"></i>&nbsp;&nbsp;Download Spreadsheet <small>[0.1 MB xls]</small></a>
+                                        </p>
                                     </div> 
-                                     <div id="about_footer"><p>The information provided through this web application is the culmination of field work and research done by DVRPC staff. For more information on how this analysis was used to support and develop strategies for these retail districts, please visit our <a href="https://www.dvrpc.org/communityrevitalization" target="_new">Community Resilience webpage</a>.</p>
+                                     <div id="about_footer"><p>The information provided through this web application is the culmination of field work and research done by DVRPC staff. For more information on how this analysis was used to support and develop strategies for these retail districts, please visit our <a href="https://www.dvrpc.org/communityrevitalization" target="_new" id="about-footer">Community Resilience webpage</a>.
+                                        <p>For more information, visit <a href="https://www.dvrpc.org/Policies/" target="_blank" class="one">Policies</a> | 
+                                            <a href="https://www.dvrpc.org/Products/WEB19521" target="_blank" class="one">Abstract</a></p>
+                                    </p>
                                     </div>                                 
                                 </div>
                                 <div class="tab-pane fade" id="disclaimer"> 
@@ -199,8 +202,7 @@
                                         information provided herein. DVRPC and partner state, local, and other agencies shall assume no liability for errors, omissions, or 
                                         inaccuracies in the information provided regardless of how caused; or any decision made or action taken or not taken by any person relying 
                                         on any information or data furnished within.</span></p>
-                                        <p>For more information, visit <a href="https://www.dvrpc.org/Policies/" target="_blank" class="one">https://www.dvrpc.org/Policies/</a></p>
-                                </div>
+                               </div>
                             </div>
                         </div>
                     </div><!-- /.modal-content -->
@@ -216,6 +218,7 @@
                     <p>Land use categories found within the region’s retail districts.</p>
                 </div>
                 <div class="modal-body">
+                    <ul class="a">
                           <p> <i class="fa fa-circle legend-icons civic"></i><b>Civic:</b> Includes municipal buildings, firehouses, police stations, libraries, post offices, or any other government office.</p>
                           <p> <i class="fa fa-circle legend-icons cultural"></i><b>Cultural:</b> Includes entertainment activities, such as art galleries, performing arts centers, historic theaters, as well as religious institutions.</p> 
                           <p> <i class="fa fa-circle legend-icons construction"></i><b>Construction:</b> Active construction sites, even where the intended end use was known.</p>
@@ -223,6 +226,7 @@
                           <p> <i class="fa fa-circle legend-icons office"></i><b>Office:</b> Includes professional office space from both the public and non-profit sectors. Offices above ground floor retail may not have been captured if the use could not be verified.</p> 
                           <p> <i class="fa fa-circle legend-icons res"></i><b>Residential:</b> Includes single-family and multifamily housing units. Residential units above ground-floor retail may not have been captured if the use could not be verified. </p> 
                           <p> <i class="fa fa-circle legend-icons vacant"></i><b>Vacant:</b> Unoccupied buildings or storefronts.</p> 
+                        </ul>
                           <p><b>Retail Types:</b>
                             <ul class="a">
                                 <p><i class="fa fa-circle legend-icons experiential"></i><b>Experiential (EXP):</b> Experiential retail is a relatively new trend within the retail industry that includes uses such as axe throwing, pottery making, and painting with wine. Given the relatively recent rise in experiential retail, this type was not contained in the 2013 inventory.</p>

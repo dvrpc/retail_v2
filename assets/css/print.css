@@ -1,0 +1,121 @@
+
+@media print {
+        .navbar, #map, footer, .print {
+            display: none;
+        }
+        #sidebar {
+            width: 100%;
+            background: transparent;
+            color:black;
+        }
+        body, #sidebar {
+            padding: 0;
+            overflow: visible;
+        }
+        .label-default {
+            background-color: #777;
+        }
+        .label {
+            display: inline;
+            padding: .2em .6em .3em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: .25em;
+        }
+        .legend-icons::before {
+            display: inline-block;
+            line-height: 25px;
+            width: 25px;
+            height: 15px;
+            text-align: center;
+        }
+        .civic::before{
+            color:rgb(142,198,63) !important;
+        /* #8ec63f */
+        }
+        .cultural::before{
+            color: rgb(91,198,207)!important;
+            /* #5bc5cf */
+        }
+        .fb::before {
+            color:#f29195 !important;
+            /* rgb(242, 145, 149) */
+        }
+        .gafo::before {
+            color:#eb555c !important;
+            /* rgb(235, 85, 92)*/
+        }
+        .ngs::before {
+            color:#90565c !important;
+            /* rgb(144, 86, 92) */
+        }
+        .experimental::before{
+            color:#fad5d6 !important;
+            /* rgb(250,213,214) */
+        }
+        .hosp::before{
+            color:#bc565c !important;
+            /* rgb(188, 86, 92)*/
+        }
+        .office::before{
+            color:rgb(12,135,123) !important;
+            /* #0c877b */
+        }
+        .res::before{
+            color:rgb(251,176,64) !important;
+            /* #fbb040 */
+        }
+        .vacant::before{
+            color:rgb(189,210,255) !important;
+            /* #bdd2ff */
+        }
+        .construction::before{
+            color:#878787 !important;
+        }
+        .institutional::before{
+            color:#da7b27 !important;
+        }
+        h3 small {
+            color: #000 !important;
+        }
+        .data-wrapper{
+            background-color: #fff;
+              border-radius: 3px;
+              box-shadow: 1px 2px 3px rgba(0,0,0,.3);
+              margin-left: 10px;
+              margin-top: 10px;
+        }
+        .data-subheader {
+            background-color: var(--theme-retail);
+            color: #f7f7f7;
+            padding: .25rem 0;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            box-shadow: 1.5px 0 0 rgba(0,0,0,.2);
+            text-align: center;
+            font-size: 20px;
+        }
+        .data-heading-small{
+            font-size: 14px;
+        }
+        .data-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 3px 0;
+            border-bottom: 1px dotted #414770;
+            margin: 0px 10px 0px 0px;
+        }
+        .data-row-last {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 3px 0;
+            margin: 0px 10px 0px 0px;
+        }
+    }

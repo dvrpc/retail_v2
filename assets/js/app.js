@@ -10,8 +10,8 @@ function PrintElem(elem)
     var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
     mywindow.document.write('<html><head><title>' + document.title  + '</title>');
-    mywindow.document.write('<link href="../css/main.css" rel="stylesheet" media="print">');
     mywindow.document.write('<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" media="print">');
+    mywindow.document.write('<link href="../css/print.css" rel="stylesheet" media="print">');
     mywindow.document.write('</head><body >');
     mywindow.document.write('<h1>' + document.title  + '</h1>');
     mywindow.document.write(document.getElementById("sidebar").innerHTML);
@@ -69,7 +69,7 @@ function handleSidebarDisplay() {
 
   var sidebarViz = $("#sidebar").css("display");
   if (sidebarViz !== "block") {
-    $("#map").toggleClass("col-sm-6 col-lg-6 col-sm-12 col-lg-12");
+    $("#map").toggleClass("col-sm-6 col-md-6 col-lg-6 col-sm-12 col-md-12 col-lg-12");
     $("#sidebar").css("display", "block");
   }
   $(window.map).resize();
@@ -595,9 +595,9 @@ const handleDistrict = function (props,coordinates,map) {
     var Labels = [
         "Civic",
         "Cultural",
-        "F&B",
-        "GAFO",
-        "NG&S",
+        "Food and Beverage",
+        "General Merchandise, Apparel, Furnishings, and Other",
+        "Neighborhood Goods and Services",
         "Office",
         "Residential",
         "Vacant"
@@ -719,11 +719,11 @@ const handleDistrict = function (props,coordinates,map) {
     var Labels = [
         "Civic",
         "Cultural",
-        "EXP",
-        "F&B",
-        "GAFO",
-        "HOSP",
-        "NG&S",
+        "Experiential",
+        "Food and Beverage",
+        "General Merchandise, Apparel, Furnishings, and Other",
+        "Hospitality",
+        "Neighborhood Goods and Services",
         "Office",
         "Residential",
         "Vacant",
