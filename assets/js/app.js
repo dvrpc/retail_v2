@@ -10,8 +10,8 @@ function PrintElem(elem)
     var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
     mywindow.document.write('<html><head><title>' + document.title  + '</title>');
-    mywindow.document.write('<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" media="print">');
-    mywindow.document.write('<link href="../css/print.css" rel="stylesheet" media="print">');
+    mywindow.document.write("<link href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css\" rel=\"stylesheet\" media=\"print\" ><link href=\"../css/print.css\" rel=\"stylesheet\" media=\"print\">");
+   // mywindow.document.write("<link href="../css/print.css" rel="stylesheet" media="print">");
     mywindow.document.write('</head><body >');
     mywindow.document.write('<h1>' + document.title  + '</h1>');
     mywindow.document.write(document.getElementById("sidebar").innerHTML);
@@ -54,6 +54,7 @@ map.addControl(new mapboxgl.AttributionControl(), "bottom-right");
 
 // Zoom to Extent
 document.getElementById("zoomtoregion").addEventListener("click", function () {
+  handleFullMapDisplay()
   map.flyTo({
     center: [-75.24, 40.023],
     zoom: 8,
@@ -61,6 +62,7 @@ document.getElementById("zoomtoregion").addEventListener("click", function () {
     pitch: 0,
     speed: 0.5,
   });
+
 });
 
 function handleSidebarDisplay() {
@@ -71,6 +73,19 @@ function handleSidebarDisplay() {
   if (sidebarViz !== "block") {
     $("#map").toggleClass("col-sm-6 col-md-6 col-lg-6 col-sm-12 col-md-12 col-lg-12");
     $("#sidebar").css("display", "block");
+  }
+  $(window.map).resize();
+  return false;
+}
+
+function handleFullMapDisplay() {
+  // If the sidebar is display=block ...
+  // ... set the sidebar display not display=none and resize the map div
+
+  var sidebarViz = $("#sidebar").css("display");
+  if (sidebarViz !== "none") {
+    $("#map").toggleClass("col-sm-12 col-md-12 col-lg-12 col-sm-6 col-md-6 col-lg-6");
+    $("#sidebar").css("display", "none");
   }
   $(window.map).resize();
   return false;
