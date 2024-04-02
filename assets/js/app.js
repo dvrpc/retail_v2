@@ -519,10 +519,73 @@ const handleDistrict = function (props,coordinates,map) {
     props.INST20,
   ];
 
-  updateRetailChart(Retail);
+  updateRetailChart(Retail)
+  // updateRetailChart1(Retail);
   updateRetailChart2(Retail2);
 
-  function updateRetailChart(Values) {
+  function updateRetailChart(values) {
+
+    const labels = [
+      "Civic",
+      "Cultural",
+      "Food and Beverage",
+      "General Merchandise, Apparel, Furnishings, and Other",
+      "Neighborhood Goods and Services",
+      "Office",
+      "Residential",
+      "Vacant"
+    ]
+
+    const populatedSeries = values.map((value, index) => {
+      console.log(value)
+      return {
+        name: labels[index],
+        data: value
+      }
+    })
+
+    const RetailStackedBarChart = {
+      chart: {
+        type: 'column',
+        renderTo: "Chart1",
+        plotBackgroundColor: null,
+        plotBorderWidth: 0, //null,
+        plotShadow: false,
+        height: 300,
+      },
+      title: {
+          text: 'Retail Categories',
+          align: 'left'
+      },
+      xAxis: {
+          categories: ['2013']
+      },
+      yAxis: {
+          min: 0,
+          title: {
+              text: 'Percent'
+          }
+      },
+      tooltip: {
+          pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
+          shared: true
+      },
+      plotOptions: {
+          column: {
+              stacking: 'percent',
+              dataLabels: {
+                  enabled: true,
+                  format: '{point.percentage:.0f}%'
+              }
+          }
+      },
+      series: populatedSeries,
+    }    
+    const chart = new Highcharts.Chart(RetailStackedBarChart);
+
+  }
+
+  function updateRetailChart1(Values) {
     var RetailChart = {
       chart: {
         renderTo: "Chart1",
