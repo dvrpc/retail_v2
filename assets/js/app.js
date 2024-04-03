@@ -5,34 +5,33 @@ const searchForm = document.getElementById('search')
 var retailSearch = {};
 var clickedStateId = null;
 
-function PrintElem(elem)
-{
-    var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+function PrintElem(elem) {
+  var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-    mywindow.document.write('<html><head><title>' + document.title  + '</title>');
-    mywindow.document.write("<link href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css\" rel=\"stylesheet\" media=\"print\" ><link href=\"../css/print.css\" rel=\"stylesheet\" media=\"print\">");
-   // mywindow.document.write("<link href="../css/print.css" rel="stylesheet" media="print">");
-    mywindow.document.write('</head><body >');
-    mywindow.document.write('<h1>' + document.title  + '</h1>');
-    mywindow.document.write(document.getElementById("sidebar").innerHTML);
-   // mywindow.document.write(document.getElementById(elem).innerHTML);
-    mywindow.document.write('</body></html>');
+  mywindow.document.write('<html><head><title>' + document.title + '</title>');
+  mywindow.document.write("<link href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css\" rel=\"stylesheet\" media=\"print\" ><link href=\"../css/print.css\" rel=\"stylesheet\" media=\"print\">");
+  // mywindow.document.write("<link href="../css/print.css" rel="stylesheet" media="print">");
+  mywindow.document.write('</head><body >');
+  mywindow.document.write('<h1>' + document.title + '</h1>');
+  mywindow.document.write(document.getElementById("sidebar").innerHTML);
+  // mywindow.document.write(document.getElementById(elem).innerHTML);
+  mywindow.document.write('</body></html>');
 
-    mywindow.document.close(); // necessary for IE >= 10
-    mywindow.focus(); // necessary for IE >= 10*/
-  
-    setTimeout(function () {
-      mywindow.print();
-      mywindow.close();
-      }, 1000)
-      return true;
+  mywindow.document.close(); // necessary for IE >= 10
+  mywindow.focus(); // necessary for IE >= 10*/
+
+  setTimeout(function () {
+    mywindow.print();
+    mywindow.close();
+  }, 1000)
+  return true;
 }
 
 function catShow() {
- $("#CATModal").modal("show");
-} 
-$(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip();   
+  $("#CATModal").modal("show");
+}
+$(document).ready(function () {
+  $('[data-toggle="tooltip"]').tooltip();
   $("#aboutModal").modal("show");
 });
 
@@ -93,23 +92,23 @@ function handleFullMapDisplay() {
 
 fetch('https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson')
   .then(response => response.json())
-  .then (data => {
+  .then(data => {
     var retail = data;
     retail.features.forEach(function (geojsonrow) {
       retailSearch[geojsonrow.properties.DISTRICT] = geojsonrow
     });
   });
- // .then(data => console.log(data));
- console.log(retailSearch);
+// .then(data => console.log(data));
+console.log(retailSearch);
 
 map.on("load", function () {
-// add map events here (click, mousemove, etc)
+  // add map events here (click, mousemove, etc)
 
-// Create a popup, but don't add it to the map yet.
+  // Create a popup, but don't add it to the map yet.
   var popup = new mapboxgl.Popup({
-      className: "station-popup",
-      closeButton: false,
-      closeOnClick: false
+    className: "station-popup",
+    closeButton: false,
+    closeOnClick: false
   });
 
   map.addLayer({
@@ -128,120 +127,120 @@ map.on("load", function () {
     filter: ["==", "dvrpc", "Yes"],
   });
 
-map.addLayer({
+  map.addLayer({
     id: "districts",
     type: "fill",
     source: {
       type: "geojson",
-      'data':'https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail/FeatureServer/2/query?where=1%3D1&outFields=*&outSR=4326&f=geojson'
-   //   data: districts,
+      'data': 'https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail/FeatureServer/2/query?where=1%3D1&outFields=*&outSR=4326&f=geojson'
+      //   data: districts,
     },
     layout: {},
     paint: {
       "fill-outline-color": "#39398e",
-      "fill-color": "rgba(57, 57, 142,0.35)"       
+      "fill-color": "rgba(57, 57, 142,0.35)"
     }
-});
-   // When the map loads, add the data from the USGS earthquake API as a source
-   map.addSource('d2', {
+  });
+  // When the map loads, add the data from the USGS earthquake API as a source
+  map.addSource('d2', {
     'type': 'geojson',
-    'data':'https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail/FeatureServer/1/query?where=1%3D1&outFields=*&outSR=4326&f=geojson',
+    'data': 'https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail/FeatureServer/1/query?where=1%3D1&outFields=*&outSR=4326&f=geojson',
     //'data':d2, // Use the sevenDaysAgo variable to only retrieve quakes from the past week
     'generateId': true // This ensures that all features have unique IDs
   });
-  
-    map.addLayer({
-      id: "d2",
-      type: "line",
-      source: "d2",
-      layout: {},
-      paint: {
-        "line-color": [ 'case',
+
+  map.addLayer({
+    id: "d2",
+    type: "line",
+    source: "d2",
+    layout: {},
+    paint: {
+      "line-color": ['case',
         ['boolean', ['feature-state', 'click'], false],
         '#FFD662', '#0078ae'
-        ],
-        "line-width": [ 'case',
+      ],
+      "line-width": ['case',
         ['boolean', ['feature-state', 'click'], false],
         5, 3
-        ]
-      }
-    });
- // When the map loads, add the data from the USGS earthquake API as a source
-map.addSource('retail', {
-  'type': 'geojson',
-  //'data':retail, 
-  'data':'https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson',
-  'generateId': true // This ensures that all features have unique IDs
-});
+      ]
+    }
+  });
+  // When the map loads, add the data from the USGS earthquake API as a source
+  map.addSource('retail', {
+    'type': 'geojson',
+    //'data':retail, 
+    'data': 'https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson',
+    'generateId': true // This ensures that all features have unique IDs
+  });
 
-map.addLayer({
+  map.addLayer({
     id: 'retail',
     type: 'circle',
-    source:'retail',
+    source: 'retail',
     layout: {
-      'visibility':'visible'
-       },
+      'visibility': 'visible'
+    },
     paint: {
       'circle-radius': [
         'case',
         ['boolean', ['feature-state', 'hover'], false],
-        9,6
-        ],
-        'circle-stroke-color': '#e5e5e5',
-        'circle-stroke-width': .5,
-        'circle-color': [
-          'case',
-          ['boolean', ['feature-state', 'hover'], false],
+        9, 6
+      ],
+      'circle-stroke-color': '#e5e5e5',
+      'circle-stroke-width': .5,
+      'circle-color': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
         //  '#fbb040',
-          '#ad0074',
-          '#39398e'
-          ],
-      }
-});
+        '#ad0074',
+        '#39398e'
+      ],
+    }
+  });
 
 
   map.addLayer({
-      'id': 'Buildings',
-      'source': 'composite',
-      'minzoom':15,
-      'source-layer': 'building',
-      'filter': ['==', 'extrude', 'true'],
-      'type': 'fill-extrusion',
+    'id': 'Buildings',
+    'source': 'composite',
+    'minzoom': 15,
+    'source-layer': 'building',
+    'filter': ['==', 'extrude', 'true'],
+    'type': 'fill-extrusion',
     //  'minzoom': 14,
-        'paint': {
-          'fill-extrusion-color': '#aaa',
-           
-          // Use an 'interpolate' expression to
-          // add a smooth transition effect to
-          // the buildings as the user zooms in.
-          'fill-extrusion-height': [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-          15,
-          0,
-          15.05,
-          ['get', 'height']
-          ],
-          'fill-extrusion-base': [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-          15,
-          0,
-          15.05,
-          ['get', 'min_height']
-          ],
-          'fill-extrusion-opacity': 0.6
-          }
-    });
+    'paint': {
+      'fill-extrusion-color': '#aaa',
 
-var districtID = null;
-var polygonID = null;
-map.on('mousemove', 'retail', (marker) => {
+      // Use an 'interpolate' expression to
+      // add a smooth transition effect to
+      // the buildings as the user zooms in.
+      'fill-extrusion-height': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        15,
+        0,
+        15.05,
+        ['get', 'height']
+      ],
+      'fill-extrusion-base': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        15,
+        0,
+        15.05,
+        ['get', 'min_height']
+      ],
+      'fill-extrusion-opacity': 0.6
+    }
+  });
+
+  var districtID = null;
+  var polygonID = null;
+  map.on('mousemove', 'retail', (marker) => {
     map.getCanvas().style.cursor = 'pointer';
     var coordinates = marker.features[0].geometry.coordinates.slice();
-    var description = '<h3>'+ marker.features[0].properties.DISTRICT+'</h3>';
+    var description = '<h3>' + marker.features[0].properties.DISTRICT + '</h3>';
 
     popup.setLngLat(coordinates).setHTML(description).addTo(map);
     if (marker.features.length > 0) {
@@ -266,12 +265,12 @@ map.on('mousemove', 'retail', (marker) => {
         }
       );
     }
-   
-});
+
+  });
 
   // When the mouse leaves the retail-viz layer, update the
   // feature state of the previously hovered feature
-map.on('mouseleave', 'retail', function () {
+  map.on('mouseleave', 'retail', function () {
     if (districtID) {
       map.setFeatureState(
         {
@@ -288,374 +287,337 @@ map.on('mouseleave', 'retail', function () {
     // Reset the cursor style
     map.getCanvas().style.cursor = '';
     popup.remove();
-});
+  });
 
 
 
-map.on('click','retail', (marker) => {
+  map.on('click', 'retail', (marker) => {
     // mapbox function calling of geojson properties
     var props = marker.features[0].properties;
     var coordinates = marker.features[0].geometry.coordinates;
     var FID = marker.features[0].id;
-  //  console.log(FID);
+    //  console.log(FID);
     if (props.RD_Year == '2021') {
-     // alert ("nope");
+      // alert ("nope");
       $("#chart2013").css("display", "none");
       $("#data-wrapper").css("display", "none");
       handleSidebarDisplay()
-      handleDistrict(props,coordinates,map)
+      handleDistrict(props, coordinates, map)
       handleHighlight(FID)
     } else {
       $("#chart2013").css("display", "block");
       $("#data-wrapper").css("display", "block");
       handleSidebarDisplay()
-      handleDistrict(props,coordinates,map)
+      handleDistrict(props, coordinates, map)
       handleHighlight(FID)
     }
-});  
+  });
 
 
-searchForm.onsubmit = function (e) {
-  e.preventDefault()
-  const input = e.target.children[0].children[0]
-  const searched = input.value
-  const location = retailSearch[searched]
-  
-  if(!location) {
-    alert('Please select a value from the dropdown list')
-    input.value = ''
-    return
+  searchForm.onsubmit = function (e) {
+    e.preventDefault()
+    const input = e.target.children[0].children[0]
+    const searched = input.value
+    const location = retailSearch[searched]
+
+    if (!location) {
+      alert('Please select a value from the dropdown list')
+      input.value = ''
+      return
+    }
+
+    // non-mapbox function calling the geojson properties and coordinates that get pushed to the handleDisctrict function
+    var props = location.properties;
+    var coordinates = location.geometry.coordinates;
+    var FID = props.RETAIL_ID;
+    // console.log(FID);
+
+    if (props.RD_Year == '2021') {
+      // alert ("nope");
+      $("#chart2013").css("display", "none");
+      $("#data-wrapper").css("display", "none");
+      handleSidebarDisplay()
+      handleDistrict(props, coordinates, map)
+      handleHighlight(FID - 1)
+    } else {
+      $("#chart2013").css("display", "block");
+      $("#data-wrapper").css("display", "block");
+      handleSidebarDisplay()
+      handleDistrict(props, coordinates, map)
+      handleHighlight(FID - 1)
+    }
   }
- 
-  // non-mapbox function calling the geojson properties and coordinates that get pushed to the handleDisctrict function
-  var props = location.properties;
-  var coordinates = location.geometry.coordinates;
-  var FID = props.RETAIL_ID;
- // console.log(FID);
 
-  if (props.RD_Year == '2021') {
-     // alert ("nope");
-      $("#chart2013").css("display", "none");
-      $("#data-wrapper").css("display", "none");
-      handleSidebarDisplay()
-      handleDistrict(props,coordinates,map)
-      handleHighlight(FID-1)
-    } else {
-      $("#chart2013").css("display", "block");
-      $("#data-wrapper").css("display", "block");
-      handleSidebarDisplay()
-      handleDistrict(props,coordinates,map)
-      handleHighlight(FID-1)
-    }
-}
+  const handleHighlight = function (FID) {
 
-const handleHighlight = function (FID){
-
-  if (FID > 0) {
-    if(polygonID) { // Need to change this
+    if (FID > 0) {
+      if (polygonID) { // Need to change this
         map.removeFeatureState({
-            source: 'd2',
-            id: polygonID
+          source: 'd2',
+          id: polygonID
         });
-    }
-   // polygonID = marker.features[0].id; // Get generated ID
-    polygonID = FID;
-    map.setFeatureState({
+      }
+      // polygonID = marker.features[0].id; // Get generated ID
+      polygonID = FID;
+      map.setFeatureState({
         source: 'd2',
         id: polygonID
-    }, {
+      }, {
         click: true
+      });
+    }
+    // console.log(polygonID);
+  }
+
+  // pull click event into standalone function in order to apply to both form submit and map click
+  // added 2 parameters props and coordinates to handle the different approaches to working with GeoJson features
+  const handleDistrict = function (props, coordinates, map) {
+    // var props = marker.properties;
+    // console.log(marker.features[0].properties);
+    // var props = marker.features[0].properties;
+    if (props.BREW === 0) {
+      var BREW = "<div class='hidden'></div>";
+    } else {
+      var BREW = '<span class="label label-default">Brewery</span>';
+    }
+
+    if (props.CIRCUIT === 0) {
+      var CIRCUIT = "<div class='hidden'></div>";
+    } else {
+      var CIRCUIT = '<span class="label label-default">Circuit</span>';
+    }
+
+    if (props.CLASSIC === 0) {
+      var CTOWN = "<div class='hidden'></div>";
+    } else {
+      var CTOWN = '<span class="label label-default">Classic Town</span>';
+    }
+
+    if (props.COLLEGE === 0) {
+      var COLLEGE = "<div class='hidden'></div>";
+    } else {
+      var COLLEGE = '<span class="label label-default">College</span>';
+    }
+
+    if (props.CORE === 0) {
+      var CORE = "<div class='hidden'></div>";
+    } else {
+      var CORE = '<span class="label label-default">Core City</span>';
+    }
+
+    if (props.EXPAND === 0) {
+      var EXPAND = "<div class='hidden'></div>";
+    } else {
+      var EXPAND = '<span class="label label-default">Expanding</span>';
+    }
+
+    if (props.HIST === 0) {
+      var HDIST = "<div class='hidden'></div>";
+    } else {
+      var HDIST =
+        '<span class="label label-default">Historic</span>';
+    }
+
+    if (props.OPP === 0) {
+      var OPP = "<div class='hidden'></div>";
+    } else {
+      var OPP = '<span class="label label-default">Opportunity</span>';
+    }
+
+    if (props.TRANSIT_1 === 0) {
+      var TRANSIT = "<div class='hidden'></div>";
+    } else {
+      var TRANSIT =
+        '<span class="label label-default">Transit-Oriented</span>';
+    }
+
+    var info =
+      "<div id='d-name'><h3 style='margin-top:0;'>" +
+      props.DISTRICT +
+      "</span><small><span> " +
+      props.COUNTY +
+      "</span><span></span> County, <span>" +
+      props.STATE +
+      "</span></small></h3></div>" +
+      "<div id='dt-section'><h4 style=''>District Typologies</h4>" +
+      BREW +
+      CIRCUIT +
+      CTOWN +
+      COLLEGE +
+      CORE +
+      EXPAND +
+      HDIST +
+      OPP +
+      TRANSIT +
+      "</div>"
+      ;
+    var content1 = "<div class='data-row'><span class='data-info'>Number of Blocks </span><span class='data-value'> " +
+      props.DTRETAIL +
+      "</span></div>" +
+      "<br><div class='data-row'><span class='data-info'>Maximum Sidewalk Width (ft) </span><span class='data-value'> " +
+      props.MAXSWW +
+      "</span></div>" +
+      "<br><div class='data-row'><span class='data-info'>Maximum Cartway Width (ft) </span><span class='data-value'> " +
+      props.MAXCARTW +
+      "</span></div>" +
+      "<br><div class='data-row'><span class='data-info'>Walk Score® </span><span class='data-value'> " +
+      props.WSCORE +
+      "</span></div>" +
+      "<br><div class='data-row'><span class='data-info'>Transit </span><span class='data-value'> " +
+      props.TRANSIT +
+      "</span></div>" +
+      "<br><div class='data-row'><span class='data-info'>Bus Route(s) </span><span class='data-value'> " +
+      props.BUSROUTE +
+      "</span></div>" +
+      "<br><div class='data-row'><span class='data-info'>Parking </span><span class='data-value'> " +
+      props.PARKING +
+      "</span></div>" +
+      "<br><div class='data-row'><span class='data-info'>Population </span><span class='data-value'> " +
+      numeral(props.POP).format("(0,0)") +
+      "</span></div>" +
+      "<br><div class='data-row'><span class='data-info'>Households </span><span class='data-value'> " +
+      numeral(props.HH).format("(0,0)") +
+      "</span></div>" +
+      "<br><div class='data-row-last'><span class='data-info'>Median Household Income </span><span class='data-value'> " +
+      numeral(props.MEDHH).format("($0,0)") +
+      "</span></div>"
+      ;
+    document.getElementById("resultsHeader").innerHTML = info;
+    document.getElementById("info1").innerHTML = content1;
+
+    map.flyTo({
+      // created a parameter that pulls the lat/long values from the geojson
+      center: coordinates,
+      pitch: 20,
+      speed: 0.7,
+      zoom: 15,
     });
-}
-// console.log(polygonID);
-}
+    // charts
+    Retail = [
+      props.CIVIC,
+      props.CULT,
+      props.FB,
+      props.GAFO,
+      props.NGS,
+      props.NONREOFF,
+      props.RESIDE,
+      props.VACANT,
+    ];
+    Retail2 = [
+      props.CIVIC20,
+      props.CULTURAL20,
+      props.EXP20,
+      props.FB20,
+      props.GAFO20,
+      props.HOSP20,
+      props.NGS20,
+      props.OFFICE20,
+      props.RES20,
+      props.VACANT20,
+      props.CONSTR20,
+      props.INST20,
+    ];
 
-// pull click event into standalone function in order to apply to both form submit and map click
-// added 2 parameters props and coordinates to handle the different approaches to working with GeoJson features
-const handleDistrict = function (props,coordinates,map) {
- // var props = marker.properties;
- // console.log(marker.features[0].properties);
- // var props = marker.features[0].properties;
-  if (props.BREW === 0) {
-    var BREW = "<div class='hidden'></div>";
-  } else {
-    var BREW ='<span class="label label-default">Brewery</span>';
-  }
+    updateRetailChart(Retail)
+    updateRetailChart1(Retail);
+    updateRetailChart2(Retail2);
+    updateWebAndSocialChart(Retail)
+    updateBanksChart(Retail)
+    updateRetailTenancyChart(Retail)
 
-  if (props.CIRCUIT === 0) {
-    var CIRCUIT = "<div class='hidden'></div>";
-  } else {
-    var CIRCUIT = '<span class="label label-default">Circuit</span>';
-  }
+    function updateRetailChart(values) {
 
-  if (props.CLASSIC === 0) {
-    var CTOWN = "<div class='hidden'></div>";
-  } else {
-    var CTOWN = '<span class="label label-default">Classic Town</span>';
-  }
+      const labels = [
+        "Civic",
+        "Cultural",
+        "Food and Beverage",
+        "General Merchandise, Apparel, Furnishings, and Other",
+        "Neighborhood Goods and Services",
+        "Office",
+        "Residential",
+        "Vacant"
+      ]
 
-  if (props.COLLEGE === 0) {
-    var COLLEGE = "<div class='hidden'></div>";
-  } else {
-    var COLLEGE = '<span class="label label-default">College</span>';
-  }
+      colors = [
+        "#8ec63f",
+        "#5bc5cf",
+        "#f29195",
+        "#eb555c",
+        "#90565c",
+        "#0c877b",
+        "#fbb040",
+        "#bdd2ff"
+      ];
 
-  if (props.CORE === 0) {
-    var CORE = "<div class='hidden'></div>";
-  } else {
-    var CORE = '<span class="label label-default">Core City</span>';
-  }
+      const populatedSeries = values.map((value, index) => {
+        return {
+          name: labels[index],
+          data: [value * 100],
+          color: colors[index]
+        }
+      })
 
-  if (props.EXPAND === 0) {
-    var EXPAND = "<div class='hidden'></div>";
-  } else {
-    var EXPAND = '<span class="label label-default">Expanding</span>';
-  }
-
-  if (props.HIST === 0) {
-    var HDIST = "<div class='hidden'></div>";
-  } else {
-    var HDIST =
-      '<span class="label label-default">Historic</span>';
-  }
-
-  if (props.OPP === 0) {
-    var OPP = "<div class='hidden'></div>";
-  } else {
-    var OPP = '<span class="label label-default">Opportunity</span>';
-  }
-
-  if (props.TRANSIT_1 === 0) {
-    var TRANSIT = "<div class='hidden'></div>";
-  } else {
-    var TRANSIT =
-      '<span class="label label-default">Transit-Oriented</span>';
-  }
-
-  var info =
-    "<div id='d-name'><h3 style='margin-top:0;'>" +
-    props.DISTRICT +
-    "</span><small><span> " +
-    props.COUNTY +
-    "</span><span></span> County, <span>" +
-    props.STATE +
-    "</span></small></h3></div>"+
-    "<div id='dt-section'><h4 style=''>District Typologies</h4>"+
-    BREW +
-    CIRCUIT +
-    CTOWN +
-    COLLEGE +
-    CORE +
-    EXPAND +
-    HDIST +
-    OPP +
-    TRANSIT+
-    "</div>" 
-    ;
-  var content1 = "<div class='data-row'><span class='data-info'>Number of Blocks </span><span class='data-value'> " +
-    props.DTRETAIL +
-    "</span></div>" +
-    "<br><div class='data-row'><span class='data-info'>Maximum Sidewalk Width (ft) </span><span class='data-value'> " +
-    props.MAXSWW +
-    "</span></div>" +
-    "<br><div class='data-row'><span class='data-info'>Maximum Cartway Width (ft) </span><span class='data-value'> " +
-    props.MAXCARTW +
-    "</span></div>" +
-    "<br><div class='data-row'><span class='data-info'>Walk Score® </span><span class='data-value'> " +
-    props.WSCORE +
-    "</span></div>" +
-    "<br><div class='data-row'><span class='data-info'>Transit </span><span class='data-value'> " +
-    props.TRANSIT +
-    "</span></div>" +
-    "<br><div class='data-row'><span class='data-info'>Bus Route(s) </span><span class='data-value'> " +
-    props.BUSROUTE +
-    "</span></div>" +
-    "<br><div class='data-row'><span class='data-info'>Parking </span><span class='data-value'> " +
-    props.PARKING +
-    "</span></div>" +
-    "<br><div class='data-row'><span class='data-info'>Population </span><span class='data-value'> " +
-    numeral(props.POP).format("(0,0)") +
-    "</span></div>" +
-    "<br><div class='data-row'><span class='data-info'>Households </span><span class='data-value'> " +
-    numeral(props.HH).format("(0,0)") +
-    "</span></div>" +
-    "<br><div class='data-row-last'><span class='data-info'>Median Household Income </span><span class='data-value'> " +
-    numeral(props.MEDHH).format("($0,0)") +
-    "</span></div>" 
-    ;
-  document.getElementById("resultsHeader").innerHTML = info;
-  document.getElementById("info1").innerHTML = content1;
-
-  map.flyTo({
-    // created a parameter that pulls the lat/long values from the geojson
-    center: coordinates,
-    pitch: 20,
-    speed: 0.7,
-    zoom: 15,
-  });
-  // charts
-  Retail = [
-    props.CIVIC,
-    props.CULT,
-    props.FB,
-    props.GAFO,
-    props.NGS,
-    props.NONREOFF,
-    props.RESIDE,
-    props.VACANT,
-  ];
-  Retail2 = [
-    props.CIVIC20,
-    props.CULTURAL20,
-    props.EXP20,
-    props.FB20,
-    props.GAFO20,
-    props.HOSP20,
-    props.NGS20,
-    props.OFFICE20,
-    props.RES20,
-    props.VACANT20,
-    props.CONSTR20,
-    props.INST20,
-  ];
-
-  updateRetailChart(Retail)
-  // updateRetailChart1(Retail);
-  updateRetailChart2(Retail2);
-
-  function updateRetailChart(values) {
-
-    const labels = [
-      "Civic",
-      "Cultural",
-      "Food and Beverage",
-      "General Merchandise, Apparel, Furnishings, and Other",
-      "Neighborhood Goods and Services",
-      "Office",
-      "Residential",
-      "Vacant"
-    ]
-
-    const populatedSeries = values.map((value, index) => {
-      console.log(value)
-      return {
-        name: labels[index],
-        data: value
-      }
-    })
-
-    const RetailStackedBarChart = {
-      chart: {
-        type: 'column',
-        renderTo: "Chart1",
-        plotBackgroundColor: null,
-        plotBorderWidth: 0, //null,
-        plotShadow: false,
-        height: 300,
-      },
-      title: {
+      const RetailStackedBarChart = {
+        chart: {
+          type: 'column',
+          renderTo: "Chart3",
+          plotBackgroundColor: null,
+          plotBorderWidth: 0, //null,
+          plotShadow: false,
+          height: 400,
+          fontSize: "1em"
+        },
+        title: {
           text: 'Retail Categories',
           align: 'left'
-      },
-      xAxis: {
-          categories: ['2013']
-      },
-      yAxis: {
+        },
+        xAxis: {
+          categories: ['2013'],
+          labels: {
+            style: {
+              fontSize: '12px'
+            }
+          }
+        },
+        yAxis: {
           min: 0,
           title: {
-              text: 'Percent'
+            text: 'Percent'
           }
-      },
-      tooltip: {
-          pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
+        },
+        tooltip: {
+          pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}</b> <br/>',
           shared: true
-      },
-      plotOptions: {
+        },
+        plotOptions: {
           column: {
-              stacking: 'percent',
-              dataLabels: {
-                  enabled: true,
-                  format: '{point.percentage:.0f}%'
-              }
-          }
-      },
-      series: populatedSeries,
-    }    
-    const chart = new Highcharts.Chart(RetailStackedBarChart);
-
-  }
-
-  function updateRetailChart1(Values) {
-    var RetailChart = {
-      chart: {
-        renderTo: "Chart1",
-        type: "pie",
-        plotBackgroundColor: null,
-        plotBorderWidth: 0, //null,
-        plotShadow: false,
-        height: 300,
-      //  width: 370,
-        colors: [
-          "#8ec63f",
-          "#5bc5cf",
-          "#f29195",
-          "#eb555c",
-          "#90565c",
-          "#0c877b",
-          "#fbb040",
-          "#bdd2ff"
-        ],
-      },
-      title: {
-        text: "",
-      },
-      plotOptions: {
-        pie: {
-          //  allowPointSelect: true,
-          cursor: "pointer",
-          point: {
-            events: {
-              legendItemClick: function (e) {
-                e.preventDefault();
+            stacking: 'percent',
+            dataLabels: {
+              enabled: true,
+              format: '{point.percentage:.0f}%',
+              style: {
+                fontSize: '12px'
               },
-            },
-          },
-          dataLabels: {
-        //   enabled: false
-            enabled: true,
-         //   style: "{text-align: center}",
-            verticalAlign: "middle",
-            distance: 5,
-            format: "<span>{point.percentage:.0f} %</span>",
-            filter: {
-              property: "percentage",
-              operator: ">",
-              value: ".5",
-            },
-          },
-          showInLegend: false,
+              showInLegend: false
+            }
+          }
         },
-      },
-      tooltip: {
-        formatter: function () {
-          //  return '<b>'+Highcharts.numberFormat(this.point.y,0,',',',')+' Acres</b><br/>';
-          return (
-            "<b>" +
-            this.point.name +
-            "</b><br/>" +
-            Highcharts.numberFormat(this.percentage, 2) +
-            " %"
-          );
-        },
-      },
-      credits: {
-        enabled: false,
-      },
-      series: [
-        {
-          name: "Total",
-          id: "Values",
-          innerSize: "40%",
+        series: populatedSeries,
+      }
+      const chart = new Highcharts.Chart(RetailStackedBarChart);
+
+    }
+
+    function updateRetailChart1(Values) {
+      var RetailChart = {
+        chart: {
+          renderTo: "Chart1",
+          type: "pie",
+          plotBackgroundColor: null,
+          plotBorderWidth: 0, //null,
+          plotShadow: false,
+          height: 300,
+          //  width: 370,
           colors: [
             "#8ec63f",
             "#5bc5cf",
@@ -666,11 +628,72 @@ const handleDistrict = function (props,coordinates,map) {
             "#fbb040",
             "#bdd2ff"
           ],
-          data: [],
         },
-      ],
-    };
-    var Labels = [
+        title: {
+          text: "",
+        },
+        plotOptions: {
+          pie: {
+            //  allowPointSelect: true,
+            cursor: "pointer",
+            point: {
+              events: {
+                legendItemClick: function (e) {
+                  e.preventDefault();
+                },
+              },
+            },
+            dataLabels: {
+              //   enabled: false
+              enabled: true,
+              //   style: "{text-align: center}",
+              verticalAlign: "middle",
+              distance: 5,
+              format: "<span>{point.percentage:.0f} %</span>",
+              filter: {
+                property: "percentage",
+                operator: ">",
+                value: ".5",
+              },
+            },
+            showInLegend: false,
+          },
+        },
+        tooltip: {
+          formatter: function () {
+            //  return '<b>'+Highcharts.numberFormat(this.point.y,0,',',',')+' Acres</b><br/>';
+            return (
+              "<b>" +
+              this.point.name +
+              "</b><br/>" +
+              Highcharts.numberFormat(this.percentage, 2) +
+              " %"
+            );
+          },
+        },
+        credits: {
+          enabled: false,
+        },
+        series: [
+          {
+            name: "Total",
+            id: "Values",
+            innerSize: "40%",
+            colors: [
+              "#8ec63f",
+              "#5bc5cf",
+              "#f29195",
+              "#eb555c",
+              "#90565c",
+              "#0c877b",
+              "#fbb040",
+              "#bdd2ff"
+            ],
+            data: [],
+          },
+        ],
+      };
+      var Labels = [
         "Civic",
         "Cultural",
         "Food and Beverage",
@@ -680,109 +703,34 @@ const handleDistrict = function (props,coordinates,map) {
         "Residential",
         "Vacant"
       ],
-      counData = [];
-    for (var i = 0; i < Values.length; i++) {
-      counData.push({
-        name: Labels[i],
-        y: Values[i],
-      });
+        counData = [];
+      for (var i = 0; i < Values.length; i++) {
+        counData.push({
+          name: Labels[i],
+          y: Values[i],
+        });
+      }
+      RetailChart.series[0].data = counData;
+      var chart2 = new Highcharts.Chart(RetailChart);
     }
-    RetailChart.series[0].data = counData;
-    var chart2 = new Highcharts.Chart(RetailChart);
-  }
-  // start second chart
-  function updateRetailChart2(Values) {
-    var RetailChart2 = {
-      chart: {
-        renderTo: "Chart2",
-        type: "pie",
-        plotBackgroundColor: null,
-        plotBorderWidth: 0, //null,
-        plotShadow: false,
-         height: 300,
-      //  width: 75,
-        colors: [
-          "#8ec63f",
-          "#5bc5cf",
-          "#fad5d6",    
-          "#f29195",
-          "#eb555c",
-          "#bc565c",   
-          "#90565c",
-          "#0c877b",
-          "#fbb040",
-          "#bdd2ff",
-          "#878787",
-          "#da7b27"
-        ],
-      },
-      title: {
-        text: "",
-      },
-      plotOptions: {
-        pie: {
-          //  allowPointSelect: true,
-          cursor: "pointer",
-          point: {
-            events: {
-              legendItemClick: function (e) {
-                e.preventDefault();
-              },
-            },
-          },
-          dataLabels: {
-            //   enabled: false
-            enabled: true,
-          //  style: "{text-align: center}",
-            verticalAlign: "middle",
-            distance: 5,
-            format: "<span>{point.percentage:.0f} %</span>",
-            filter: {
-              property: "percentage",
-              operator: ">",
-              value: ".5",
-            },
-          },
-          showInLegend: false,
-        },
-      },
-  /*   legend: {
-      title: {
-          text: '<span style="text-align:center;font-size: 9px; color: #666; font-weight: normal">Retail Mix 2015</span>',
-          style: {
-                fontStyle: 'italic'
-          }
-        },
-      layout:'horizontal'
-    }, 
-  */  
-      tooltip: {
-        formatter: function () {
-          //  return '<b>'+Highcharts.numberFormat(this.point.y,0,',',',')+' Acres</b><br/>';
-          return (
-            "<b>" +
-            this.point.name +
-            "</b><br/>" +
-            Highcharts.numberFormat(this.percentage, 2) +
-            " %"
-          );
-        },
-      },
-      credits: {
-        enabled: false,
-      },
-      series: [
-        {
-          name: "Total",
-          id: "Values",
-          innerSize: "40%",
+    // start second chart
+    function updateRetailChart2(Values) {
+      var RetailChart2 = {
+        chart: {
+          renderTo: "Chart2",
+          type: "pie",
+          plotBackgroundColor: null,
+          plotBorderWidth: 0, //null,
+          plotShadow: false,
+          height: 300,
+          //  width: 75,
           colors: [
             "#8ec63f",
             "#5bc5cf",
-            "#fad5d6",    
+            "#fad5d6",
             "#f29195",
             "#eb555c",
-            "#bc565c",   
+            "#bc565c",
             "#90565c",
             "#0c877b",
             "#fbb040",
@@ -790,11 +738,86 @@ const handleDistrict = function (props,coordinates,map) {
             "#878787",
             "#da7b27"
           ],
-          data: [],
         },
-      ],
-    };
-    var Labels = [
+        title: {
+          text: "",
+        },
+        plotOptions: {
+          pie: {
+            //  allowPointSelect: true,
+            cursor: "pointer",
+            point: {
+              events: {
+                legendItemClick: function (e) {
+                  e.preventDefault();
+                },
+              },
+            },
+            dataLabels: {
+              //   enabled: false
+              enabled: true,
+              //  style: "{text-align: center}",
+              verticalAlign: "middle",
+              distance: 5,
+              format: "<span>{point.percentage:.0f} %</span>",
+              filter: {
+                property: "percentage",
+                operator: ">",
+                value: ".5",
+              },
+            },
+            showInLegend: false,
+          },
+        },
+        /*   legend: {
+            title: {
+                text: '<span style="text-align:center;font-size: 9px; color: #666; font-weight: normal">Retail Mix 2015</span>',
+                style: {
+                      fontStyle: 'italic'
+                }
+              },
+            layout:'horizontal'
+          }, 
+        */
+        tooltip: {
+          formatter: function () {
+            //  return '<b>'+Highcharts.numberFormat(this.point.y,0,',',',')+' Acres</b><br/>';
+            return (
+              "<b>" +
+              this.point.name +
+              "</b><br/>" +
+              Highcharts.numberFormat(this.percentage, 2) +
+              " %"
+            );
+          },
+        },
+        credits: {
+          enabled: false,
+        },
+        series: [
+          {
+            name: "Total",
+            id: "Values",
+            innerSize: "40%",
+            colors: [
+              "#8ec63f",
+              "#5bc5cf",
+              "#fad5d6",
+              "#f29195",
+              "#eb555c",
+              "#bc565c",
+              "#90565c",
+              "#0c877b",
+              "#fbb040",
+              "#bdd2ff",
+              "#878787",
+              "#da7b27"
+            ],
+            data: [],
+          },
+        ],
+      };
+      var Labels = [
         "Civic",
         "Cultural",
         "Experiential",
@@ -808,31 +831,187 @@ const handleDistrict = function (props,coordinates,map) {
         "Construction",
         "Institutional"
       ],
-      counData = [];
-    for (var i = 0; i < Values.length; i++) {
-      counData.push({
-        name: Labels[i],
-        y: Values[i],
-      });
+        counData = [];
+      for (var i = 0; i < Values.length; i++) {
+        counData.push({
+          name: Labels[i],
+          y: Values[i],
+        });
+      }
+      RetailChart2.series[0].data = counData;
+      var chart4 = new Highcharts.Chart(RetailChart2);
     }
-    RetailChart2.series[0].data = counData;
-    var chart4 = new Highcharts.Chart(RetailChart2);
+
+    function updateWebAndSocialChart(values) {
+      const webAndSocialChart = {
+        chart: {
+          renderTo: "Chart4",
+          type: "column",
+          plotBackgroundColor: null,
+          plotBorderWidth: 0, //null,
+          plotShadow: false,
+          height: 300,
+        },
+        title: {
+          text: ""
+        },
+        xAxis: {
+          categories: ['Web 2013', 'Social 2013', 'Web 2020', 'Social 2020', 'Web 2022', 'Social 2020'],
+          crosshair: true,
+          accessibility: {
+            description: 'Web or Social Years'
+          }
+        },
+        yAxis: {
+          min: 0,
+          max: 100,
+          labels: {
+            format: '{value}%'
+          },
+          accessibility: {
+            description: 'Share of retail with social or website'
+          }
+        },
+        plotOptions: {
+          column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+          }
+        },
+        series: [
+          {
+            name: 'District Name',
+            data: [20, 30, 25, 40, 34, 60]
+          },
+          {
+            name: 'Retail District Average',
+            data: [30, 33, 40, 35, 40, 40]
+          }
+        ]
+      }
+      var chart4 = new Highcharts.Chart(webAndSocialChart);
+    }
+
+    function updateBanksChart(values) {
+      const banksChart = {
+        chart: {
+          renderTo: "Chart5",
+          type: "column",
+          plotBackgroundColor: null,
+          plotBorderWidth: 0, //null,
+          plotShadow: false,
+          height: 300,
+        },
+        title: {
+          text: ""
+        },
+        xAxis: {
+          categories: ['2013', '2020', '2022'],
+          crosshair: true,
+          accessibility: {
+            description: 'Years'
+          }
+        },
+        yAxis: {
+          min: 0,
+          accessibility: {
+            description: 'Total bank branches'
+          }
+        },
+        plotOptions: {
+          column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+          }
+        },
+        series: [
+          {
+            name: 'District Name',
+            data: [3, 4, 4]
+          },
+          {
+            name: 'Retail District Average',
+            data: [6, 7, 8]
+          }
+        ]
+      }
+      var chart5 = new Highcharts.Chart(banksChart);
+    }
+
+    function updateRetailTenancyChart(values) {
+      const retailTenancyChart = {
+        chart: {
+          type: 'column',
+          renderTo: "Chart6",
+          plotBackgroundColor: null,
+          plotBorderWidth: 0, //null,
+          plotShadow: false,
+          height: 400,
+          fontSize: "1em"
+        },
+        title: {
+          text: 'Retail Categories',
+          align: 'left'
+        },
+        xAxis: {
+          categories: ['District Name 2013', 'Retail District Average 2020', 'District Name 2020', 'Retail District Avergae 2020', 'District Name 2022', 'Retail District Average 2022'],
+          labels: {
+            style: {
+              fontSize: '12px'
+            }
+          }
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: 'Percent'
+          }
+        },
+        tooltip: {
+          pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}</b> <br/>',
+          shared: true
+        },
+        plotOptions: {
+          column: {
+            stacking: 'percent',
+            dataLabels: {
+              enabled: true,
+              format: '{point.percentage:.0f}%',
+              style: {
+                fontSize: '12px'
+              },
+              showInLegend: false
+            }
+          }
+        },
+        series: [
+          {
+            name: 'Local',
+            data: [15, 18, 20, 19, 25, 21]
+          },
+          {
+            name: 'Chain',
+            data: [85, 72, 80, 71, 75, 79]
+          }
+        ],
+      }
+      const chart = new Highcharts.Chart(retailTenancyChart);
+    }
   }
-}
-// add typeahead
-const populateOptions = function (obj) {
-  const datalist = document.getElementById('retail-districts-list')
-  const frag = document.createDocumentFragment()
-  
-  Object.keys(obj).sort((a, b) => a > b).forEach(function(el) {
-    const option = document.createElement('option')
-    option.value = el
-    frag.appendChild(option)
-  })
+  // add typeahead
+  const populateOptions = function (obj) {
+    const datalist = document.getElementById('retail-districts-list')
+    const frag = document.createDocumentFragment()
 
-  datalist.appendChild(frag)
-}
+    Object.keys(obj).sort((a, b) => a > b).forEach(function (el) {
+      const option = document.createElement('option')
+      option.value = el
+      frag.appendChild(option)
+    })
 
-populateOptions(retailSearch)
+    datalist.appendChild(frag)
+  }
+
+  populateOptions(retailSearch)
 
 }); 
