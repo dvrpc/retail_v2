@@ -1,8 +1,12 @@
+
 // var retail, districts, d2;
 var geojson;
 const searchForm = document.getElementById('search')
 
 var retailSearch = {};
+var chartData = {}
+var salesTrendData = {};
+
 var clickedStateId = null;
 
 function PrintElem(elem) {
@@ -89,7 +93,6 @@ function handleFullMapDisplay() {
   $(window.map).resize();
   return false;
 }
-
 fetch('https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson')
   .then(response => response.json())
   .then(data => {
@@ -98,8 +101,32 @@ fetch('https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail
       retailSearch[geojsonrow.properties.DISTRICT] = geojsonrow
     });
   });
-// .then(data => console.log(data));
-console.log(retailSearch);
+
+fetch('https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail/FeatureServer/3/query?where=1%3D1&outFields=*&outSR=4326&f=json')
+  .then(response => response.json())
+  .then(data => {
+    data.features.forEach(row => {
+
+      if (chartData[row.attributes.district]) {
+        chartData[row.attributes.district][row.attributes.year] = row.attributes;
+      } else {
+        const dict = {};
+        dict[row.attributes.year] = row.attributes;
+        chartData[row.attributes.district] = dict;
+      };
+    });
+  });
+
+fetch('https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail/FeatureServer/4/query?where=1%3D1&outFields=*&outSR=4326&f=json')
+  .then(response => response.json())
+  .then(data => {
+    data.features.forEach(row => {
+      salesTrendData[row.attributes.district] = row.attributes;
+    });
+  });
+
+console.log(chartData)
+console.log(salesTrendData);
 
 map.on("load", function () {
   // add map events here (click, mousemove, etc)
@@ -463,10 +490,11 @@ map.on("load", function () {
       "<br><div class='data-row'><span class='data-info'>Walk Score® </span><span class='data-value'> " +
       props.WSCORE +
       "</span></div>" +
-      "<br><div class='data-row'><span class='data-info'>Transit </span><span class='data-value'> " +
+      "<br><div class='data-row-last'><span class='data-info'>Transit </span><span class='data-value'> " +
       props.TRANSIT +
-      "</span></div>" +
-      "<br><div class='data-row'><span class='data-info'>Bus Route(s) </span><span class='data-value'> " +
+      "</span></div>"
+
+    var content2 = "<div class='data-row'><span class='data-info'>Bus Route(s) </span><span class='data-value'> " +
       props.BUSROUTE +
       "</span></div>" +
       "<br><div class='data-row'><span class='data-info'>Parking </span><span class='data-value'> " +
@@ -480,10 +508,12 @@ map.on("load", function () {
       "</span></div>" +
       "<br><div class='data-row-last'><span class='data-info'>Median Household Income </span><span class='data-value'> " +
       numeral(props.MEDHH).format("($0,0)") +
-      "</span></div>"
-      ;
+      "</span></div>";
+
     document.getElementById("resultsHeader").innerHTML = info;
     document.getElementById("info1").innerHTML = content1;
+    document.getElementById("info2").innerHTML = content2;
+
 
     map.flyTo({
       // created a parameter that pulls the lat/long values from the geojson
@@ -492,87 +522,79 @@ map.on("load", function () {
       speed: 0.7,
       zoom: 15,
     });
+
+    const districtChartData = chartData[props.DISTRICT];
+    const districtSalesTrendData = salesTrendData[props.DISTRICT];
+    const regionalSalesTrendData = salesTrendData["Regional Average"];
     // charts
-    Retail = [
-      props.CIVIC,
-      props.CULT,
-      props.FB,
-      props.GAFO,
-      props.NGS,
-      props.NONREOFF,
-      props.RESIDE,
-      props.VACANT,
-    ];
-    Retail2 = [
-      props.CIVIC20,
-      props.CULTURAL20,
-      props.EXP20,
-      props.FB20,
-      props.GAFO20,
-      props.HOSP20,
-      props.NGS20,
-      props.OFFICE20,
-      props.RES20,
-      props.VACANT20,
-      props.CONSTR20,
-      props.INST20,
-    ];
 
-    updateRetailChart(Retail)
-    updateRetailChart1(Retail);
-    updateRetailChart2(Retail2);
-    updateWebAndSocialChart(Retail)
-    updateBanksChart(Retail)
-    updateRetailTenancyChart(Retail)
+    updateRetailChart(districtChartData);
+    updateWebAndSocialChart(districtChartData);
+    updateBanksChart(districtChartData);
+    updateRetailTenancyChart(districtChartData);
+    updateSalesTrendsChart(districtSalesTrendData, regionalSalesTrendData);
 
-    function updateRetailChart(values) {
+    function updateRetailChart(chartData) {
 
-      const labels = [
-        "Civic",
-        "Cultural",
-        "Food and Beverage",
-        "General Merchandise, Apparel, Furnishings, and Other",
-        "Neighborhood Goods and Services",
-        "Office",
-        "Residential",
-        "Vacant"
-      ]
+      const retailCategoryFieldMapping = {
+        "Civic": "civic",
+        "Cultural": "cultural",
+        "Food and Beverage": "f_b",
+        "General Merchandise, Apparel, Furnishings, and Other": "gafo",
+        "Neighborhood Goods and Services": "ng_s",
+        "Office": "office",
+        "Residential": "reside",
+        "Vacant": "vacant",
+        "Experimental": "exp",
+        "Hospitality": "hosp",
+        "Active Construction Sites": "construct",
+        "Institutional": "institute"
+      }
 
-      colors = [
-        "#8ec63f",
-        "#5bc5cf",
-        "#f29195",
-        "#eb555c",
-        "#90565c",
-        "#0c877b",
-        "#fbb040",
-        "#bdd2ff"
-      ];
+      const retailCategoryColorMapping = {
+        "Civic": "#8EC63F",
+        "Cultural": "#63bfc7",
+        "Food and Beverage": "#f29195",
+        "General Merchandise, Apparel, Furnishings, and Other": "#eb555c",
+        "Neighborhood Goods and Services": "#90565c",
+        "Office": "#0C8771",
+        "Residential": "#FBB040",
+        "Vacant": "#BDD2FF",
+        "Experimental": "#fad5d6",
+        "Hospitality": "#bc565c",
+        "Active Construction Sites": "#878787",
+        "Institutional": "#da7b27"
+      }
 
-      const populatedSeries = values.map((value, index) => {
-        return {
-          name: labels[index],
-          data: [value * 100],
-          color: colors[index]
-        }
+      const populatedSeries = []
+      const yearsAvailable = Object.keys(chartData).length;
+
+      Object.keys(retailCategoryFieldMapping).forEach(label => {
+        const fieldData = []
+
+        Object.values(chartData).forEach(chart_year => {
+          fieldData.push(chart_year[retailCategoryFieldMapping[label]])
+        });
+        populatedSeries.push({
+          name: label,
+          data: fieldData,
+          color: retailCategoryColorMapping[label],
+          // showInLegend: false
+        })
       })
 
-      const RetailStackedBarChart = {
+      const retailStackedBarChart = {
         chart: {
           type: 'column',
-          renderTo: "Chart3",
+          renderTo: "retail-chart",
           plotBackgroundColor: null,
           plotBorderWidth: 0, //null,
           plotShadow: false,
           height: 400,
           fontSize: "1em"
         },
-        title: {
-          text: 'Retail Categories',
-          align: 'left'
-        },
         xAxis: {
-          categories: ['2013'],
+          categories: yearsAvailable === 3 ? ['2013', '2020', '2022'] : ['2020', '2022'],
           labels: {
             style: {
               fontSize: '12px'
@@ -581,13 +603,25 @@ map.on("load", function () {
         },
         yAxis: {
           min: 0,
-          title: {
-            text: 'Percent'
+          labels: {
+            format: '{value}%',
+            style: {
+              fontSize: '12px'
+            }
+          },
+          title: ""
+        },
+        title: "",
+        tooltip: {
+          pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b> <br/>',
+          shared: true,
+          style: {
+            fontSize: "12px"
           }
         },
-        tooltip: {
-          pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}</b> <br/>',
-          shared: true
+        legend: {
+          itemStyle: {fontSize: "12px"},
+          alignColumns: false,          
         },
         plotOptions: {
           column: {
@@ -604,248 +638,19 @@ map.on("load", function () {
         },
         series: populatedSeries,
       }
-      const chart = new Highcharts.Chart(RetailStackedBarChart);
 
+      const chart = new Highcharts.Chart(retailStackedBarChart);
     }
 
-    function updateRetailChart1(Values) {
-      var RetailChart = {
-        chart: {
-          renderTo: "Chart1",
-          type: "pie",
-          plotBackgroundColor: null,
-          plotBorderWidth: 0, //null,
-          plotShadow: false,
-          height: 300,
-          //  width: 370,
-          colors: [
-            "#8ec63f",
-            "#5bc5cf",
-            "#f29195",
-            "#eb555c",
-            "#90565c",
-            "#0c877b",
-            "#fbb040",
-            "#bdd2ff"
-          ],
-        },
-        title: {
-          text: "",
-        },
-        plotOptions: {
-          pie: {
-            //  allowPointSelect: true,
-            cursor: "pointer",
-            point: {
-              events: {
-                legendItemClick: function (e) {
-                  e.preventDefault();
-                },
-              },
-            },
-            dataLabels: {
-              //   enabled: false
-              enabled: true,
-              //   style: "{text-align: center}",
-              verticalAlign: "middle",
-              distance: 5,
-              format: "<span>{point.percentage:.0f} %</span>",
-              filter: {
-                property: "percentage",
-                operator: ">",
-                value: ".5",
-              },
-            },
-            showInLegend: false,
-          },
-        },
-        tooltip: {
-          formatter: function () {
-            //  return '<b>'+Highcharts.numberFormat(this.point.y,0,',',',')+' Acres</b><br/>';
-            return (
-              "<b>" +
-              this.point.name +
-              "</b><br/>" +
-              Highcharts.numberFormat(this.percentage, 2) +
-              " %"
-            );
-          },
-        },
-        credits: {
-          enabled: false,
-        },
-        series: [
-          {
-            name: "Total",
-            id: "Values",
-            innerSize: "40%",
-            colors: [
-              "#8ec63f",
-              "#5bc5cf",
-              "#f29195",
-              "#eb555c",
-              "#90565c",
-              "#0c877b",
-              "#fbb040",
-              "#bdd2ff"
-            ],
-            data: [],
-          },
-        ],
-      };
-      var Labels = [
-        "Civic",
-        "Cultural",
-        "Food and Beverage",
-        "General Merchandise, Apparel, Furnishings, and Other",
-        "Neighborhood Goods and Services",
-        "Office",
-        "Residential",
-        "Vacant"
-      ],
-        counData = [];
-      for (var i = 0; i < Values.length; i++) {
-        counData.push({
-          name: Labels[i],
-          y: Values[i],
-        });
+    function updateWebAndSocialChart(chartData) {
+
+      function getFieldPercentage(fieldName, year) {
+        return chartData[year][fieldName] * 100;
       }
-      RetailChart.series[0].data = counData;
-      var chart2 = new Highcharts.Chart(RetailChart);
-    }
-    // start second chart
-    function updateRetailChart2(Values) {
-      var RetailChart2 = {
-        chart: {
-          renderTo: "Chart2",
-          type: "pie",
-          plotBackgroundColor: null,
-          plotBorderWidth: 0, //null,
-          plotShadow: false,
-          height: 300,
-          //  width: 75,
-          colors: [
-            "#8ec63f",
-            "#5bc5cf",
-            "#fad5d6",
-            "#f29195",
-            "#eb555c",
-            "#bc565c",
-            "#90565c",
-            "#0c877b",
-            "#fbb040",
-            "#bdd2ff",
-            "#878787",
-            "#da7b27"
-          ],
-        },
-        title: {
-          text: "",
-        },
-        plotOptions: {
-          pie: {
-            //  allowPointSelect: true,
-            cursor: "pointer",
-            point: {
-              events: {
-                legendItemClick: function (e) {
-                  e.preventDefault();
-                },
-              },
-            },
-            dataLabels: {
-              //   enabled: false
-              enabled: true,
-              //  style: "{text-align: center}",
-              verticalAlign: "middle",
-              distance: 5,
-              format: "<span>{point.percentage:.0f} %</span>",
-              filter: {
-                property: "percentage",
-                operator: ">",
-                value: ".5",
-              },
-            },
-            showInLegend: false,
-          },
-        },
-        /*   legend: {
-            title: {
-                text: '<span style="text-align:center;font-size: 9px; color: #666; font-weight: normal">Retail Mix 2015</span>',
-                style: {
-                      fontStyle: 'italic'
-                }
-              },
-            layout:'horizontal'
-          }, 
-        */
-        tooltip: {
-          formatter: function () {
-            //  return '<b>'+Highcharts.numberFormat(this.point.y,0,',',',')+' Acres</b><br/>';
-            return (
-              "<b>" +
-              this.point.name +
-              "</b><br/>" +
-              Highcharts.numberFormat(this.percentage, 2) +
-              " %"
-            );
-          },
-        },
-        credits: {
-          enabled: false,
-        },
-        series: [
-          {
-            name: "Total",
-            id: "Values",
-            innerSize: "40%",
-            colors: [
-              "#8ec63f",
-              "#5bc5cf",
-              "#fad5d6",
-              "#f29195",
-              "#eb555c",
-              "#bc565c",
-              "#90565c",
-              "#0c877b",
-              "#fbb040",
-              "#bdd2ff",
-              "#878787",
-              "#da7b27"
-            ],
-            data: [],
-          },
-        ],
-      };
-      var Labels = [
-        "Civic",
-        "Cultural",
-        "Experiential",
-        "Food and Beverage",
-        "General Merchandise, Apparel, Furnishings, and Other",
-        "Hospitality",
-        "Neighborhood Goods and Services",
-        "Office",
-        "Residential",
-        "Vacant",
-        "Construction",
-        "Institutional"
-      ],
-        counData = [];
-      for (var i = 0; i < Values.length; i++) {
-        counData.push({
-          name: Labels[i],
-          y: Values[i],
-        });
-      }
-      RetailChart2.series[0].data = counData;
-      var chart4 = new Highcharts.Chart(RetailChart2);
-    }
 
-    function updateWebAndSocialChart(values) {
       const webAndSocialChart = {
         chart: {
-          renderTo: "Chart4",
+          renderTo: "web-and-social-chart",
           type: "column",
           plotBackgroundColor: null,
           plotBorderWidth: 0, //null,
@@ -856,21 +661,36 @@ map.on("load", function () {
           text: ""
         },
         xAxis: {
-          categories: ['Web 2013', 'Social 2013', 'Web 2020', 'Social 2020', 'Web 2022', 'Social 2020'],
-          crosshair: true,
+          categories: ['Web 2020', 'Social 2020', 'Web 2022', 'Social 2022'],
           accessibility: {
             description: 'Web or Social Years'
-          }
+          },
+          labels: {
+            style: {
+              fontSize: '12px'
+            }
+          },
+        },
+        legend: {
+          itemStyle: { "fontSize": "12px" }
         },
         yAxis: {
           min: 0,
-          max: 100,
           labels: {
-            format: '{value}%'
+            format: '{value}%',
+            style: {
+              fontSize: '12px'
+            }
           },
           accessibility: {
             description: 'Share of retail with social or website'
-          }
+          },
+          title: "false"
+        },
+        tooltip: {
+          style: {
+            fontSize: "12px"
+          },
         },
         plotOptions: {
           column: {
@@ -880,22 +700,33 @@ map.on("load", function () {
         },
         series: [
           {
-            name: 'District Name',
-            data: [20, 30, 25, 40, 34, 60]
+            name: chartData[2020].district,
+            color: "#bc5090",
+            data: [
+              getFieldPercentage('web', 2020),
+              getFieldPercentage('social', 2020),
+              getFieldPercentage('web', 2022),
+              getFieldPercentage('social', 2022)]
           },
           {
             name: 'Retail District Average',
-            data: [30, 33, 40, 35, 40, 40]
+            color: "#ffa600",
+            data: [
+              getFieldPercentage('web_ave', 2020),
+              getFieldPercentage('social_ave', 2020),
+              getFieldPercentage('web_ave', 2022),
+              getFieldPercentage('social_ave', 2022)]
           }
         ]
       }
-      var chart4 = new Highcharts.Chart(webAndSocialChart);
+      var chart = new Highcharts.Chart(webAndSocialChart);
     }
 
-    function updateBanksChart(values) {
+    function updateBanksChart(chartData) {
+
       const banksChart = {
         chart: {
-          renderTo: "Chart5",
+          renderTo: "bank-chart",
           type: "column",
           plotBackgroundColor: null,
           plotBorderWidth: 0, //null,
@@ -910,13 +741,32 @@ map.on("load", function () {
           crosshair: true,
           accessibility: {
             description: 'Years'
+          },
+          labels: {
+            style: {
+              fontSize: "12px"
+            }
           }
         },
         yAxis: {
           min: 0,
           accessibility: {
             description: 'Total bank branches'
-          }
+          },
+          labels: {
+            style: {
+              fontSize: "12px"
+            }
+          },
+          title: ""
+        },
+        legend: {
+          itemStyle: { "fontSize": "12px" }
+        },
+        tooltip: {
+          style: {
+            fontSize: "12px"
+          },
         },
         plotOptions: {
           column: {
@@ -926,23 +776,33 @@ map.on("load", function () {
         },
         series: [
           {
-            name: 'District Name',
-            data: [3, 4, 4]
+            color: "#7AE5C8",
+            name: chartData[2013].district,
+            data: [chartData[2013].banks, chartData[2020].banks, chartData[2022].banks]
           },
           {
+            color: "#A863A2",
             name: 'Retail District Average',
-            data: [6, 7, 8]
+            data: [chartData[2013].banks_ave, chartData[2020].banks_ave, chartData[2022].banks_ave]
           }
         ]
       }
-      var chart5 = new Highcharts.Chart(banksChart);
+
+      var chart = new Highcharts.Chart(banksChart);
     }
 
-    function updateRetailTenancyChart(values) {
+    function updateRetailTenancyChart(chartData) {
+
+      const districtName = chartData[2013].district;
+
+      function getFieldPercentage(fieldName, year) {
+        return chartData[year][fieldName] * 100;
+      }
+
       const retailTenancyChart = {
         chart: {
           type: 'column',
-          renderTo: "Chart6",
+          renderTo: "tenancy-chart",
           plotBackgroundColor: null,
           plotBorderWidth: 0, //null,
           plotShadow: false,
@@ -950,11 +810,16 @@ map.on("load", function () {
           fontSize: "1em"
         },
         title: {
-          text: 'Retail Categories',
-          align: 'left'
+          text: ""
+        },
+        tooltip: {
+          style: {
+            fontSize: "12px"
+          },
+          pointFormat: '<span>{series.name}</span>: <b>{point.y:.0f}%</b> <br/>',
         },
         xAxis: {
-          categories: ['District Name 2013', 'Retail District Average 2020', 'District Name 2020', 'Retail District Avergae 2020', 'District Name 2022', 'Retail District Average 2022'],
+          categories: [`${districtName} 2013`, 'Retail District Average 2020', `${districtName} 2020`, 'Retail District Avergae 2020', `${districtName} 2022`, 'Retail District Average 2022'],
           labels: {
             style: {
               fontSize: '12px'
@@ -963,13 +828,18 @@ map.on("load", function () {
         },
         yAxis: {
           min: 0,
-          title: {
-            text: 'Percent'
-          }
+          labels: {
+            format: '{value}%'
+          },
+          labels: {
+            style: {
+              fontSize: "12px"
+            }
+          },
+          title: "false"
         },
-        tooltip: {
-          pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}</b> <br/>',
-          shared: true
+        legend: {
+          itemStyle: { "fontSize": "12px" }
         },
         plotOptions: {
           column: {
@@ -986,16 +856,153 @@ map.on("load", function () {
         },
         series: [
           {
+            color: "#77CE9D",
             name: 'Local',
-            data: [15, 18, 20, 19, 25, 21]
+            data: [
+              getFieldPercentage('local', 2013),
+              getFieldPercentage('local_ave', 2013),
+              getFieldPercentage('local', 2020),
+              getFieldPercentage('local_ave', 2020),
+              getFieldPercentage('local', 2022),
+              getFieldPercentage('local_ave', 2022)
+            ]
           },
           {
+            color: "#E57A7A",
             name: 'Chain',
-            data: [85, 72, 80, 71, 75, 79]
+            data: [
+              getFieldPercentage('chain', 2013),
+              getFieldPercentage('chain_ave', 2013),
+              getFieldPercentage('chain', 2020),
+              getFieldPercentage('chain_ave', 2020),
+              getFieldPercentage('chain', 2022),
+              getFieldPercentage('chain_ave', 2022)
+            ]
           }
         ],
       }
       const chart = new Highcharts.Chart(retailTenancyChart);
+    }
+
+    function updateSalesTrendsChart(districtSalesTrends, reginonalSalesTrends) {
+
+      const salesCategoryFieldMapping = {
+        "Total": "total",
+        "Motor Vehicle Parts & Dealers": "mvp",
+        "Furniture & Home Furnishing Stores": "fhf",
+        "Electronics & Appliance Stores": "ea",
+        "Building Material, Garden Equip. & Supplies": "bmge",
+        "Food & Beverage Stores": "fb",
+        "Health & Personal Care Stores": "hpc",
+        "Clothing & Clothing Accessories Stores": "cca",
+        "Sporting Goods, Hobby, Book, & Music Stores": "sghmb",
+        "General Merchandise Stores": "gm",
+        "Miscellaneous Store Retailers": "misc",
+        "Foodservice & Drinking Places": "fd",
+      }
+
+      const salesCategories = [
+        "Total",
+        "Motor Vehicle Parts & Dealers",
+        "Furniture & Home Furnishing Stores",
+        "Electronics & Appliance Stores",
+        "Building Material, Garden Equip. & Supplies",
+        "Food & Beverage Stores",
+        "Health & Personal Care Stores",
+        "Clothing & Clothing Accessories Stores",
+        "Sporting Goods, Hobby, Book, & Music Stores",
+        "General Merchandise Stores",
+        "Miscellaneous Store Retailers",
+        "Foodservice & Drinking Places"
+      ]
+
+      const districtName = districtSalesTrends.district;
+      const populatedDistrictData = [];
+      const populatedRegionalData = [];
+
+      for (const [key, value] of Object.entries(salesCategoryFieldMapping)) {
+        populatedDistrictData.push(Math.round(districtSalesTrends[value] * 100));
+        populatedRegionalData.push(Math.round(reginonalSalesTrends[value] * 100))
+      }
+
+      const salesTrendChart = {
+        chart: {
+          type: 'bar',
+          renderTo: "sales-trend-chart",
+          plotBackgroundColor: null,
+          plotBorderWidth: 0, //null,
+          plotShadow: false,
+          height: 1000,
+          fontSize: "1em"
+        },
+        title: {
+          text: ''
+        },
+        tooltip: {
+          style: {
+            fontSize: "12px"
+          },
+          pointFormat: '<span>{series.name}</span>: <b>{point.y:.0f}%</b> <br/>',
+        },
+        // legend: false,
+        xAxis: {
+          categories: salesCategories,
+          labels: {
+            style: {
+              fontSize: '12px'
+            }
+          },
+          gridLineWidth: 1,
+          lineWidth: 0
+        },
+        yAxis: {
+          plotBands: [{
+            color: 'blue',
+            width: 2,
+            value: 0,
+            zIndex: 4
+          }],
+          title: {
+            enabled: false
+          },
+          labels: {
+            format: '{value}%',
+            style: {
+              fontSize: "12px"
+            }
+          },
+          tickInterval: 10,
+        },
+        legend: {
+          itemStyle: { "fontSize": "12px" }
+        },
+        plotOptions: {
+          series: {
+            dataLabels: {
+              format: "<span>{point.y}%</span>",
+              style: {
+                fontSize: "12px"
+              },
+              enabled: true
+            }
+          }
+        },
+        series: [
+          {
+            name: districtName,
+            data: populatedDistrictData,
+            color: 'green',
+            negativeColor: 'red',
+          },
+          {
+            name: "Regional Average",
+            data: populatedRegionalData,
+            color: '#6bdb6b',
+            negativeColor: '#FF7A7A',
+          }]
+      }
+      const chart = new Highcharts.Chart(salesTrendChart);
+
     }
   }
   // add typeahead

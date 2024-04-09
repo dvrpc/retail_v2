@@ -1,234 +1,341 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-       <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="description" content="version 1.0.0">
-        <meta name="author" content="DVRPC">   
-    
-        <title>Retail Districts of Greater Philadelphia</title>
 
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="description" content="version 1.0.0">
+    <meta name="author" content="DVRPC">
 
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+    <title>Retail Districts of Greater Philadelphia</title>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css">
-      
-        <link rel="stylesheet" type="text/css" href="assets/css/main.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/print.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+        integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
 
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css">
 
-        <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
-        
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/print.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+        crossorigin="anonymous"></script>
+
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
+
     <style>
     </style>
-  </head>
-  
-  <body>
-<!-- Start Main Body -->
-  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+</head>
+
+<body>
+    <!-- Start Main Body -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
                 <div class="navbar-brand">
                     <div class="wrapper">
                         <a id="header-link" href="https://www.dvrpc.org" target="_blank">
-                            <img id="dvrpc-logo" src="assets/img/dvrpc_logo_small.png" alt="DVRPC logo"/>
+                            <img id="dvrpc-logo" src="assets/img/dvrpc_logo_small.png" alt="DVRPC logo" />
                             <p id="header-link-text">Retail Districts of Greater Philadelphia</p>
-                            </a>
-                             <button type="button" class="btn about-btn" onclick="$('#aboutModal').modal('show'); return false;" data-toggle="collapse" data-target=".navbar-collapse.in">
-                                <i class="fa fa-info-circle" style="color:#39398e"></i>&nbsp;&nbsp;<b>About</b>
-                            </button>
-                          <!--  <button type="button" class="btn about-btn" onclick="PrintElem();" data-toggle="collapse" data-target=".navbar-collapse.in">
+                        </a>
+                        <button type="button" class="btn about-btn"
+                            onclick="$('#aboutModal').modal('show'); return false;" data-toggle="collapse"
+                            data-target=".navbar-collapse.in">
+                            <i class="fa fa-info-circle" style="color:#39398e"></i>&nbsp;&nbsp;<b>About</b>
+                        </button>
+                        <!--  <button type="button" class="btn about-btn" onclick="PrintElem();" data-toggle="collapse" data-target=".navbar-collapse.in">
                                 <i class="fa fa-info-circle" style="color:#39398e"></i>&nbsp;&nbsp;<b>Print</b>
                             </button>
                             <button href="#" onclick="window.print();return false" class="print btn btn-primary pull-right"><i class="glyphicon glyphicon-print"></i> PRINT</button>
-                  -->  </div> 
-                       
-                
-                </div>
-
-                </div>
-             
-                <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                 
-
-                    <div class="nav navbar-nav navbar-right">
-                        <div class="input-group search-container">
-                            <form id="search">
-                                <label>
-                                    Search by district:
-                                    <input list="retail-districts-list" id="searchbox" name="searchbox" autocomplete="new-password"/>
-            
-                                    <datalist id="retail-districts-list"></datalist>
-                                </label>
-        
-                                <button type="submit" class="btn">search</button>
-                            </form>
-                        </div>
+                  -->
                     </div>
-                   
+
+
                 </div>
 
             </div>
-    </div>
- 
 
-<div class="row" id="container">
-    <div class="col-sm-6 col-md-6 col-lg-6" id="sidebar">
-        <div class="panel-group">
-            <div id="data-info-section">
- <!-- Info Section-->                
-                <div class='infoLeft' style="height:100vh;">
-                    <div id='resultsHeader'></div>   
-                    <div id="chart-legend">
-                        <h3 class='chart-legend-heading'>
-                            <i class='glyphicon glyphicon-info-sign' id='info-icon' data-toggle='tooltip' title='Category Info' onclick='catShow()'></i>
-                        Categories of Uses</h3>
-                        <span id="chart-legend-icons">
-                            <i class="fa fa-circle legend-icons civic"></i>Civic
-                            <i class="fa fa-circle legend-icons cultural"></i>Cultural
-                            <i class="fa fa-circle legend-icons construction"></i>Construction
-                            <i class="fa fa-circle legend-icons institutional"></i>Institutional
-                            <br>
-                            <i class="fa fa-circle legend-icons office"></i>Office
-                            <i class="fa fa-circle legend-icons res"></i>Residential
-                            <i class="fa fa-circle legend-icons vacant"></i>Vacant 
-                        </span>
-                        <br>
-                        <span>
-                            <b>Retail Types:</b>
-                            <i class="fa fa-circle legend-icons experiential"></i>Experiential
-                            <i class="fa fa-circle legend-icons fb"></i>Food and Beverage
-                            <br>
-                            <i class="fa fa-circle legend-icons gafo"></i>General Merchandise, Apparel, Furnishings, and Other
-                            <i class="fa fa-circle legend-icons hosp"></i>Hospitality
-                            <br>
-                            <i class="fa fa-circle legend-icons ngs"></i>Neighborhood Goods and Services
-                        </span>
-                        </div>
-                        <div class='chart-wrapper'>       
-                        <h3 class='chart-subheader'>2020 Mix of Uses and Retail Types</h3> 
-                        <div id="Chart2"></div> 
-                        </div> 
+            <div class="collapse navbar-collapse" id="navbar-collapse-1">
 
-                        <div class='chart-wrapper' id='chart2013'>     
-                        <h3 class='chart-subheader'>2013 Mix of Uses and Retail Types</h3>  
-                        <div id="Chart1"></div>   
-                        </div> 
 
-                        <div class='chart-wrapper' id='chart2013'>     
-                        <h3 class='chart-subheader'>Mix of Uses and Retail Types</h3>  
-                        <div id="Chart3"></div>   
-                        </div> 
+                <div class="nav navbar-nav navbar-right">
+                    <div class="input-group search-container">
+                        <form id="search">
+                            <label>
+                                Search by district:
+                                <input list="retail-districts-list" id="searchbox" name="searchbox"
+                                    autocomplete="new-password" />
 
-                        <div class='chart-wrapper' id='chart2013'>     
-                            <h3 class='chart-subheader'>Share of Retail with Social Media and/or a Website</h3>  
-                            <div id="Chart4"></div>   
-                        </div> 
+                                <datalist id="retail-districts-list"></datalist>
+                            </label>
 
-                        <div class='chart-wrapper' id='chart2013'>     
-                            <h3 class='chart-subheader'>Total Bank Branches</h3>  
-                            <div id="Chart5"></div>   
-                        </div>
-
-                        <div class='chart-wrapper' id='chart2013'>     
-                            <h3 class='chart-subheader'>Local-Chain Retail Mix</h3>  
-                            <div id="Chart6"></div>   
-                        </div> 
-
-                        <div class='data-wrapper' id='data-wrapper'>     
-                        <h2 class='data-subheader'>
-                        Accessibility and Demographics 
-                        <span class='data-heading-small'><br>(within 1/2 mile) as of 2013</span></h2> 
-                         <div id='info1' class='info1'></div>
-                        </div> 
+                            <button type="submit" class="btn">search</button>
+                        </form>
+                    </div>
                 </div>
 
             </div>
-         </div> 
-    </div>
-         <!-- Map -->
-         <div class="col-sm-12 col-md-12 col-lg-12" id="map" style="overflow:hidden"></div>
 
-</div>      
-<!-- Zoom -->
-      </div>
-        <a href='javascript:void(0);' id='zoomtoregion'></a>
-</div>
-            <!-- About Modal -->
-        <div class="modal fade" id="aboutModal">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">Retail Districts of Greater Philadelphia</h4>
-                        </div>
-                        <div class="modal-body">
-                             <ul id="aboutTabs" class="nav nav-tabs">
-                                <li class="active"><a href="#about" data-toggle="tab"><i class="icon-info-sign"></i>&nbsp;About</a></li> 
-                                <li><a href="#disclaimer" data-toggle="tab"><i class="icon-exclamation-sign"></i>&nbsp;Disclaimer</a></li>
-                            </ul>
-                            <div id="aboutTabsContent" class="tab-content" style="padding-top: 10px;">
-                                <div class="tab-pane fade active in" id="about">
-                                     <div><p class="about-one">In 2013, staff compiled information about 71 suburban downtown retail districts in an effort to learn what elements were common among successful older suburban retail districts. 
-                                         The information about each downtown's retail mix was collected between January and April 2013. 
-                                         Retail elements included in this analysis were: sidewalk width, <a href="https://www.walkscore.com/" target="_new" class="one">Walk Score®</a>, vacancy rate, parking options, streetscape, street width, National Register of Historic Places, household income, transit accessibility, residential population, use and retail type mix, and blocks included for analysis.</p> 
-                                    <p>An update to DVRPC’s 2013 inventory of use and retail type mix was conducted from January through December 2020. As part of this effort, one retail district was added from each of the region’s four Core Cities: Camden, Chester, Philadelphia, and Trenton. 
-                                        Additionally, nine different district typologies were identified, with many downtowns having several typologies:</p> 
-                                    <ul class="a">
-                                        <li><b>Brewery – </b>have at least one craft brewery located within the district boundaries.</li>
-                                        <li><b>Circuit – </b>have one or more of the region’s Circuit Trails within ¼ mile of the district. </li>
-                                        <li><b>Classic – </b>were previously part of the <a href="https://www.dvrpc.org/ClassicTowns/" target="_new" class="one">Classic Towns</a> program.</li>
-                                        <li><b>Core – </b>are located in one of the region’s four Core Cities.</li>
-                                        <li><b>College – </b>have a large, academic campus within ½ mile of the district.</li>
-                                        <li><b>Expanding – </b>boundaries were expanded in response to relatively significant development activity that occurred at the periphery of the district since 2013.</li>
-                                        <li><b>Historic – </b>have a national register or local historic district located within the retail district.</li>
-                                        <li><b>Opportunity – </b>have one or more Opportunity Zones located within the district’s boundaries. </li>
-                                        <li><b>Transit-Oriented – </b>are within ½ mile radius of a transit stop (not including buses).</li>
-                                      </ul>
-                                      <p>
-                                        <h4>For more information:</h4>
-                                            <address>
-                                            Spencer Gober | Senior Planner, Office of Community and Economic Development<br/>
-                                            <a href="mailto:sgober@dvrpc.org" class="one">sgober@dvrpc.org</a><br/>
-                                            </address>
-                                        <a href="https://drive.google.com/file/d/1YkRyS25oFpPShhs1ZhY_W1dGD_LHQwbG/view?usp=sharing" target="_new"><i class="glyphicon glyphicon-download-alt"></i>&nbsp;&nbsp;Download Spreadsheet <small>[0.1 MB xls]</small></a>
-                                        </p>
-                                    </div> 
-                                     <div id="about_footer"><p>The information provided through this web application is the culmination of field work and research done by DVRPC staff. For more information on how this analysis was used to support and develop strategies for these retail districts, please visit our <a href="https://www.dvrpc.org/communityrevitalization" target="_new" id="about-footer">Community Resilience webpage</a>.
-                                        <p>For more information, visit <a href="https://www.dvrpc.org/Policies/" target="_blank" class="one">Policies</a> | 
-                                            <a href="https://www.dvrpc.org/Products/WEB19521" target="_blank" class="one">Abstract</a></p>
-                                    </p>
-                                    </div>                                 
-                                </div>
-                                <div class="tab-pane fade" id="disclaimer"> 
-                                      <img src="https://www.dvrpc.org/img/homepage/dvrpclogo70px.png" alt="DVRPC logo" class="dvrpc_full_logo"/><p style="margin: -5px 0px 0px 45px;display:block"><span><span>This web page is a public resource of general information. The Delaware Valley Regional Planning Commission (DVRPC) makes no warranty, 
-                                        representation, or guarantee as to the content, sequence, accuracy, timeliness, or completeness of any of the spatial data or database 
-                                        information provided herein. DVRPC and partner state, local, and other agencies shall assume no liability for errors, omissions, or 
-                                        inaccuracies in the information provided regardless of how caused; or any decision made or action taken or not taken by any person relying 
-                                        on any information or data furnished within.</span></p>
-                               </div>
+        </div>
+    </div>
+
+
+    <div class="row" id="container">
+        <div class="col-sm-6 col-md-6 col-lg-6" id="sidebar">
+            <div class="panel-group">
+                <div id="data-info-section">
+                    <!-- Info Section-->
+                    <div class='infoLeft' style="height:100vh;">
+                        <div id='resultsHeader'></div>
+                        <!-- <div id="chart-legend">
+                            <h3 class='chart-legend-heading'>
+                                <i class='glyphicon glyphicon-info-sign' id='info-icon' data-toggle='tooltip'
+                                    title='Category Info' onclick='catShow()'></i>
+                                Categories of Uses
+                            </h3>
+                            <span id="chart-legend-icons">
+                                <i class="fa fa-circle legend-icons civic"></i>Civic
+                                <i class="fa fa-circle legend-icons cultural"></i>Cultural
+                                <i class="fa fa-circle legend-icons construction"></i>Construction
+                                <i class="fa fa-circle legend-icons institutional"></i>Institutional
+                                <br>
+                                <i class="fa fa-circle legend-icons office"></i>Office
+                                <i class="fa fa-circle legend-icons res"></i>Residential
+                                <i class="fa fa-circle legend-icons vacant"></i>Vacant
+                            </span>
+                            <br>
+                            <span>
+                                <b>Retail Types:</b>
+                                <i class="fa fa-circle legend-icons experiential"></i>Experiential
+                                <i class="fa fa-circle legend-icons fb"></i>Food and Beverage
+                                <br>
+                                <i class="fa fa-circle legend-icons gafo"></i>General Merchandise, Apparel, Furnishings,
+                                and Other
+                                <i class="fa fa-circle legend-icons hosp"></i>Hospitality
+                                <br>
+                                <i class="fa fa-circle legend-icons ngs"></i>Neighborhood Goods and Services
+                            </span>
+                        </div> -->
+
+                        <div class='data-wrapper' id='data-wrapper'>
+                            <h2 class='data-subheader'>
+                                Accessibility and Demographics
+                                <span class='data-heading-small'><br>(within 1/2 mile) as of 2013</span>
+                            </h2>
+                            <div id='info-wrapper' class='info-wrapper'>
+                                <div id='info1' class='info1'></div>
+                                <div id='info2' class='info2'></div>
                             </div>
                         </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
+
+                        <div class='chart-wrapper' id='retail-chart-wrapper'>
+                            <div>
+                                <h3 class='chart-subheader'>Mix of Uses and Retail Types</h3>
+                                <!-- <i class='glyphicon glyphicon-info-sign' id='info-icon' data-toggle='tooltip'
+                                    title='Category Info' onclick='catShow()'></i> -->
+                            </div>
+                            
+                            <div id="retail-chart"></div>
+                        </div>
+
+                        <div class='chart-wrapper' id='web-and-social-chart-wrapper'>
+                            <h3 class='chart-subheader'>Share of Retail with Social Media and/or a Website</h3>
+                            <div id="web-and-social-chart"></div>
+                            <div class="sidebar-chart-paragraphs">
+                                <p><span>Prior to the pandemic, increased competition from
+                                        e-commerce prompted traditional brick-and-mortar retail businesses to curate
+                                        their own online presence, and during the pandemic e-commerce was a lifeline for
+                                        retail during periods of economic shutdown. However, research has found a
+                                        beneficial relationship between a combined approach to retail that includes both
+                                        e-commerce and brick-and-mortar. This benefit has been termed the Halo Effect.
+                                        &nbsp;</span></p>
+                                <p><span>Learn more about the Halo Effect, and the role it
+                                        played in our region during the pandemic, by watching DVRPC&rsquo;s webinar
+                                        on&nbsp;</span><a
+                                        href="https://dvrpc.zoom.us/rec/play/fFzlb28HBj4Zx-Dv6AbvMHicfLe5SktB3IYF1v777rKtg_g7M2Zp1Tc0fV6Qan9IwVQZCOvI-hAv4aBt.0v0hxSaQ5H9PW10N?canPlayFromShare=true&from=share_recording_detail&continueMode=true&componentName=rec-play&originRequestUrl=https%3A%2F%2Fdvrpc.zoom.us%2Frec%2Fshare%2FTzLrmssjG-ikvuBdN651EHvuj3MExfLLS1H6iGLfr7iSursZsJO8C2CdOJrWMx2G.4ynzwaYzHZRet_K1"><u><span
+                                                style="color:#1155cc">How E-Commerce Can Actually Save
+                                                Main Street.</span></u></a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class='chart-wrapper' id='bank-chart-wrapper'>
+                            <h3 class='chart-subheader'>Total Bank Branches</h3>
+                            <div id="bank-chart"></div>
+                        </div>
+
+                        <div class='chart-wrapper' id='tenancy-chart-wrapper'>
+                            <h3 class='chart-subheader'>Local-Chain Retail Mix</h3>
+                            <div id="tenancy-chart"></div>
+                            <div class="sidebar-chart-paragraphs">
+                                <p><span>What constitutes a healthy mix of chain and
+                                        locally-owned businesses will be unique for every community. But it is
+                                        important that local retail be a part of the retail mix for the health of
+                                        the local economy, and the retail district itself.&nbsp;</span></p>
+                                <p><span>DVRPC&rsquo;s publication&nbsp;</span><a
+                                        href="https://www.dvrpc.org/products/mit034"><u><em><span
+                                                    style="color:#1155cc">Cultivating a Homegrown
+                                                    Economy</span></em></u></a><span>&nbsp;discusses the trends
+                                        behind, and benefits of,
+                                        locally-owned businesses and local identity in general. A follow-up
+                                        three-part webinar series provided a deeper dive into the subject, and can
+                                        be viewed via the links below.&nbsp;</span></p>
+                                <p><a
+                                        href="https://dvrpc.zoom.us/rec/share/K4gHtkpTlNV9v52d91qg6XwX6yCn5zW50N-voEXGuMKEdIZexFvuFrLMZ8-kMmy-.tGjDsI2vHDxasCcQ?startTime=1657896836000%20Passcode:%202DuDiX&m"><u><span
+                                                style="color:#1155cc">Session 1: Economic
+                                                Sustainability</span></u></a><span>, July
+                                        15, 2022</span></br>
+                                <a
+                                        href="https://dvrpc.zoom.us/rec/share/qr5bYetMYcgFGPXtYlz8kti7NngYOYkCoVPgq2gX7dwkaiKWQRwAY2KDAVTKbEQM.9FQFcqJ-X7wxB7jY?startTime=1659711695000"><u><span
+                                                style="color:#1155cc">Session 2: Environmental
+                                                Sustainability</span></u></a><span>, August
+                                        5, 2022</span></br>
+                                <a
+                                        href="https://dvrpc.zoom.us/rec/share/BJkc9toy26Bok33cHk-yol2jaGFFIsXW9nxvWLgwSIbYf-67h1cVV0jgPDFQ9XP7.8o0xP0yabrxJZJdT"><u><span
+                                                style="color:#1155cc">Session 3: Social
+                                                Sustainability</span></u></a>
+                                    <span">,
+                                        September 9, 2022</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class='chart-wrapper' id='sales-trend-chart-wrapper'>
+                            <h3 class='chart-subheader'>Percent Change in Estimated Sales by Retail Category, 2020-2023</h3>
+                            <div id="sales-trend-chart"></div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Map -->
+        <div class="col-sm-12 col-md-12 col-lg-12" id="map" style="overflow:hidden"></div>
+
+    </div>
+    <!-- Zoom -->
+    </div>
+    <a href='javascript:void(0);' id='zoomtoregion'></a>
+    </div>
+    <!-- About Modal -->
+    <div class="modal fade" id="aboutModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Retail Districts of Greater Philadelphia</h4>
+                </div>
+                <div class="modal-body">
+                    <ul id="aboutTabs" class="nav nav-tabs">
+                        <li class="active"><a href="#about" data-toggle="tab"><i
+                                    class="icon-info-sign"></i>&nbsp;About</a></li>
+                        <li><a href="#disclaimer" data-toggle="tab"><i
+                                    class="icon-exclamation-sign"></i>&nbsp;Disclaimer</a></li>
+                    </ul>
+                    <div id="aboutTabsContent" class="tab-content" style="padding-top: 10px;">
+                        <div class="tab-pane fade active in" id="about">
+                            <div>
+                                <p class="about-one">In 2013, staff compiled information about 71 suburban downtown
+                                    retail districts in an effort to learn what elements were common among successful
+                                    older suburban retail districts.
+                                    The information about each downtown's retail mix was collected between January and
+                                    April 2013.
+                                    Retail elements included in this analysis were: sidewalk width, <a
+                                        href="https://www.walkscore.com/" target="_new" class="one">Walk Score®</a>,
+                                    vacancy rate, parking options, streetscape, street width, National Register of
+                                    Historic Places, household income, transit accessibility, residential population,
+                                    use and retail type mix, and blocks included for analysis.</p>
+                                <p>An update to DVRPC’s 2013 inventory of use and retail type mix was conducted from
+                                    January through December 2020. As part of this effort, one retail district was added
+                                    from each of the region’s four Core Cities: Camden, Chester, Philadelphia, and
+                                    Trenton.
+                                    Additionally, nine different district typologies were identified, with many
+                                    downtowns having several typologies:</p>
+                                <ul class="a">
+                                    <li><b>Brewery – </b>have at least one craft brewery located within the district
+                                        boundaries.</li>
+                                    <li><b>Circuit – </b>have one or more of the region’s Circuit Trails within ¼ mile
+                                        of the district. </li>
+                                    <li><b>Classic – </b>were previously part of the <a
+                                            href="https://www.dvrpc.org/ClassicTowns/" target="_new" class="one">Classic
+                                            Towns</a> program.</li>
+                                    <li><b>Core – </b>are located in one of the region’s four Core Cities.</li>
+                                    <li><b>College – </b>have a large, academic campus within ½ mile of the district.
+                                    </li>
+                                    <li><b>Expanding – </b>boundaries were expanded in response to relatively
+                                        significant development activity that occurred at the periphery of the district
+                                        since 2013.</li>
+                                    <li><b>Historic – </b>have a national register or local historic district located
+                                        within the retail district.</li>
+                                    <li><b>Opportunity – </b>have one or more Opportunity Zones located within the
+                                        district’s boundaries. </li>
+                                    <li><b>Transit-Oriented – </b>are within ½ mile radius of a transit stop (not
+                                        including buses).</li>
+                                </ul>
+                                <p>
+                                <h4>For more information:</h4>
+                                <address>
+                                    Spencer Gober | Senior Planner, Office of Community and Economic Development<br />
+                                    <a href="mailto:sgober@dvrpc.org" class="one">sgober@dvrpc.org</a><br />
+                                </address>
+                                <a href="https://drive.google.com/file/d/1YkRyS25oFpPShhs1ZhY_W1dGD_LHQwbG/view?usp=sharing"
+                                    target="_new"><i class="glyphicon glyphicon-download-alt"></i>&nbsp;&nbsp;Download
+                                    Spreadsheet <small>[0.1 MB xls]</small></a>
+                                </p>
+                            </div>
+                            <div id="about_footer">
+                                <p>The information provided through this web application is the culmination of field
+                                    work and research done by DVRPC staff. For more information on how this analysis was
+                                    used to support and develop strategies for these retail districts, please visit our
+                                    <a href="https://www.dvrpc.org/communityrevitalization" target="_new"
+                                        id="about-footer">Community Resilience webpage</a>.
+                                <p>For more information, visit <a href="https://www.dvrpc.org/Policies/" target="_blank"
+                                        class="one">Policies</a> |
+                                    <a href="https://www.dvrpc.org/Products/WEB19521" target="_blank"
+                                        class="one">Abstract</a>
+                                </p>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="disclaimer">
+                            <img src="https://www.dvrpc.org/img/homepage/dvrpclogo70px.png" alt="DVRPC logo"
+                                class="dvrpc_full_logo" />
+                            <p style="margin: -5px 0px 0px 45px;display:block"><span><span>This web page is a public
+                                        resource of general information. The Delaware Valley Regional Planning
+                                        Commission (DVRPC) makes no warranty,
+                                        representation, or guarantee as to the content, sequence, accuracy, timeliness,
+                                        or completeness of any of the spatial data or database
+                                        information provided herein. DVRPC and partner state, local, and other agencies
+                                        shall assume no liability for errors, omissions, or
+                                        inaccuracies in the information provided regardless of how caused; or any
+                                        decision made or action taken or not taken by any person relying
+                                        on any information or data furnished within.</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <!-- Legend Modal -->
     <div class="modal fade" id="CATModal">
         <div class="modal-dialog" style="width:710px;">
@@ -240,34 +347,60 @@
                 </div>
                 <div class="modal-body">
                     <ul class="a">
-                          <p> <i class="fa fa-circle legend-icons civic"></i><b>Civic:</b> Includes municipal buildings, firehouses, police stations, libraries, post offices, or any other government office.</p>
-                          <p> <i class="fa fa-circle legend-icons cultural"></i><b>Cultural:</b> Includes entertainment activities, such as art galleries, performing arts centers, historic theaters, as well as religious institutions.</p> 
-                          <p> <i class="fa fa-circle legend-icons construction"></i><b>Construction:</b> Active construction sites, even where the intended end use was known.</p>
-                          <p> <i class="fa fa-circle legend-icons institutional"></i><b>Institutional:</b> Includes institutions of higher or continuing education. </p> 
-                          <p> <i class="fa fa-circle legend-icons office"></i><b>Office:</b> Includes professional office space from both the public and non-profit sectors. Offices above ground floor retail may not have been captured if the use could not be verified.</p> 
-                          <p> <i class="fa fa-circle legend-icons res"></i><b>Residential:</b> Includes single-family and multifamily housing units. Residential units above ground-floor retail may not have been captured if the use could not be verified. </p> 
-                          <p> <i class="fa fa-circle legend-icons vacant"></i><b>Vacant:</b> Unoccupied buildings or storefronts.</p> 
-                        </ul>
-                          <p><b>Retail Types:</b>
-                            <ul class="a">
-                                <p><i class="fa fa-circle legend-icons experiential"></i><b>Experiential (EXP):</b> Experiential retail is a relatively new trend within the retail industry that includes uses such as axe throwing, pottery making, and painting with wine. Given the relatively recent rise in experiential retail, this type was not contained in the 2013 inventory.</p>
-                                <p><i class="fa fa-circle legend-icons fb"></i><b>Food and Beverage (F&B):</b> Includes sit-down restaurants, take-away food, cafes, bars, coffee shops, sandwich shops, ice cream shops, fast food restaurants, and similar types of tenants. </p>
-                                <p><i class="fa fa-circle legend-icons gafo"></i><b>General Merchandise, Apparel, Furnishings, and Other (GAFO):</b> Includes clothing stores, furniture stores, discount stores, bookstores, jewelry stores, gift shops, pet supply stores, home decor stores, music stores, sporting goods stores, craft stores, mattress stores, electronics stores, auto parts stores, hardware stores, and similar types of tenants.</p>
-                                <p><i class="fa fa-circle legend-icons hosp"></i><b>Hospitality (HOSP):</b> Includes bed and breakfasts, hotels, inns, motels, and other similar types of lodging. Restaurants and bars associated with a hospitality use would have been captured separately in the F&B retail type. Hospitality uses were not treated as a separate retail type in the 2013 inventory.</p>
-                                <p><i class="fa fa-circle legend-icons ngs"></i><b>Neighborhood Goods and Services (NG&S):</b> Includes grocery stores, convenience stores, drugstores, florists, gyms, bakeries, delicatessens, butchers, dry cleaners, yoga studios, salons, tailors, laundromats, spas, liquor stores, shoe repair, and similar types of tenants. </p>
-                             </ul>
-                        </p>
+                        <p> <i class="fa fa-circle legend-icons civic"></i><b>Civic:</b> Includes municipal buildings,
+                            firehouses, police stations, libraries, post offices, or any other government office.</p>
+                        <p> <i class="fa fa-circle legend-icons cultural"></i><b>Cultural:</b> Includes entertainment
+                            activities, such as art galleries, performing arts centers, historic theaters, as well as
+                            religious institutions.</p>
+                        <p> <i class="fa fa-circle legend-icons construction"></i><b>Construction:</b> Active
+                            construction sites, even where the intended end use was known.</p>
+                        <p> <i class="fa fa-circle legend-icons institutional"></i><b>Institutional:</b> Includes
+                            institutions of higher or continuing education. </p>
+                        <p> <i class="fa fa-circle legend-icons office"></i><b>Office:</b> Includes professional office
+                            space from both the public and non-profit sectors. Offices above ground floor retail may not
+                            have been captured if the use could not be verified.</p>
+                        <p> <i class="fa fa-circle legend-icons res"></i><b>Residential:</b> Includes single-family and
+                            multifamily housing units. Residential units above ground-floor retail may not have been
+                            captured if the use could not be verified. </p>
+                        <p> <i class="fa fa-circle legend-icons vacant"></i><b>Vacant:</b> Unoccupied buildings or
+                            storefronts.</p>
+                    </ul>
+                    <p><b>Retail Types:</b>
+                    <ul class="a">
+                        <p><i class="fa fa-circle legend-icons experiential"></i><b>Experiential (EXP):</b> Experiential
+                            retail is a relatively new trend within the retail industry that includes uses such as axe
+                            throwing, pottery making, and painting with wine. Given the relatively recent rise in
+                            experiential retail, this type was not contained in the 2013 inventory.</p>
+                        <p><i class="fa fa-circle legend-icons fb"></i><b>Food and Beverage (F&B):</b> Includes sit-down
+                            restaurants, take-away food, cafes, bars, coffee shops, sandwich shops, ice cream shops,
+                            fast food restaurants, and similar types of tenants. </p>
+                        <p><i class="fa fa-circle legend-icons gafo"></i><b>General Merchandise, Apparel, Furnishings,
+                                and Other (GAFO):</b> Includes clothing stores, furniture stores, discount stores,
+                            bookstores, jewelry stores, gift shops, pet supply stores, home decor stores, music stores,
+                            sporting goods stores, craft stores, mattress stores, electronics stores, auto parts stores,
+                            hardware stores, and similar types of tenants.</p>
+                        <p><i class="fa fa-circle legend-icons hosp"></i><b>Hospitality (HOSP):</b> Includes bed and
+                            breakfasts, hotels, inns, motels, and other similar types of lodging. Restaurants and bars
+                            associated with a hospitality use would have been captured separately in the F&B retail
+                            type. Hospitality uses were not treated as a separate retail type in the 2013 inventory.</p>
+                        <p><i class="fa fa-circle legend-icons ngs"></i><b>Neighborhood Goods and Services (NG&S):</b>
+                            Includes grocery stores, convenience stores, drugstores, florists, gyms, bakeries,
+                            delicatessens, butchers, dry cleaners, yoga studios, salons, tailors, laundromats, spas,
+                            liquor stores, shoe repair, and similar types of tenants. </p>
+                    </ul>
+                    </p>
                 </div><!-- /.modal-body -->
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div><!-- /.modal fade-->           
+    </div><!-- /.modal fade-->
 
-<script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>  
-<script type="text/javascript" src="assets/js/app.js"></script>
-<script type="text/javascript" src="assets/js/numeral.js"></script>
+    <script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript" src="assets/js/app.js"></script>
+    <script type="text/javascript" src="assets/js/numeral.js"></script>
 
-<script>var _gaq=[['_setAccount','UA-9825778-1'],['_trackPageview']];(function(d){var g=d.createElement('script'),s=d.scripts[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document))</script>
+    <script>var _gaq = [['_setAccount', 'UA-9825778-1'], ['_trackPageview']]; (function (d) { var g = d.createElement('script'), s = d.scripts[0]; g.src = '//www.google-analytics.com/ga.js'; s.parentNode.insertBefore(g, s) }(document))</script>
 
-<!-- End Main Body -->
-  </body>
+    <!-- End Main Body -->
+</body>
+
 </html>
