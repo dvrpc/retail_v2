@@ -1048,6 +1048,18 @@ map.on("load", function () {
         },
         legend: {
           itemStyle: { fontSize: "12px" },
+          useHTML: true,
+          symbolPadding: 0,
+          symbolWidth: 0.1,
+          symbolHeight: 0.1,
+          symbolRadius: 0,
+          symbolWidth: 0,
+          labelFormatter: function() {
+            let name = this.name;
+            // let img = '<div width = "15px" height= "15px" border-radius="50%"/>'
+            let img = `<div class="custom-icon-container"><div class="custom-legend-icon${name === "Regional Average" ? "-2" : ""}"></div>${name}</div>`;
+            return img
+          }
         },
         plotOptions: {
           series: {
@@ -1076,6 +1088,7 @@ map.on("load", function () {
         ],
       };
       const chart = new Highcharts.Chart(salesTrendChart);
+      
     }
   };
 
@@ -1101,7 +1114,6 @@ map.on("load", function () {
         style: {
           fontSize: "12px",
         },
-        pointFormat: "<span>{series.name}</span>: <b>{point.y:.0f}%</b> <br/>",
       },
       // legend: false,
       xAxis: {
