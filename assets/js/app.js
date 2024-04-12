@@ -575,15 +575,44 @@ map.on("load", function () {
     // charts
 
     updateRetailChart(districtChartData);
-    updateWebAndSocialChart(districtChartData);
+    updateWebAndSocialChart(districtChartData['2022']);
     updateBanksChart(districtChartData);
-    updateRetailTenancyChart(districtChartData);
+    updateRetailTenancyChart(districtChartData['2022']);
     updateSalesTrendsChart(districtSalesTrendData, regionalSalesTrendData);
     updateQuarterlyVisitsChart(
       districtQuarterlyVisits,
       props.DISTRICT,
       medianQuarterlyVisits
     );
+
+    Object.keys(districtChartData).forEach(year => {
+      const tenancyBtn = document.getElementById(`tenancy-chart-btn-${year}`);
+
+      if (year !== '2013') {
+        const socialBtn = document.getElementById(`social-chart-btn-${year}`);
+        socialBtn.addEventListener('click', () => {
+          document.querySelectorAll('.social-chart-button-wrapper button.active')
+            .forEach(active => {
+              active.className = '';
+            });
+          socialBtn.className = 'active';
+
+          updateWebAndSocialChart(districtChartData[year]);
+
+        });
+      }
+
+      tenancyBtn.addEventListener('click', () => {
+        document.querySelectorAll('.tenancy-chart-button-wrapper button.active')
+          .forEach(active => {
+            active.className = '';
+          });
+        tenancyBtn.className = 'active';
+
+        updateRetailTenancyChart(districtChartData[year]);
+
+      });
+    })
 
     function updateRetailChart(chartData) {
       const retailCategoryFieldMapping = {
@@ -694,11 +723,10 @@ map.on("load", function () {
       const chart = new Highcharts.Chart(retailStackedBarChart);
     }
 
-    function updateWebAndSocialChart(chartData) {
-      function getFieldPercentage(fieldName, year) {
-        return chartData[year][fieldName] * 100;
+    function updateWebAndSocialChart(districtRow) {
+      function getFieldPercentage(fieldName) {
+        return districtRow[fieldName] * 100;
       }
-
       const webAndSocialChart = {
         chart: {
           renderTo: "web-and-social-chart",
@@ -712,7 +740,7 @@ map.on("load", function () {
           text: "",
         },
         xAxis: {
-          categories: ["Web 2020", "Social 2020", "Web 2022", "Social 2022"],
+          categories: ["Web", "Social"],
           accessibility: {
             description: "Web or Social Years",
           },
@@ -751,23 +779,19 @@ map.on("load", function () {
         },
         series: [
           {
-            name: chartData[2020].district,
+            name: districtRow.district,
             color: "#bc5090",
             data: [
-              getFieldPercentage("web", 2020),
-              getFieldPercentage("social", 2020),
-              getFieldPercentage("web", 2022),
-              getFieldPercentage("social", 2022),
+              getFieldPercentage("web", districtRow.year),
+              getFieldPercentage("social", districtRow.year),
             ],
           },
           {
             name: "Retail District Average",
             color: "#ffa600",
             data: [
-              getFieldPercentage("web_ave", 2020),
-              getFieldPercentage("social_ave", 2020),
-              getFieldPercentage("web_ave", 2022),
-              getFieldPercentage("social_ave", 2022),
+              getFieldPercentage("web_ave", districtRow.year),
+              getFieldPercentage("social_ave", districtRow.year),
             ],
           },
         ],
@@ -851,11 +875,12 @@ map.on("load", function () {
       var chart = new Highcharts.Chart(banksChart);
     }
 
-    function updateRetailTenancyChart(chartData) {
-      const districtName = chartData[2013].district;
+    function updateRetailTenancyChart(districtRow) {
+      const districtName = districtRow.district;
 
-      function getFieldPercentage(fieldName, year) {
-        return chartData[year][fieldName] * 100;
+
+      function getFieldPercentage(fieldName) {
+        return districtRow[fieldName] * 100;
       }
 
       const retailTenancyChart = {
@@ -880,12 +905,9 @@ map.on("load", function () {
         },
         xAxis: {
           categories: [
-            `${districtName} 2013`,
-            "Retail District Average 2013",
-            `${districtName} 2020`,
-            "Retail District Average 2020",
-            `${districtName} 2022`,
-            "Retail District Average 2022",
+            districtName,
+            'Retail District Average',
+
           ],
           labels: {
             style: {
@@ -926,24 +948,16 @@ map.on("load", function () {
             color: "#77CE9D",
             name: "Local",
             data: [
-              getFieldPercentage("local", 2013),
-              getFieldPercentage("local_ave", 2013),
-              getFieldPercentage("local", 2020),
-              getFieldPercentage("local_ave", 2020),
-              getFieldPercentage("local", 2022),
-              getFieldPercentage("local_ave", 2022),
+              getFieldPercentage("local", districtRow.year),
+              getFieldPercentage("local_ave", districtRow.year),
             ],
           },
           {
             color: "#E57A7A",
             name: "Chain",
             data: [
-              getFieldPercentage("chain", 2013),
-              getFieldPercentage("chain_ave", 2013),
-              getFieldPercentage("chain", 2020),
-              getFieldPercentage("chain_ave", 2020),
-              getFieldPercentage("chain", 2022),
-              getFieldPercentage("chain_ave", 2022),
+              getFieldPercentage("chain", districtRow.year),
+              getFieldPercentage("chain_ave", districtRow.year),
             ],
           },
         ],
@@ -1054,9 +1068,8 @@ map.on("load", function () {
           symbolHeight: 0.1,
           symbolRadius: 0,
           symbolWidth: 0,
-          labelFormatter: function() {
+          labelFormatter: function () {
             let name = this.name;
-            // let img = '<div width = "15px" height= "15px" border-radius="50%"/>'
             let img = `<div class="custom-icon-container"><div class="custom-legend-icon${name === "Regional Average" ? "-2" : ""}"></div>${name}</div>`;
             return img
           }
@@ -1088,7 +1101,7 @@ map.on("load", function () {
         ],
       };
       const chart = new Highcharts.Chart(salesTrendChart);
-      
+
     }
   };
 

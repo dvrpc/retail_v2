@@ -516,14 +516,14 @@
         align-items: center;
     }
 
-    .chart-button-wrapper {
+    .tenancy-chart-button-wrapper {
         min-width: 310px;
         text-align: center;
         margin: 1rem 0;
         font-size: 0;
     }
 
-    .chart-button-wrapper button {
+    .tenancy-chart-button-wrapper button {
         cursor: pointer;
         border: 1px solid silver;
         border-right-width: 0;
@@ -536,25 +536,66 @@
         height: 40px;
     }
     
-    .chart-button-wrapper button:first-child {
+    .tenancy-chart-button-wrapper button:first-child {
         border-top-left-radius: 0.3em;
         border-bottom-left-radius: 0.3em;
     }
     
-    .chart-button-wrapper button:last-child {
+    .tenancy-chart-button-wrapper button:last-child {
         border-top-right-radius: 0.3em;
         border-bottom-right-radius: 0.3em;
         border-right-width: 1px;
     }
     
-    .chart-button-wrapper button:hover {
+    .tenancy-chart-button-wrapper button:hover {
         color: white;
         background-color: rgb(158 159 163);
         outline: none;
     }
     
-    .chart-button-wrapper button.active {
+    .tenancy-chart-button-wrapper button.active {
         background-color: #0051b4;
         color: white;
     }
     
+    .social-chart-button-wrapper {
+        min-width: 310px;
+        text-align: center;
+        margin: 1rem 0;
+        font-size: 0;
+    }
+
+    .social-chart-button-wrapper button {
+        cursor: pointer;
+        border: 1px solid silver;
+        border-right-width: 0;
+        background-color: #f8f8f8;
+        font-size: 1rem;
+        padding: 0.5rem;
+        transition-duration: 0.3s;
+        margin: 0;
+        width: 90px;
+        height: 40px;
+    }
+    
+    .social-chart-button-wrapper button:first-child {
+        border-top-left-radius: 0.3em;
+        border-bottom-left-radius: 0.3em;
+    }
+    
+    .social-chart-button-wrapper button:last-child {
+        border-top-right-radius: 0.3em;
+        border-bottom-right-radius: 0.3em;
+        border-right-width: 1px;
+    }
+    
+    .social-chart-button-wrapper button:hover {
+        color: white;
+        background-color: rgb(158 159 163);
+        outline: none;
+    }
+    
+    .social-chart-button-wrapper button.active {
+        background-color: #0051b4;
+        color: white;
+    }
