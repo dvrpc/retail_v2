@@ -537,8 +537,8 @@ map.on("load", function () {
       "</span></div>";
 
     document.getElementById("resultsHeader").innerHTML = info;
-    document.getElementById("info1").innerHTML = content1;
-    document.getElementById("info2").innerHTML = content2;
+    // document.getElementById("info1").innerHTML = content1;
+    // document.getElementById("info2").innerHTML = content2;
 
     map.flyTo({
       // created a parameter that pulls the lat/long values from the geojson
@@ -574,45 +574,45 @@ map.on("load", function () {
     console.log(districtQuarterlyVisits);
     // charts
 
-    updateRetailChart(districtChartData);
+    updateRetailChart(districtChartData['2022']);
     updateWebAndSocialChart(districtChartData['2022']);
     updateBanksChart(districtChartData);
     updateRetailTenancyChart(districtChartData['2022']);
-    updateSalesTrendsChart(districtSalesTrendData, regionalSalesTrendData);
+    updateSalesTrendsChart(districtSalesTrendData, regionalSalesTrendData, 'mvp');
     updateQuarterlyVisitsChart(
       districtQuarterlyVisits,
       props.DISTRICT,
       medianQuarterlyVisits
     );
 
-    Object.keys(districtChartData).forEach(year => {
-      const tenancyBtn = document.getElementById(`tenancy-chart-btn-${year}`);
+    document.querySelectorAll('button.chart-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.id.split('-')[0]
+        const year = btn.id.split('-').slice(-1)[0]
 
-      if (year !== '2013') {
-        const socialBtn = document.getElementById(`social-chart-btn-${year}`);
-        socialBtn.addEventListener('click', () => {
-          document.querySelectorAll('.social-chart-button-wrapper button.active')
-            .forEach(active => {
-              active.className = '';
-            });
-          socialBtn.className = 'active';
-
-          updateWebAndSocialChart(districtChartData[year]);
-
-        });
-      }
-
-      tenancyBtn.addEventListener('click', () => {
-        document.querySelectorAll('.tenancy-chart-button-wrapper button.active')
+        document.querySelectorAll(`div.${type}-chart-button-wrapper button.active`)
           .forEach(active => {
             active.className = '';
           });
-        tenancyBtn.className = 'active';
+        btn.className = 'chart-btn active';
 
-        updateRetailTenancyChart(districtChartData[year]);
-
+        if (type === 'retail') {
+          updateRetailChart(districtChartData[year])
+        } else if (type === 'tenancy') {
+          updateRetailTenancyChart(districtChartData[year]);
+        } else {
+          updateWebAndSocialChart(districtChartData[year]);
+        }
       });
     })
+
+    document.getElementById('sales-category-select').addEventListener('change', (event) => {
+      console.log(event)
+      updateSalesTrendsChart(districtSalesTrendData, regionalSalesTrendData, event.target.value)
+    })
+
+    const select = document.getElementById('sales-category-select')
+    select.value = 'mvp'
 
     function updateRetailChart(chartData) {
       const retailCategoryFieldMapping = {
@@ -646,14 +646,12 @@ map.on("load", function () {
       };
 
       const populatedSeries = [];
-      const yearsAvailable = Object.keys(chartData).length;
 
       Object.keys(retailCategoryFieldMapping).forEach((label) => {
         const fieldData = [];
 
-        Object.values(chartData).forEach((chart_year) => {
-          fieldData.push(chart_year[retailCategoryFieldMapping[label]]);
-        });
+        fieldData.push(chartData[retailCategoryFieldMapping[label]]);
+
         populatedSeries.push({
           name: label,
           data: fieldData,
@@ -673,13 +671,11 @@ map.on("load", function () {
           fontSize: "1em",
         },
         xAxis: {
-          categories:
-            yearsAvailable === 3 ? ["2013", "2020", "2022"] : ["2020", "2022"],
+          crosshair: false,
+          tickLength: 0,
           labels: {
-            style: {
-              fontSize: "12px",
-            },
-          },
+            enabled: false
+          }
         },
         yAxis: {
           min: 0,
@@ -693,6 +689,7 @@ map.on("load", function () {
         },
         title: "",
         tooltip: {
+          headerFormat: null,
           pointFormat:
             '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b> <br/>',
           shared: true,
@@ -749,6 +746,8 @@ map.on("load", function () {
               fontSize: "12px",
             },
           },
+          gridLineWidth: 1,
+          lineWidth: 0,
         },
         legend: {
           itemStyle: { fontSize: "12px" },
@@ -914,18 +913,20 @@ map.on("load", function () {
               fontSize: "12px",
             },
           },
+          gridLineWidth: 1,
+          lineWidth: 0,
         },
         yAxis: {
           min: 0,
           labels: {
             format: "{value}%",
-          },
-          labels: {
             style: {
               fontSize: "12px",
             },
           },
           title: "false",
+          gridLineWidth: 1,
+          lineWidth: 0,
         },
         legend: {
           itemStyle: { fontSize: "12px" },
@@ -965,58 +966,55 @@ map.on("load", function () {
       const chart = new Highcharts.Chart(retailTenancyChart);
     }
 
-    function updateSalesTrendsChart(districtSalesTrends, reginonalSalesTrends) {
+    function updateSalesTrendsChart(districtSalesTrends, reginonalSalesTrends, selectedField) {
       const salesCategoryFieldMapping = {
-        Total: "total",
-        "Motor Vehicle Parts & Dealers": "mvp",
-        "Furniture & Home Furnishing Stores": "fhf",
-        "Electronics & Appliance Stores": "ea",
-        "Building Material, Garden Equip. & Supplies": "bmge",
-        "Food & Beverage Stores": "fb",
-        "Health & Personal Care Stores": "hpc",
-        "Clothing & Clothing Accessories Stores": "cca",
-        "Sporting Goods, Hobby, Book, & Music Stores": "sghmb",
-        "General Merchandise Stores": "gm",
-        "Miscellaneous Store Retailers": "misc",
-        "Foodservice & Drinking Places": "fd",
+        "total": "Total",
+        "mvp": "Motor Vehicle Parts & Dealers",
+        "fhf": "Furniture & Home Furnishing Stores",
+        "ea": "Electronics & Appliance Stores",
+        "bmge": "Building Material, Garden Equip. & Supplies",
+        "fb": "Food & Beverage Stores",
+        "hpc": "Health & Personal Care Stores",
+        "cca": "Clothing & Clothing Accessories Stores",
+        "sghmb": "Sporting Goods, Hobby, Book, & Music Stores",
+        "gm": "General Merchandise Stores",
+        "misc": "Miscellaneous Store Retailers",
+        "fd": "Foodservice & Drinking Places",
       };
 
       const salesCategories = [
-        "Total",
-        "Motor Vehicle Parts & Dealers",
-        "Furniture & Home Furnishing Stores",
-        "Electronics & Appliance Stores",
-        "Building Material, Garden Equip. & Supplies",
-        "Food & Beverage Stores",
-        "Health & Personal Care Stores",
-        "Clothing & Clothing Accessories Stores",
-        "Sporting Goods, Hobby, Book, & Music Stores",
-        "General Merchandise Stores",
-        "Miscellaneous Store Retailers",
-        "Foodservice & Drinking Places",
+        "Total"
       ];
+
+      salesCategories.push(salesCategoryFieldMapping[selectedField]);
 
       const districtName = districtSalesTrends.district;
       const populatedDistrictData = [];
       const populatedRegionalData = [];
 
-      for (const [key, value] of Object.entries(salesCategoryFieldMapping)) {
-        populatedDistrictData.push(
-          Math.round(districtSalesTrends[value] * 100)
-        );
-        populatedRegionalData.push(
-          Math.round(reginonalSalesTrends[value] * 100)
-        );
-      }
+      populatedDistrictData.push(
+        Math.round(districtSalesTrends['total'] * 100)
+      );
+      populatedRegionalData.push(
+        Math.round(reginonalSalesTrends['total'] * 100)
+      );
+
+      populatedDistrictData.push(
+        Math.round(districtSalesTrends[selectedField] * 100)
+      );
+      populatedRegionalData.push(
+        Math.round(reginonalSalesTrends[selectedField] * 100)
+      );
+
 
       const salesTrendChart = {
         chart: {
-          type: "bar",
+          type: "column",
           renderTo: "sales-trend-chart",
           plotBackgroundColor: null,
           plotBorderWidth: 0, //null,
           plotShadow: false,
-          height: 1000,
+          height: 400,
           fontSize: "1em",
         },
         title: {
@@ -1058,21 +1056,9 @@ map.on("load", function () {
               fontSize: "12px",
             },
           },
-          tickInterval: 10,
         },
         legend: {
           itemStyle: { fontSize: "12px" },
-          useHTML: true,
-          symbolPadding: 0,
-          symbolWidth: 0.1,
-          symbolHeight: 0.1,
-          symbolRadius: 0,
-          symbolWidth: 0,
-          labelFormatter: function () {
-            let name = this.name;
-            let img = `<div class="custom-icon-container"><div class="custom-legend-icon${name === "Regional Average" ? "-2" : ""}"></div>${name}</div>`;
-            return img
-          }
         },
         plotOptions: {
           series: {
@@ -1089,14 +1075,12 @@ map.on("load", function () {
           {
             name: districtName,
             data: populatedDistrictData,
-            color: "green",
-            negativeColor: "red",
+            color: "#F26419",
           },
           {
             name: "Regional Average",
             data: populatedRegionalData,
-            color: "#6bdb6b",
-            negativeColor: "#FF7A7A",
+            color: "#2F4858",
           },
         ],
       };

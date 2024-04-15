@@ -135,7 +135,7 @@
                             </span>
                         </div> -->
 
-                        <div class='data-wrapper' id='data-wrapper'>
+                        <!-- <div class='data-wrapper' id='data-wrapper'>
                             <h2 class='data-subheader'>
                                 Accessibility and Demographics
                                 <span class='data-heading-small'><br>(within 1/2 mile) as of 2013</span>
@@ -144,7 +144,7 @@
                                 <div id='info1' class='info1'></div>
                                 <div id='info2' class='info2'></div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class='chart-wrapper' id='retail-chart-wrapper'>
                             <div>
@@ -152,7 +152,11 @@
                                 <!-- <i class='glyphicon glyphicon-info-sign' id='info-icon' data-toggle='tooltip'
                                     title='Category Info' onclick='catShow()'></i> -->
                             </div>
-
+                            <div class="retail-chart-button-wrapper">
+                                <button id='retail-chart-btn-2013' class='chart-btn'>2013</button>
+                                <button id='retail-chart-btn-2020' class='chart-btn'>2020</button>
+                                <button id='retail-chart-btn-2022' class='chart-btn active'>2022</button>
+                            </div>
                             <div id="retail-chart"></div>
                         </div>
 
@@ -184,6 +188,26 @@
                         <div class='chart-wrapper' id='bank-chart-wrapper'>
                             <h3 class='chart-subheader'>Total Bank Branches</h3>
                             <div id="bank-chart"></div>
+                            <div class="sidebar-chart-paragraphs">
+
+                                <p><span>Between 2012 and 2022, there was a net loss of 405 bank
+                                        branches in all of Greater Philadelphia, mirroring a national trend commonly
+                                        referred to as the Great Consolidation. The socioeconomic implications of the
+                                        Great
+                                        Consolidation are multifaceted as it has the capacity to impact mortgage and
+                                        small
+                                        business lending, lead to obsolescence of and redundancies in the workforce, and
+                                        exacerbate the inequities related to the digital divide.</span></p>
+                                <p><span>More detailed information on the Great Consolidation,
+                                        and
+                                        the role that community banks play in local economies, can be found in
+                                        DVRPC&rsquo;s
+                                        publication&nbsp;</span><em><span>The Great
+                                            Consolidation:
+                                            Community Banking Decline in Greater
+                                            Philadelphia</span></em><span>.&nbsp;</span></p>
+                            </div>
+
                         </div>
 
                         <div class='chart-wrapper' id='tenancy-chart-wrapper'>
@@ -230,12 +254,36 @@
                         <div class='chart-wrapper' id='sales-trend-chart-wrapper'>
                             <h3 class='chart-subheader'>Percent Change in Estimated Sales by Retail Category, 2020-2023
                             </h3>
+                            <div class='sales-category-select-wrapper'>
+                                <select id="sales-category-select" class="sales-category-select">
+                                    <option value="mvp">Motor Vehicle Parts & Dealers</option>
+                                    <option value="fhf">Furniture & Home Furnishing Stores</option>
+                                    <option value="ea">Electronics & Appliance Stores</option>
+                                    <option value="bmge">Building Material, Garden Equip. & Supplies</option>
+                                    <option value="fb">Food & Beverage Stores</option>
+                                    <option value="hpc">Health & Personal Care Stores</option>
+                                    <option value="cca">Clothing & Clothing Accessories Stores</option>
+                                    <option value="sghmb">Sporting Goods, Hobby, Book, & Music Stores</option>
+                                    <option value="gm">General Merchandise Stores</option>
+                                    <option value="misc">Miscellaneous Store Retailers</option>
+                                    <option value="fd">Foodservice & Drinking Places</option>
+                                </select>
+                            </div>
+
                             <div id="sales-trend-chart"></div>
                         </div>
 
                         <div class='chart-wrapper' id='quarterly-visits-chart-wrapper'>
                             <h3 class='chart-subheader'>Total Visits by Quarter, 2022-2023</h3>
                             <div id="quarterly-visits-chart"></div>
+                            <div class="sidebar-chart-paragraphs">
+                                <p><span style="font-size:11pt;">In an era with greater telework capacity and
+                                        competition from e-commerce, proactively working to attract visitors to a
+                                        downtown, main street, or retail district is growing increasingly important.
+                                        Fortunately, visits to the region&rsquo;s retail districts were up by a median
+                                        of 92 percent in the fourth quarter of 2023, compared to the first quarter of
+                                        2022.</span></p>
+                            </div>
                         </div>
 
 
