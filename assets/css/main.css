@@ -428,7 +428,6 @@
     #chart-legend {
         text-align: center;
         padding-bottom: 10px;
-        margin-top: 2%;
     }
 
     #chart-legend-icons {
@@ -650,7 +649,7 @@
     }
 
     .tenancy-chart-button-wrapper button.active {
-        background-color: #0051b4;
+        background-color: var(--theme-retail);
         color: white;
     }
 
@@ -692,7 +691,7 @@
     }
 
     .social-chart-button-wrapper button.active {
-        background-color: #0051b4;
+        background-color: var(--theme-retail);
         color: white;
     }
 
@@ -734,7 +733,7 @@
     }
 
     .retail-chart-button-wrapper button.active {
-        background-color: #0051b4;
+        background-color: var(--theme-retail);
         color: white;
     }
 
