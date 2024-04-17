@@ -20,6 +20,12 @@ const retailDistrictAverageColor = "#878787"
 
 var clickedStateId = null;
 
+Highcharts.setOptions({
+  lang: {
+    thousandsSep: ','
+  }
+})
+
 function PrintElem(elem) {
   var mywindow = window.open("", "PRINT", "height=400,width=600");
 
@@ -87,7 +93,7 @@ fetch(
   .then((data) => {
     var retail = data;
     retail.features.forEach(function (geojsonrow) {
-      retailSearch[geojsonrow.properties.DISTRICT] = geojsonrow;
+      retailSearch[geojsonrow.properties.RETAIL_ID] = geojsonrow;
     });
   });
 
@@ -97,13 +103,13 @@ fetch(
   .then((response) => response.json())
   .then((data) => {
     data.features.forEach((row) => {
-      if (combinedChartData[row.attributes.district]) {
-        combinedChartData[row.attributes.district][row.attributes.year] =
+      if (combinedChartData[row.attributes.dist_id]) {
+        combinedChartData[row.attributes.dist_id][row.attributes.year] =
           row.attributes;
       } else {
         const dict = {};
         dict[row.attributes.year] = row.attributes;
-        combinedChartData[row.attributes.district] = dict;
+        combinedChartData[row.attributes.dist_id] = dict;
       }
     });
   });
@@ -114,7 +120,11 @@ fetch(
   .then((response) => response.json())
   .then((data) => {
     data.features.forEach((row) => {
-      salesTrendData[row.attributes.district] = row.attributes;
+      if (!row.attributes.dist_id) {
+        salesTrendData[row.attributes.district] = row.attributes;
+      } else {
+        salesTrendData[row.attributes.dist_id] = row.attributes;
+      }
     });
   });
 
@@ -124,13 +134,23 @@ fetch(
   .then((response) => response.json())
   .then((data) => {
     data.features.forEach((row) => {
-      if (quarterlyVisitsData[row.attributes.district]) {
-        quarterlyVisitsData[row.attributes.district].push(row.attributes);
+      if (row.attributes.dist_id === '#N/A') {
+        if (quarterlyVisitsData[row.attributes.district]) {
+          quarterlyVisitsData[row.attributes.district].push(row.attributes);
+        } else {
+          quarterlyVisitsData[row.attributes.district] = [row.attributes];
+        }
       } else {
-        quarterlyVisitsData[row.attributes.district] = [row.attributes];
+        if (quarterlyVisitsData[row.attributes.dist_id]) {
+          quarterlyVisitsData[row.attributes.dist_id].push(row.attributes);
+        } else {
+          quarterlyVisitsData[row.attributes.dist_id] = [row.attributes];
+        }
       }
+
     });
   });
+  
 
 function handleSidebarDisplay() {
   // If the sidebar is not display=block ...
@@ -513,6 +533,11 @@ map.on("load", function () {
       "</div>";
 
     document.getElementById("resultsHeader").innerHTML = info;
+    const quarterlyVisitsHyperlink = document.getElementById("quarterly-visits-hyperlink")
+    const quarterlyVisitsHyperlinkText = document.getElementById("quarterly-visits-hyperlink-text")
+    quarterlyVisitsHyperlinkText.textContent = props.DISTRICT
+    quarterlyVisitsHyperlink.href= props.report
+
 
     map.flyTo({
       // created a parameter that pulls the lat/long values from the geojson
@@ -522,8 +547,8 @@ map.on("load", function () {
       zoom: 15,
     });
 
-    districtChartData = combinedChartData[props.DISTRICT];
-    districtSalesTrendData = salesTrendData[props.DISTRICT];
+    districtChartData = combinedChartData[props.RETAIL_ID];
+    districtSalesTrendData = salesTrendData[props.RETAIL_ID];
     regionalSalesTrendData = salesTrendData["Regional Average"];
 
     function sortAndMapQuarterlyVisits(quarterlyVisits) {
@@ -539,7 +564,7 @@ map.on("load", function () {
     }
 
     const districtQuarterlyVisits = sortAndMapQuarterlyVisits(
-      quarterlyVisitsData[props.DISTRICT]
+      quarterlyVisitsData[props.RETAIL_ID]
     );
     const medianQuarterlyVisits = sortAndMapQuarterlyVisits(
       quarterlyVisitsData["Median"]
@@ -780,6 +805,7 @@ function updateWebAndSocialChart(districtRow) {
     },
     yAxis: {
       min: 0,
+      max: 100,
       labels: {
         format: "{value}%",
         style: {
@@ -795,6 +821,8 @@ function updateWebAndSocialChart(districtRow) {
       style: {
         fontSize: "12px",
       },
+      pointFormat:
+        "<span>{series.name}</span>: <b>{point.y:.0f}%</b> <br/>",
     },
     plotOptions: {
       column: {
@@ -944,6 +972,7 @@ function updateRetailTenancyChart(districtRow) {
     },
     yAxis: {
       min: 0,
+      max: 100,
       labels: {
         format: "{value}%",
         style: {
