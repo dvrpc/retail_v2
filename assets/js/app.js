@@ -74,6 +74,23 @@ var map = new mapboxgl.Map({
 map.addControl(new mapboxgl.NavigationControl(), ["top-right"]);
 map.addControl(new mapboxgl.AttributionControl(), "bottom-right");
 
+const populateOptions = function (obj) {
+  const datalist = document.getElementById('retail-districts-list')
+  const frag = document.createDocumentFragment();
+
+  Object.keys(obj)
+    .sort((a, b) => a > b)
+    .forEach(function (el) {
+      const option = document.createElement("option");
+      option.value = el;
+      frag.appendChild(option);
+    });
+
+  console.log(frag)
+
+  datalist.appendChild(frag);
+};
+
 // Zoom to Extent
 document.getElementById("zoomtoregion").addEventListener("click", function () {
   handleFullMapDisplay();
@@ -93,8 +110,9 @@ fetch(
   .then((data) => {
     var retail = data;
     retail.features.forEach(function (geojsonrow) {
-      retailSearch[geojsonrow.properties.RETAIL_ID] = geojsonrow;
+      retailSearch[geojsonrow.properties.DISTRICT] = geojsonrow;
     });
+    populateOptions(retailSearch);
   });
 
 fetch(
@@ -648,23 +666,11 @@ map.on("load", function () {
     select.value = 'mvp'
 
     // add typeahead
-    const populateOptions = function (obj) {
-      const frag = document.createDocumentFragment();
 
-      Object.keys(obj)
-        .sort((a, b) => a > b)
-        .forEach(function (el) {
-          const option = document.createElement("option");
-          option.value = el;
-          frag.appendChild(option);
-        });
-
-      datalist.appendChild(frag);
-    };
-
-    populateOptions(retailSearch);
   };
 })
+
+
 
 function updateRetailChart(chartData) {
   const retailCategoryFieldMapping = {
