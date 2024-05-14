@@ -128,13 +128,15 @@
                                 <button id='retail-chart-btn-2020' class='chart-btn'>2020</button>
                                 <button id='retail-chart-btn-2022' class='chart-btn active'>2022</button>
                             </div>
-                            <div id="retail-chart"></div>
-                            <div id="chart-legend">
+                            <div class="chart-heading-wrapper">
                                 <h3 class='chart-legend-heading'>
                                     <i class='glyphicon glyphicon-info-sign' id='info-icon' data-toggle='tooltip'
                                         title='Category Info' onclick='catShow()'></i>
                                     Categories of Uses
                                 </h3>
+                            </div>
+                            <div id="retail-uses-chart"></div>
+                            <div id="chart-legend">
                                 <span id="chart-legend-icons">
                                     <i class="fa fa-circle legend-icons civic"></i>Civic
                                     <i class="fa fa-circle legend-icons cultural"></i>Cultural
@@ -145,9 +147,18 @@
                                     <i class="fa fa-circle legend-icons res"></i>Residential
                                     <i class="fa fa-circle legend-icons vacant"></i>Vacant
                                 </span>
-                                <br>
+                            </div>
+                            <div class="chart-heading-wrapper">
+                                <h3 class='chart-legend-heading'>
+                                    <i class='glyphicon glyphicon-info-sign' id='info-icon' data-toggle='tooltip'
+                                        title='Category Info' onclick='catShow()'></i>
+                                    Retail Types
+                                </h3>
+                            </div>
+
+                            <div id="retail-types-chart"></div>
+                            <div id="chart-legend">
                                 <span>
-                                    <b>Retail Types:</b>
                                     <i class="fa fa-circle legend-icons experiential"></i>Experiential
                                     <i class="fa fa-circle legend-icons fb"></i>Food and Beverage
                                     <br>
@@ -212,7 +223,7 @@
                         </div>
 
                         <div class='chart-wrapper' id='tenancy-chart-wrapper'>
-                            <h3 class='chart-subheader'>Local-Chain Retail Mix</h3>
+                            <h3 class='chart-subheader'>Share of Retail that is Local vs. Chain</h3>
                             <div id="tenancy-chart-button-wrapper" class="tenancy-chart-button-wrapper">
                                 <button id='tenancy-chart-btn-2013' class='chart-btn'>2013</button>
                                 <button id='tenancy-chart-btn-2020' class='chart-btn'>2020</button>

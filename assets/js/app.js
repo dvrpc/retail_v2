@@ -673,20 +673,23 @@ map.on("load", function () {
 
 
 function updateRetailChart(chartData) {
-  const retailCategoryFieldMapping = {
+  const retailUsesCategoryFieldMapping = {
     Civic: "civic",
     Cultural: "cultural",
+    Office: "office",
+    "Active Construction Sites": "construct",
+    Residential: "reside",
+    Vacant: "vacant",
+    Institutional: "institute",
+  };
+
+  const retailTypesCategoryFieldMapping = {
     "Food and Beverage": "f_b",
     "General Merchandise, Apparel, Furnishings, and Other": "gafo",
     "Neighborhood Goods and Services": "ng_s",
-    Office: "office",
-    Residential: "reside",
-    Vacant: "vacant",
-    Experimental: "exp",
+    Experiential: "exp",
     Hospitality: "hosp",
-    "Active Construction Sites": "construct",
-    Institutional: "institute",
-  };
+  }
 
   const retailCategoryColorMapping = {
     Civic: "#8EC63F",
@@ -697,84 +700,137 @@ function updateRetailChart(chartData) {
     Office: "#0C8771",
     Residential: "#FBB040",
     Vacant: "#BDD2FF",
-    Experimental: "#fad5d6",
+    Experiential: "#fad5d6",
     Hospitality: "#bc565c",
     "Active Construction Sites": "#878787",
     Institutional: "#da7b27",
   };
 
-  const populatedSeries = [];
+  const populatedUsesSeries = [];
+  const populatedUsesSeriesNegatives = [];
 
-  Object.keys(retailCategoryFieldMapping).forEach((label) => {
+  const populatedTypesSeries = [];
+  const populatedTypesSeriesNegatives = [];
+
+  for(const [label, fieldName] of Object.entries(retailUsesCategoryFieldMapping)) {
     const fieldData = [];
 
-    fieldData.push(chartData[retailCategoryFieldMapping[label]]);
+    const value = chartData[fieldName] * 100
+    fieldData.push(value);
+    fieldData.push(100 - value)
 
-    populatedSeries.push({
-      name: label,
-      data: fieldData,
+    populatedUsesSeries.push({
+      y: value,
       color: retailCategoryColorMapping[label],
-      // showInLegend: false
     });
-  });
 
-  const retailStackedBarChart = {
-    chart: {
-      type: "column",
-      renderTo: "retail-chart",
-      plotBackgroundColor: null,
-      plotBorderWidth: 0, //null,
-      plotShadow: false,
-      height: 400,
-      fontSize: "1em",
-    },
-    xAxis: {
-      crosshair: false,
-      tickLength: 0,
-      labels: {
-        enabled: false
-      }
-    },
-    yAxis: {
-      min: 0,
-      labels: {
-        format: "{value}%",
-        style: {
-          fontSize: "12px",
-        },
-      },
-      title: "",
-    },
-    title: "",
-    tooltip: {
-      headerFormat: null,
-      pointFormat:
-        '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b> <br/>',
-      shared: true,
-      style: {
-        fontSize: "12px",
-      },
-    },
-    legend: {
-      enabled: false
-    },
-    plotOptions: {
-      column: {
-        stacking: "percent",
-        dataLabels: {
+    populatedUsesSeriesNegatives.push({
+      y: 100 - value,
+      color: "#E1E1E1",
+      dataLabels: {
           enabled: true,
-          format: "{point.percentage:.0f}%",
+          align: "left",
+          format: "{subtract 100 point.y}%",
           style: {
             fontSize: "12px",
           },
           showInLegend: false,
         },
-      },
-    },
-    series: populatedSeries,
+    });
   };
 
-  const chart = new Highcharts.Chart(retailStackedBarChart);
+  console.log(populatedUsesSeries)
+  console.log(populatedUsesSeriesNegatives)
+
+  Hicharts.chart({
+    chart: {
+      type: "bar",
+      renderTo: "retail-uses-chart",
+      plotBackgroundColor: null,
+      plotBorderWidth: 0, //null,
+      plotShadow: false,
+      height: 700,
+      fontSize: "1em",
+      marginRight: 100
+    },
+    xAxis: {
+      categories: Object.keys(retailUsesCategoryFieldMapping),
+      labels: {
+        style: {
+          fontSize: "12px",
+        },
+      },
+    },
+    yAxis: {
+      visible: false
+    },
+    title: "",
+    tooltip: {
+      visible: false
+    },
+    legend: {
+      enabled: false
+    },
+    plotOptions: {
+      bar: {
+        stacking: "percent",
+      },
+    },
+    series: [
+      {
+        data: populatedUsesSeriesNegatives
+      },
+      {
+        data: populatedUsesSeries
+      },
+    ]
+  });
+
+  Highcharts.Chart({
+    chart: {
+      type: "bar",
+      renderTo: "retail-types-chart",
+      plotBackgroundColor: null,
+      plotBorderWidth: 0, //null,
+      plotShadow: false,
+      height: 500,
+      fontSize: "1em",
+      marginRight: 100
+    },
+    xAxis: {
+      categories: Object.keys(retailUsesCategoryFieldMapping),
+      labels: {
+        style: {
+          fontSize: "12px",
+        },
+      },
+    },
+    yAxis: {
+      visible: false
+    },
+    title: "",
+    tooltip: {
+      visible: false
+    },
+    legend: {
+      enabled: false
+    },
+    plotOptions: {
+      bar: {
+        stacking: "percent",
+      },
+    },
+    series: [
+      {
+        data: populatedUsesSeriesNegatives
+      },
+      {
+        data: populatedUsesSeries
+      },
+
+    ]
+  });
+
 }
 
 function updateWebAndSocialChart(districtRow) {

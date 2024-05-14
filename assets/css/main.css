@@ -695,6 +695,15 @@
         color: white;
     }
 
+    .retail-chart-heading-wrapper {
+        text-align: center;
+    }
+    
+    .retail-chart-wrapper {
+        display: flex;
+        flex-direction: row;
+    }
+
     .retail-chart-button-wrapper {
         min-width: 310px;
         text-align: center;
