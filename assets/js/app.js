@@ -791,7 +791,7 @@ function updateRetailChart(chartData) {
         plotBackgroundColor: null,
         plotBorderWidth: 0, //null,
         plotShadow: false,
-        height: populatedSeries.length * 80,
+        height: populatedSeries.length * 30,
         fontSize: "1em",
         marginRight: 50,
       },
@@ -803,7 +803,8 @@ function updateRetailChart(chartData) {
           allowOverlap: true,
           style: {
             fontSize: "12px",
-            width: 130,
+            "min-width": "200px",
+            width: 200,
             wordBreak: "normal",
             overflowWrap: "break-word",
             textAlign: "right",
@@ -826,6 +827,8 @@ function updateRetailChart(chartData) {
         },
         series: {
           enableMouseTracking: false,
+          groupPadding: 0.05,
+          pointPadding: 0.05,
         },
       },
       series: [
