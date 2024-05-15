@@ -778,106 +778,79 @@ function updateRetailChart(chartData) {
   populateChart(retailUsesCategoryFieldMapping, "uses");
   populateChart(retailTypesCategoryFieldMapping, "types");
 
-  const retailUsesChart = {
-    chart: {
-      type: "bar",
-      renderTo: "retail-uses-chart",
-      plotBackgroundColor: null,
-      plotBorderWidth: 0, //null,
-      plotShadow: false,
-      height: 560,
-      fontSize: "1em",
-      marginRight: 50,
-    },
+  function getRetailChart(
+    populatedSeries,
+    populatedNegativeSeries,
+    fieldMapping,
+    type
+  ) {
+    return {
+      chart: {
+        type: "bar",
+        renderTo: `retail-${type}-chart`,
+        plotBackgroundColor: null,
+        plotBorderWidth: 0, //null,
+        plotShadow: false,
+        height: populatedSeries.length * 80,
+        fontSize: "1em",
+        marginRight: 50,
+      },
 
-    xAxis: {
-      categories: Object.keys(retailUsesCategoryFieldMapping),
-      labels: {
-        useHTML: true,
-        allowOverlap: true,
-        style: {
-          fontSize: "12px",
-          width: 130,
-          wordBreak: "normal",
-          overflowWrap: "break-word",
-          textAlign: "right",
+      xAxis: {
+        categories: Object.keys(fieldMapping),
+        labels: {
+          useHTML: true,
+          allowOverlap: true,
+          style: {
+            fontSize: "12px",
+            width: 130,
+            wordBreak: "normal",
+            overflowWrap: "break-word",
+            textAlign: "right",
+          },
         },
       },
-    },
-    yAxis: {
-      visible: false,
-    },
-    title: "",
-    tooltip: {
-      visible: false,
-    },
-    legend: {
-      enabled: false,
-    },
-    plotOptions: {
-      bar: {
-        stacking: "percent",
+      yAxis: {
+        visible: false,
       },
-    },
-    series: [
-      {
-        data: populatedUsesSeriesNegatives,
+      title: "",
+      tooltip: {
+        enabled: false,
       },
-      {
-        data: populatedUsesSeries,
+      legend: {
+        enabled: false,
       },
-    ],
-  };
-
-  const retailTypesChart = {
-    chart: {
-      type: "bar",
-      renderTo: "retail-types-chart",
-      plotBackgroundColor: null,
-      plotBorderWidth: 0, //null,
-      plotShadow: false,
-      height: 400,
-      fontSize: "1em",
-      marginRight: 50,
-    },
-    xAxis: {
-      categories: Object.keys(retailTypesCategoryFieldMapping),
-      labels: {
-        useHTML: true,
-        allowOverlap: true,
-        style: {
-          fontSize: "12px",
-          width: 130,
-          wordBreak: "normal",
-          overflowWrap: "break-word",
-          textAlign: "right",
+      plotOptions: {
+        bar: {
+          stacking: "percent",
+        },
+        series: {
+          enableMouseTracking: false,
         },
       },
-    },
-    yAxis: {
-      visible: false,
-    },
-    title: "",
-    tooltip: {
-      visible: false,
-    },
-    legend: {
-      enabled: false,
-    },
-    plotOptions: {
-      bar: {
-        stacking: "percent",
-      },
-    },
-    series: [
-      {
-        data: populatedTypesSeriesNegatives,
-      },
-      {
-        data: populatedTypesSeries,
-      },
-    ],
-  };
+      series: [
+        {
+          data: populatedNegativeSeries,
+        },
+        {
+          data: populatedSeries,
+        },
+      ],
+    };
+  }
+
+  const retailUsesChart = getRetailChart(
+    populatedUsesSeries,
+    populatedUsesSeriesNegatives,
+    retailUsesCategoryFieldMapping,
+    "uses"
+  );
+  const retailTypesChart = getRetailChart(
+    populatedTypesSeries,
+    populatedTypesSeriesNegatives,
+    retailTypesCategoryFieldMapping,
+    "types"
+  );
 
   const chart1 = new Highcharts.Chart(retailUsesChart);
   const chart2 = new Highcharts.Chart(retailTypesChart);
