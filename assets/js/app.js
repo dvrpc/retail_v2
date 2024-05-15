@@ -16,15 +16,15 @@ let regionalSalesTrendData = {};
 // handles removing and adding 2013 buttons
 let buttonRemoved = false;
 
-const retailDistrictAverageColor = "#878787"
+const retailDistrictAverageColor = "#878787";
 
 var clickedStateId = null;
 
 Highcharts.setOptions({
   lang: {
-    thousandsSep: ','
-  }
-})
+    thousandsSep: ",",
+  },
+});
 
 function PrintElem(elem) {
   var mywindow = window.open("", "PRINT", "height=400,width=600");
@@ -75,7 +75,7 @@ map.addControl(new mapboxgl.NavigationControl(), ["top-right"]);
 map.addControl(new mapboxgl.AttributionControl(), "bottom-right");
 
 const populateOptions = function (obj) {
-  const datalist = document.getElementById('retail-districts-list')
+  const datalist = document.getElementById("retail-districts-list");
   const frag = document.createDocumentFragment();
 
   Object.keys(obj)
@@ -86,7 +86,7 @@ const populateOptions = function (obj) {
       frag.appendChild(option);
     });
 
-  console.log(frag)
+  console.log(frag);
 
   datalist.appendChild(frag);
 };
@@ -152,7 +152,7 @@ fetch(
   .then((response) => response.json())
   .then((data) => {
     data.features.forEach((row) => {
-      if (row.attributes.dist_id === '#N/A') {
+      if (row.attributes.dist_id === "#N/A") {
         if (quarterlyVisitsData[row.attributes.district]) {
           quarterlyVisitsData[row.attributes.district].push(row.attributes);
         } else {
@@ -165,10 +165,8 @@ fetch(
           quarterlyVisitsData[row.attributes.dist_id] = [row.attributes];
         }
       }
-
     });
   });
-  
 
 function handleSidebarDisplay() {
   // If the sidebar is not display=block ...
@@ -177,7 +175,7 @@ function handleSidebarDisplay() {
   var sidebarViz = $("#sidebar").css("display");
   if (sidebarViz !== "block") {
     $("#map").toggleClass(
-      "col-sm-6 col-md-6 col-lg-6 col-sm-12 col-md-12 col-lg-12"
+      "col-sm-7 col-md-7 col-lg-7 col-sm-12 col-md-12 col-lg-12"
     );
     $("#sidebar").css("display", "block");
   }
@@ -410,7 +408,6 @@ map.on("load", function () {
       handleSidebarDisplay();
       handleDistrict(props, coordinates, map);
       handleHighlight(FID);
-
     }
   });
 
@@ -551,11 +548,14 @@ map.on("load", function () {
       "</div>";
 
     document.getElementById("resultsHeader").innerHTML = info;
-    const quarterlyVisitsHyperlink = document.getElementById("quarterly-visits-hyperlink")
-    const quarterlyVisitsHyperlinkText = document.getElementById("quarterly-visits-hyperlink-text")
-    quarterlyVisitsHyperlinkText.textContent = props.DISTRICT
-    quarterlyVisitsHyperlink.href= props.report
-
+    const quarterlyVisitsHyperlink = document.getElementById(
+      "quarterly-visits-hyperlink"
+    );
+    const quarterlyVisitsHyperlinkText = document.getElementById(
+      "quarterly-visits-hyperlink-text"
+    );
+    quarterlyVisitsHyperlinkText.textContent = props.DISTRICT;
+    quarterlyVisitsHyperlink.href = props.report;
 
     map.flyTo({
       // created a parameter that pulls the lat/long values from the geojson
@@ -589,49 +589,68 @@ map.on("load", function () {
     );
 
     // charts
-    const has2013 = districtChartData['2013'] !== undefined;
-    let retailActiveYear = document.querySelectorAll("div.retail-chart-button-wrapper button.active")[0].id.split('-').slice(-1)[0]
-    let tenancyActiveYear = document.querySelectorAll("div.tenancy-chart-button-wrapper button.active")[0].id.split('-').slice(-1)[0]
-    let socialActiveYear = document.querySelectorAll("div.social-chart-button-wrapper button.active")[0].id.split('-').slice(-1)[0]
+    const has2013 = districtChartData["2013"] !== undefined;
+    let retailActiveYear = document
+      .querySelectorAll("div.retail-chart-button-wrapper button.active")[0]
+      .id.split("-")
+      .slice(-1)[0];
+    let tenancyActiveYear = document
+      .querySelectorAll("div.tenancy-chart-button-wrapper button.active")[0]
+      .id.split("-")
+      .slice(-1)[0];
+    let socialActiveYear = document
+      .querySelectorAll("div.social-chart-button-wrapper button.active")[0]
+      .id.split("-")
+      .slice(-1)[0];
 
-    //handles removing 2013 buttons  
+    //handles removing 2013 buttons
     if (!has2013) {
-      if (retailActiveYear === '2013') {
-        document.getElementById('retail-chart-btn-2022').className = 'chart-btn active'
+      if (retailActiveYear === "2013") {
+        document.getElementById("retail-chart-btn-2022").className =
+          "chart-btn active";
       }
-      if (tenancyActiveYear === '2013') {
-        document.getElementById('tenancy-chart-btn-2022').className = 'chart-btn active'
+      if (tenancyActiveYear === "2013") {
+        document.getElementById("tenancy-chart-btn-2022").className =
+          "chart-btn active";
       }
       if (!buttonRemoved) {
-        const retailButton = document.getElementById('retail-chart-btn-2013');
-        const tenancyButton = document.getElementById('tenancy-chart-btn-2013');
+        const retailButton = document.getElementById("retail-chart-btn-2013");
+        const tenancyButton = document.getElementById("tenancy-chart-btn-2013");
 
-        if (retailButton.classList.contains('active')) {
-          document.getElementById('retail-chart-btn-2022').className = 'chart-btn active'
+        if (retailButton.classList.contains("active")) {
+          document.getElementById("retail-chart-btn-2022").className =
+            "chart-btn active";
         }
 
-        if (tenancyButton.classList.contains('active')) {
-          document.getElementById('tenancy-chart-btn-2022').className = 'chart-btn active'
+        if (tenancyButton.classList.contains("active")) {
+          document.getElementById("tenancy-chart-btn-2022").className =
+            "chart-btn active";
         }
 
         retailButton.remove();
         tenancyButton.remove();
-        retailActiveYear = '2022'
-        tenancyActiveYear = '2022'
+        retailActiveYear = "2022";
+        tenancyActiveYear = "2022";
 
         buttonRemoved = true;
       }
     }
 
-    // handles adding back 2013 buttons 
+    // handles adding back 2013 buttons
     if (has2013 && buttonRemoved) {
-      const retailButton = "<button id='retail-chart-btn-2013' class='chart-btn'>2013</button>"
-      const retailWrapper = document.getElementById('retail-chart-button-wrapper')
-      retailWrapper.insertAdjacentHTML("afterbegin", retailButton)
+      const retailButton =
+        "<button id='retail-chart-btn-2013' class='chart-btn'>2013</button>";
+      const retailWrapper = document.getElementById(
+        "retail-chart-button-wrapper"
+      );
+      retailWrapper.insertAdjacentHTML("afterbegin", retailButton);
 
-      const tenancyButton = "<button id='tenancy-chart-btn-2013' class='chart-btn'>2013</button>"
-      const tenancyWrapper = document.getElementById('tenancy-chart-button-wrapper')
-      tenancyWrapper.insertAdjacentHTML("afterbegin", tenancyButton)
+      const tenancyButton =
+        "<button id='tenancy-chart-btn-2013' class='chart-btn'>2013</button>";
+      const tenancyWrapper = document.getElementById(
+        "tenancy-chart-button-wrapper"
+      );
+      tenancyWrapper.insertAdjacentHTML("afterbegin", tenancyButton);
 
       buttonRemoved = false;
     }
@@ -640,37 +659,44 @@ map.on("load", function () {
     updateWebAndSocialChart(districtChartData[socialActiveYear]);
     updateBanksChart(districtChartData, has2013);
     updateRetailTenancyChart(districtChartData[tenancyActiveYear]);
-    updateSalesTrendsChart(districtSalesTrendData, regionalSalesTrendData, 'mvp');
+    updateSalesTrendsChart(
+      districtSalesTrendData,
+      regionalSalesTrendData,
+      "mvp"
+    );
     updateQuarterlyVisitsChart(
       districtQuarterlyVisits,
       props.DISTRICT,
       medianQuarterlyVisits
     );
 
-    document.querySelectorAll('button.chart-btn').forEach(btn => {
-      const type = btn.id.split('-')[0]
-      const year = btn.id.split('-').slice(-1)[0]
-      if (!has2013 && year === '2013') {
+    document.querySelectorAll("button.chart-btn").forEach((btn) => {
+      const type = btn.id.split("-")[0];
+      const year = btn.id.split("-").slice(-1)[0];
+      if (!has2013 && year === "2013") {
         btn.remove();
         return;
       }
 
-      btn.addEventListener('click', () => handleClick(year, type, btn))
-    })
+      btn.addEventListener("click", () => handleClick(year, type, btn));
+    });
 
-    document.getElementById('sales-category-select').addEventListener('change', (event) => {
-      updateSalesTrendsChart(districtSalesTrendData, regionalSalesTrendData, event.target.value)
-    })
+    document
+      .getElementById("sales-category-select")
+      .addEventListener("change", (event) => {
+        updateSalesTrendsChart(
+          districtSalesTrendData,
+          regionalSalesTrendData,
+          event.target.value
+        );
+      });
 
-    const select = document.getElementById('sales-category-select')
-    select.value = 'mvp'
+    const select = document.getElementById("sales-category-select");
+    select.value = "mvp";
 
     // add typeahead
-
   };
-})
-
-
+});
 
 function updateRetailChart(chartData) {
   const retailUsesCategoryFieldMapping = {
@@ -689,7 +715,7 @@ function updateRetailChart(chartData) {
     "Neighborhood Goods and Services": "ng_s",
     Experiential: "exp",
     Hospitality: "hosp",
-  }
+  };
 
   const retailCategoryColorMapping = {
     Civic: "#8EC63F",
@@ -712,22 +738,23 @@ function updateRetailChart(chartData) {
   const populatedTypesSeries = [];
   const populatedTypesSeriesNegatives = [];
 
-  for(const [label, fieldName] of Object.entries(retailUsesCategoryFieldMapping)) {
-    const fieldData = [];
+  function populateChart(fieldMapping, type) {
+    for (const [label, fieldName] of Object.entries(fieldMapping)) {
+      const fieldData = [];
 
-    const value = chartData[fieldName] * 100
-    fieldData.push(value);
-    fieldData.push(100 - value)
+      const value = chartData[fieldName] * 100;
+      fieldData.push(value);
+      fieldData.push(100 - value);
 
-    populatedUsesSeries.push({
-      y: value,
-      color: retailCategoryColorMapping[label],
-    });
+      const data = {
+        y: value,
+        color: retailCategoryColorMapping[label],
+      };
 
-    populatedUsesSeriesNegatives.push({
-      y: 100 - value,
-      color: "#E1E1E1",
-      dataLabels: {
+      const negativeData = {
+        y: 100 - value,
+        color: "#E1E1E1",
+        dataLabels: {
           enabled: true,
           align: "left",
           format: "{subtract 100 point.y}%",
@@ -736,40 +763,56 @@ function updateRetailChart(chartData) {
           },
           showInLegend: false,
         },
-    });
-  };
+      };
 
-  console.log(populatedUsesSeries)
-  console.log(populatedUsesSeriesNegatives)
+      if (type === "uses") {
+        populatedUsesSeries.push(data);
+        populatedUsesSeriesNegatives.push(negativeData);
+      } else {
+        populatedTypesSeries.push(data);
+        populatedTypesSeriesNegatives.push(negativeData);
+      }
+    }
+  }
 
-  Hicharts.chart({
+  populateChart(retailUsesCategoryFieldMapping, "uses");
+  populateChart(retailTypesCategoryFieldMapping, "types");
+
+  const retailUsesChart = {
     chart: {
       type: "bar",
       renderTo: "retail-uses-chart",
       plotBackgroundColor: null,
       plotBorderWidth: 0, //null,
       plotShadow: false,
-      height: 700,
+      height: 560,
       fontSize: "1em",
-      marginRight: 100
+      marginRight: 50,
     },
+
     xAxis: {
       categories: Object.keys(retailUsesCategoryFieldMapping),
       labels: {
+        useHTML: true,
+        allowOverlap: true,
         style: {
           fontSize: "12px",
+          width: 130,
+          wordBreak: "normal",
+          overflowWrap: "break-word",
+          textAlign: "right",
         },
       },
     },
     yAxis: {
-      visible: false
+      visible: false,
     },
     title: "",
     tooltip: {
-      visible: false
+      visible: false,
     },
     legend: {
-      enabled: false
+      enabled: false,
     },
     plotOptions: {
       bar: {
@@ -778,42 +821,48 @@ function updateRetailChart(chartData) {
     },
     series: [
       {
-        data: populatedUsesSeriesNegatives
+        data: populatedUsesSeriesNegatives,
       },
       {
-        data: populatedUsesSeries
+        data: populatedUsesSeries,
       },
-    ]
-  });
+    ],
+  };
 
-  Highcharts.Chart({
+  const retailTypesChart = {
     chart: {
       type: "bar",
       renderTo: "retail-types-chart",
       plotBackgroundColor: null,
       plotBorderWidth: 0, //null,
       plotShadow: false,
-      height: 500,
+      height: 400,
       fontSize: "1em",
-      marginRight: 100
+      marginRight: 50,
     },
     xAxis: {
-      categories: Object.keys(retailUsesCategoryFieldMapping),
+      categories: Object.keys(retailTypesCategoryFieldMapping),
       labels: {
+        useHTML: true,
+        allowOverlap: true,
         style: {
           fontSize: "12px",
+          width: 130,
+          wordBreak: "normal",
+          overflowWrap: "break-word",
+          textAlign: "right",
         },
       },
     },
     yAxis: {
-      visible: false
+      visible: false,
     },
     title: "",
     tooltip: {
-      visible: false
+      visible: false,
     },
     legend: {
-      enabled: false
+      enabled: false,
     },
     plotOptions: {
       bar: {
@@ -822,15 +871,16 @@ function updateRetailChart(chartData) {
     },
     series: [
       {
-        data: populatedUsesSeriesNegatives
+        data: populatedTypesSeriesNegatives,
       },
       {
-        data: populatedUsesSeries
+        data: populatedTypesSeries,
       },
+    ],
+  };
 
-    ]
-  });
-
+  const chart1 = new Highcharts.Chart(retailUsesChart);
+  const chart2 = new Highcharts.Chart(retailTypesChart);
 }
 
 function updateWebAndSocialChart(districtRow) {
@@ -883,8 +933,7 @@ function updateWebAndSocialChart(districtRow) {
       style: {
         fontSize: "12px",
       },
-      pointFormat:
-        "<span>{series.name}</span>: <b>{point.y:.0f}%</b> <br/>",
+      pointFormat: "<span>{series.name}</span>: <b>{point.y:.0f}%</b> <br/>",
     },
     plotOptions: {
       column: {
@@ -993,7 +1042,6 @@ function updateBanksChart(chartData, has2013) {
 function updateRetailTenancyChart(districtRow) {
   const districtName = districtRow.district;
 
-
   function getFieldPercentage(fieldName) {
     return districtRow[fieldName] * 100;
   }
@@ -1015,15 +1063,10 @@ function updateRetailTenancyChart(districtRow) {
       style: {
         fontSize: "12px",
       },
-      pointFormat:
-        "<span>{series.name}</span>: <b>{point.y:.0f}%</b> <br/>",
+      pointFormat: "<span>{series.name}</span>: <b>{point.y:.0f}%</b> <br/>",
     },
     xAxis: {
-      categories: [
-        districtName,
-        'Retail District Average',
-
-      ],
+      categories: [districtName, "Retail District Average"],
       labels: {
         style: {
           fontSize: "12px",
@@ -1083,25 +1126,27 @@ function updateRetailTenancyChart(districtRow) {
   const chart = new Highcharts.Chart(retailTenancyChart);
 }
 
-function updateSalesTrendsChart(districtSalesTrends, reginonalSalesTrends, selectedField) {
+function updateSalesTrendsChart(
+  districtSalesTrends,
+  reginonalSalesTrends,
+  selectedField
+) {
   const salesCategoryFieldMapping = {
-    "total": "Total Sales",
-    "mvp": "Motor Vehicle Parts & Dealers",
-    "fhf": "Furniture & Home Furnishing Stores",
-    "ea": "Electronics & Appliance Stores",
-    "bmge": "Building Material, Garden Equip. & Supplies",
-    "fb": "Food & Beverage Stores",
-    "hpc": "Health & Personal Care Stores",
-    "cca": "Clothing & Clothing Accessories Stores",
-    "sghmb": "Sporting Goods, Hobby, Book, & Music Stores",
-    "gm": "General Merchandise Stores",
-    "misc": "Miscellaneous Store Retailers",
-    "fd": "Foodservice & Drinking Places",
+    total: "Total Sales",
+    mvp: "Motor Vehicle Parts & Dealers",
+    fhf: "Furniture & Home Furnishing Stores",
+    ea: "Electronics & Appliance Stores",
+    bmge: "Building Material, Garden Equip. & Supplies",
+    fb: "Food & Beverage Stores",
+    hpc: "Health & Personal Care Stores",
+    cca: "Clothing & Clothing Accessories Stores",
+    sghmb: "Sporting Goods, Hobby, Book, & Music Stores",
+    gm: "General Merchandise Stores",
+    misc: "Miscellaneous Store Retailers",
+    fd: "Foodservice & Drinking Places",
   };
 
-  const salesCategories = [
-    "Total"
-  ];
+  const salesCategories = ["Total"];
 
   salesCategories.push(salesCategoryFieldMapping[selectedField]);
 
@@ -1109,12 +1154,8 @@ function updateSalesTrendsChart(districtSalesTrends, reginonalSalesTrends, selec
   const populatedDistrictData = [];
   const populatedRegionalData = [];
 
-  populatedDistrictData.push(
-    Math.round(districtSalesTrends['total'] * 100)
-  );
-  populatedRegionalData.push(
-    Math.round(reginonalSalesTrends['total'] * 100)
-  );
+  populatedDistrictData.push(Math.round(districtSalesTrends["total"] * 100));
+  populatedRegionalData.push(Math.round(reginonalSalesTrends["total"] * 100));
 
   populatedDistrictData.push(
     Math.round(districtSalesTrends[selectedField] * 100)
@@ -1122,7 +1163,6 @@ function updateSalesTrendsChart(districtSalesTrends, reginonalSalesTrends, selec
   populatedRegionalData.push(
     Math.round(reginonalSalesTrends[selectedField] * 100)
   );
-
 
   const salesTrendChart = {
     chart: {
@@ -1141,8 +1181,7 @@ function updateSalesTrendsChart(districtSalesTrends, reginonalSalesTrends, selec
       style: {
         fontSize: "12px",
       },
-      pointFormat:
-        "<span>{series.name}</span>: <b>{point.y:.0f}%</b> <br/>",
+      pointFormat: "<span>{series.name}</span>: <b>{point.y:.0f}%</b> <br/>",
     },
     // legend: false,
     xAxis: {
@@ -1202,9 +1241,7 @@ function updateSalesTrendsChart(districtSalesTrends, reginonalSalesTrends, selec
     ],
   };
   const chart = new Highcharts.Chart(salesTrendChart);
-
 }
-
 
 function updateQuarterlyVisitsChart(
   districtQuarterlyVisits,
@@ -1279,15 +1316,16 @@ function updateQuarterlyVisitsChart(
 }
 
 function handleClick(year, type, btn) {
-  document.querySelectorAll(`div.${type}-chart-button-wrapper button.active`)
-    .forEach(active => {
-      active.className = '';
+  document
+    .querySelectorAll(`div.${type}-chart-button-wrapper button.active`)
+    .forEach((active) => {
+      active.className = "";
     });
-  btn.className = 'chart-btn active';
+  btn.className = "chart-btn active";
 
-  if (type === 'retail') {
-    updateRetailChart(districtChartData[year])
-  } else if (type === 'tenancy') {
+  if (type === "retail") {
+    updateRetailChart(districtChartData[year]);
+  } else if (type === "tenancy") {
     updateRetailTenancyChart(districtChartData[year]);
   } else {
     updateWebAndSocialChart(districtChartData[year]);
