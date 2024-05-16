@@ -528,7 +528,7 @@ map.on("load", function () {
     }
 
     var info =
-      "<div id='d-name'><h3 style='margin-top:0;'>" +
+      "<div id='d-name'><h3 style='margin-top:10px; margin-bottom:10px; width: 100%'>" +
       props.DISTRICT +
       "</span><small><span> " +
       props.COUNTY +
@@ -916,6 +916,15 @@ function updateWebAndSocialChart(districtRow) {
         pointPadding: 0.2,
         borderWidth: 0,
       },
+      series: {
+        dataLabels: {
+          format: "<span>{point.y}%</span>",
+          style: {
+            fontSize: "12px",
+          },
+          enabled: true,
+        },
+      },
     },
     series: [
       {
@@ -988,6 +997,16 @@ function updateBanksChart(chartData, has2013) {
       column: {
         pointPadding: 0.2,
         borderWidth: 0,
+        minPointLength: 3
+      },
+      series: {
+        dataLabels: {
+          format: "<span>{point.y}</span>",
+          style: {
+            fontSize: "12px",
+          },
+          enabled: true,
+        },
       },
     },
     series: [
@@ -1207,7 +1226,7 @@ function updateSalesTrendsChart(
       {
         name: districtName,
         data: populatedDistrictData,
-        color: "#8EC640",
+        color: "#b9318e",
       },
       {
         name: "Regional Average",
