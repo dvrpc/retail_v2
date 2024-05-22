@@ -470,77 +470,56 @@ map.on("load", function () {
   // pull click event into standalone function in order to apply to both form submit and map click
   // added 2 parameters props and coordinates to handle the different approaches to working with GeoJson features
 
-
   const handleDistrict = function (props, coordinates, map) {
     // var props = marker.properties;
     // console.log(marker.features[0].properties);
     // var props = marker.features[0].properties;
 
     const tooltipTextLookup = {
-      'brew': 'At least one craft brewery is located within this district’s boundaries',
-      'circuit': 'One or more of the region’s Circuit Trails is within ¼ mile of this district',
-      'classic': 'Was previously part of the <a class="one" href="https://www.dvrpc.org/ClassicTowns/"><span>&nbsp;</span><u><span>Classic Towns</span></u></a> program',
-      'core': 'Located in one of the region’s four Core Cities',
-      'college': 'A large academic campus is located within ½ mile of this district',
-      'expand': 'Boundaries were expanded in response to relatively significant development activity that occurred at the periphery of this district since 2013',
-      'hist': 'A national register or local historic district is located within this retail district',
-      'opp': 'Has one or more Opportunity Zones located within this district’s boundaries',
-      'transit': 'Is within ½ mile radius of a transit stop (not including buses)'
+      Brewery:
+        "At least one craft brewery is located within this district’s boundaries",
+      Circuit:
+        "One or more of the region’s Circuit Trails is within ¼ mile of this district",
+      Classic:
+        "Was previously part of the Classic Towns program (see about for more info)",
+      Core: "Located in one of the region’s four Core Cities",
+      College:
+        "A large academic campus is located within ½ mile of this district",
+      Expanding:
+        "Boundaries were expanded in response to relatively significant development activity that occurred at the periphery of this district since 2013",
+      Historic:
+        "A national register or local historic district is located within this retail district",
+      Oppurtunity:
+        "Has one or more Opportunity Zones located within this district’s boundaries",
+      "Transit-Oriented":
+        "Is within ½ mile radius of a transit stop (not including buses)",
+    };
+
+    function getTooltipHTML(text) {
+      return `<div class="topology-tooltip"><span class="label label-default topology-text">${text}</span><span class="topology-tooltip-text">${tooltipTextLookup[text]}</span></div>`;
     }
 
-    if (props.BREW === 0) {
-      var BREW = "<div class='hidden'></div>";
-    } else {
-      var BREW = `<div class="topology-tooltip"><span class="label label-default topology-text">Brewery</span><span class="topology-tooltip-text">${tooltipTextLookup['brew']}</span></div>`;
-    }
+    const hiddenTooltipHTML = "<div class='hidden'></div>";
 
-    if (props.CIRCUIT === 0) {
-      var CIRCUIT = "<div class='hidden'></div>";
-    } else {
-      var CIRCUIT = `<div class="topology-tooltip"><span class="label label-default topology-text">Circuit</span><span class="topology-tooltip-text">${tooltipTextLookup['circuit']}</span></div>`;
-    }
-
-    if (props.CLASSIC === 0) {
-      var CTOWN = "<div class='hidden'></div>";
-    } else {
-      var CTOWN = `<div class="topology-tooltip"><span class="label label-default topology-text">Classic</span><span class="topology-tooltip-text">${tooltipTextLookup['classic']}</span></div>`;
-    }
-
-    if (props.COLLEGE === 0) {
-      var COLLEGE = "<div class='hidden'></div>";
-    } else {
-      var COLLEGE = `<div class="topology-tooltip"><span class="label label-default topology-text">College</span><span class="topology-tooltip-text">${tooltipTextLookup['college']}</span></div>`;
-    }
-
-    if (props.CORE === 0) {
-      var CORE = "<div class='hidden'></div>";
-    } else {
-      var CORE = `<div class="topology-tooltip"><span class="label label-default topology-text">Core</span><span class="topology-tooltip-text">${tooltipTextLookup['core']}</span></div>`;
-    }
-
-    if (props.EXPAND === 0) {
-      var EXPAND = "<div class='hidden'></div>";
-    } else {
-      var EXPAND = `<div class="topology-tooltip"><span class="label label-default topology-text">Expanding</span><span class="topology-tooltip-text">${tooltipTextLookup['expand']}</span></div>`;
-    }
-
-    if (props.HIST === 0) {
-      var HDIST = "<div class='hidden'></div>";
-    } else {
-      var HDIST = `<div class="topology-tooltip"><span class="label label-default topology-text">Historic</span><span class="topology-tooltip-text">${tooltipTextLookup['historic']}</span></div>`;
-    }
-
-    if (props.OPP === 0) {
-      var OPP = "<div class='hidden'></div>";
-    } else {
-      var OPP = `<div class="topology-tooltip"><span class="label label-default topology-text">Oppurtunity</span><span class="topology-tooltip-text">${tooltipTextLookup['opp']}</span></div>`;
-    }
-
-    if (props.TRANSIT_1 === 0) {
-      var TRANSIT = "<div class='hidden'></div>";
-    } else {
-      var TRANSIT = `<div class="topology-tooltip"><span class="label label-default topology-text">Transit-Oriented</span><span class="topology-tooltip-text">${tooltipTextLookup['transit']}</span></div>`;
-    }
+    const BREW =
+      props.BREW === 0 ? hiddenTooltipHTML : getTooltipHTML("Brewery");
+    const CIRCUIT =
+      props.CIRCUIT === 0 ? hiddenTooltipHTML : getTooltipHTML("Circuit");
+    const CTOWN =
+      props.CTOWN === 0 ? hiddenTooltipHTML : getTooltipHTML("Classic");
+    const COLLEGE =
+      props.COLLEGE === 0 ? hiddenTooltipHTML : getTooltipHTML("College");
+    const CORE = props.CORE === 0 ? hiddenTooltipHTML : getTooltipHTML("Core");
+    const EXPAND =
+      props.EXPAND === 0 ? hiddenTooltipHTML : getTooltipHTML("Expanding");
+    const HDIST =
+      props.HIST === 0 ? hiddenTooltipHTML : getTooltipHTML("Historic");
+    const OPP =
+      props.OPP === 0 ? hiddenTooltipHTML : getTooltipHTML("Oppurtunity");
+    const TRANSIT =
+      props.TRANSIT_1 === 0
+        ? hiddenTooltipHTML
+        : getTooltipHTML("Transit-Oriented");
 
     var info =
       "<div id='d-name'><h3 style='margin-top:10px; margin-bottom:10px; width: 100%'>" +
@@ -714,7 +693,7 @@ map.on("load", function () {
 });
 
 function updateRetailChart(chartData) {
-  console.log(chartData)
+  console.log(chartData);
   const retailUsesCategoryFieldMapping = {
     Civic: "civic",
     Cultural: "cultural",
@@ -1013,7 +992,7 @@ function updateBanksChart(chartData, has2013) {
       column: {
         pointPadding: 0.2,
         borderWidth: 0,
-        minPointLength: 3
+        minPointLength: 3,
       },
       series: {
         dataLabels: {
