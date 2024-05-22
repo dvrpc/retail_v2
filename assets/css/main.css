@@ -786,3 +786,10 @@
         background-repeat: no-repeat;
     }
     
+    .topology-tooltip .topology-tooltip-text {
+        visibility: hidden;
+    }
+
+    .topology-tooltip:hover .topology-tooltip-text {
+        visibility: visible;
+    }
