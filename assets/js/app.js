@@ -480,8 +480,7 @@ map.on("load", function () {
         "At least one craft brewery is located within this district’s boundaries",
       Circuit:
         "One or more of the region’s Circuit Trails is within ¼ mile of this district",
-      Classic:
-        "Was previously part of the Classic Towns program (see about for more info)",
+      Classic: "Was previously part of the Classic Towns program",
       Core: "Located in one of the region’s four Core Cities",
       College:
         "A large academic campus is located within ½ mile of this district",
@@ -1267,7 +1266,6 @@ function updateQuarterlyVisitsChart(
         "2023 Q2",
         "2023 Q3",
         "2023 Q4",
-        "2024 Q1"
       ],
       labels: {
         style: {
