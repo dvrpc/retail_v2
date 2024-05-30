@@ -1266,6 +1266,7 @@ function updateQuarterlyVisitsChart(
         "2023 Q2",
         "2023 Q3",
         "2023 Q4",
+        "2024 Q1"
       ],
       labels: {
         style: {
