@@ -480,7 +480,7 @@ map.on("load", function () {
         "At least one craft brewery is located within this district’s boundaries",
       Circuit:
         "One or more of the region’s Circuit Trails is within ¼ mile of this district",
-      Classic: "Was previously part of the Classic Towns program",
+      Classic: "Was previously part of DVRPC’s Classic Towns program",
       Core: "Located in one of the region’s four Core Cities",
       College:
         "A large academic campus is located within ½ mile of this district",
@@ -699,8 +699,9 @@ function updateRetailChart(chartData) {
     Office: "office",
     "Active Construction Sites": "construct",
     Residential: "reside",
-    Vacant: "vacant",
+    Vacant: "vac",
     Institutional: "institute",
+    "All Retail": "all_ret"
   };
 
   const retailTypesCategoryFieldMapping = {
@@ -724,6 +725,8 @@ function updateRetailChart(chartData) {
     Hospitality: "#bc565c",
     "Active Construction Sites": "#878787",
     Institutional: "#da7b27",
+    "All Retail": "#d47b80"
+
   };
 
   const populatedUsesSeries = [];
@@ -736,7 +739,7 @@ function updateRetailChart(chartData) {
     for (const [label, fieldName] of Object.entries(fieldMapping)) {
       const fieldData = [];
 
-      const value = chartData[fieldName] * 100;
+      const value = Math.round(chartData[fieldName] * 100);
       fieldData.push(value);
       fieldData.push(100 - value);
 
@@ -1135,7 +1138,7 @@ function updateSalesTrendsChart(
     fd: "Foodservice & Drinking Places",
   };
 
-  const salesCategories = ["Total"];
+  const salesCategories = ["Total Sales of all Retail Categories"];
 
   salesCategories.push(salesCategoryFieldMapping[selectedField]);
 
@@ -1147,10 +1150,10 @@ function updateSalesTrendsChart(
   populatedRegionalData.push(Math.round(reginonalSalesTrends["total"] * 100));
 
   populatedDistrictData.push(
-    Math.round(districtSalesTrends[selectedField] * 100)
+    Math.round(Math.round(districtSalesTrends[selectedField] * 100))
   );
   populatedRegionalData.push(
-    Math.round(reginonalSalesTrends[selectedField] * 100)
+    Math.round(Math.round(reginonalSalesTrends[selectedField] * 100))
   );
 
   const salesTrendChart = {
