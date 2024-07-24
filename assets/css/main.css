@@ -140,20 +140,15 @@ a:hover {
   top: 160px;
   right: 6px;
   z-index: 100;
-  background-color: white;
   color: black;
-  padding: 6px;
-  border-radius: 4px;
+  border-radius: 14.5px;
+  background-color: #fff;
   font-family: "Helvetica Neue";
   cursor: pointer;
   font-size: 12px;
   text-decoration: none;
-  background-image: url(https://raw.githubusercontent.com/dvrpc/license-plate-survey/master/src/img/dvrpc_bug.png);
-  background-size: 27px 27px;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 27px;
-  width: 27px;
+  height: 29px;
+  width: 29px;
 }
 
 #zoomtoregion:hover {
@@ -387,7 +382,7 @@ h3 small {
 }
 
 #about_footer {
-  background-color: #b9def0;
+  background-color: #eef9ff;
   border-radius: 4px;
   border: 1px solid transparent;
 }
@@ -467,7 +462,7 @@ h3 small {
 .chart-subheader {
   background-color: var(--theme-retail);
   color: #f7f7f7;
-  padding: 0.25rem 0;
+  padding: 10px;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   box-shadow: 1.5px 0 0 rgba(0, 0, 0, 0.2);
@@ -795,7 +790,7 @@ ul.a {
   font-size: 12px;
   text-align: center;
   border-radius: 6px;
-  padding: 5px 0;
+  padding: 10px;
   position: absolute;
   z-index: 1;
   bottom: 125%;

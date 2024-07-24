@@ -92,16 +92,17 @@ const populateOptions = function (obj) {
 };
 
 // Zoom to Extent
-document.getElementById("zoomtoregion").addEventListener("click", function () {
-  handleFullMapDisplay();
-  map.flyTo({
-    center: [-75.24, 40.023],
-    zoom: 8,
-    bearing: 0,
-    pitch: 0,
-    speed: 0.5,
+document
+  .getElementById("zoom-to-region-button")
+  .addEventListener("click", function () {
+    map.flyTo({
+      center: [-75.24, 40.023],
+      zoom: 8,
+      bearing: 0,
+      pitch: 0,
+      speed: 0.5,
+    });
   });
-});
 
 fetch(
   "https://services1.arcgis.com/LWtWv6q6BJyKidj8/ArcGIS/rest/services/Retail/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson"
@@ -178,21 +179,6 @@ function handleSidebarDisplay() {
       "col-sm-7 col-md-7 col-lg-7 col-sm-12 col-md-12 col-lg-12"
     );
     $("#sidebar").css("display", "block");
-  }
-  $(window.map).resize();
-  return false;
-}
-
-function handleFullMapDisplay() {
-  // If the sidebar is display=block ...
-  // ... set the sidebar display not display=none and resize the map div
-
-  var sidebarViz = $("#sidebar").css("display");
-  if (sidebarViz !== "none") {
-    $("#map").toggleClass(
-      "col-sm-12 col-md-12 col-lg-12 col-sm-6 col-md-6 col-lg-6"
-    );
-    $("#sidebar").css("display", "none");
   }
   $(window.map).resize();
   return false;
@@ -480,7 +466,7 @@ map.on("load", function () {
         "At least one craft brewery is located within this district’s boundaries",
       Circuit:
         "One or more of the region’s Circuit Trails is within ¼ mile of this district",
-      Classic: "Was previously part of the Classic Towns program",
+      Classic: "Was previously part of DVRPC’s Classic Towns program",
       Core: "Located in one of the region’s four Core Cities",
       College:
         "A large academic campus is located within ½ mile of this district",
@@ -699,8 +685,9 @@ function updateRetailChart(chartData) {
     Office: "office",
     "Active Construction Sites": "construct",
     Residential: "reside",
-    Vacant: "vacant",
+    Vacant: "vac",
     Institutional: "institute",
+    "All Retail": "all_ret",
   };
 
   const retailTypesCategoryFieldMapping = {
@@ -724,6 +711,7 @@ function updateRetailChart(chartData) {
     Hospitality: "#bc565c",
     "Active Construction Sites": "#878787",
     Institutional: "#da7b27",
+    "All Retail": "#d47b80",
   };
 
   const populatedUsesSeries = [];
@@ -736,7 +724,7 @@ function updateRetailChart(chartData) {
     for (const [label, fieldName] of Object.entries(fieldMapping)) {
       const fieldData = [];
 
-      const value = chartData[fieldName] * 100;
+      const value = Math.round(chartData[fieldName] * 100);
       fieldData.push(value);
       fieldData.push(100 - value);
 
@@ -1135,7 +1123,7 @@ function updateSalesTrendsChart(
     fd: "Foodservice & Drinking Places",
   };
 
-  const salesCategories = ["Total"];
+  const salesCategories = ["Total Sales of all Retail Categories"];
 
   salesCategories.push(salesCategoryFieldMapping[selectedField]);
 
@@ -1147,10 +1135,10 @@ function updateSalesTrendsChart(
   populatedRegionalData.push(Math.round(reginonalSalesTrends["total"] * 100));
 
   populatedDistrictData.push(
-    Math.round(districtSalesTrends[selectedField] * 100)
+    Math.round(Math.round(districtSalesTrends[selectedField] * 100))
   );
   populatedRegionalData.push(
-    Math.round(reginonalSalesTrends[selectedField] * 100)
+    Math.round(Math.round(reginonalSalesTrends[selectedField] * 100))
   );
 
   const salesTrendChart = {
@@ -1266,6 +1254,7 @@ function updateQuarterlyVisitsChart(
         "2023 Q2",
         "2023 Q3",
         "2023 Q4",
+        "2024 Q1",
       ],
       labels: {
         style: {
