@@ -222,8 +222,14 @@ a:hover {
 }
 
 .dvrpc_full_logo {
+  width: 174px;
+  height: 70px;
   margin: 10px 15px 6px 5px;
   float: left;
+}
+
+.emphasized-paragraph {
+  font-size: 18px;
 }
 
 #about-footer {
@@ -566,8 +572,37 @@ ul.a {
   background-color: #fff;
 }
 
-#search label {
+
+.search-label {
   color: white;
+  font-size: 16px;
+  margin-bottom: 0px;
+}
+
+
+.choices {
+  width: 310px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.choices__list--dropdown .choices__item--selectable, .choices__list[aria-expanded] .choices__item--selectable {
+  padding-right: 0px;
+}
+
+.choices[data-type*="select-one"] .choices__inner {
+  padding: 0px;
+  padding-left: 8px;
+  padding-top: 2px;
+  min-height: 34px;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  margin: 10px;
 }
 
 #searchbox {
@@ -814,4 +849,9 @@ ul.a {
 .topology-tooltip:hover .topology-tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+
+.chart-source {
+  font-size: 10px;
+  color: #999999;
 }

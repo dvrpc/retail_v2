@@ -1,8 +1,13 @@
 // var retail, districts, d2;
 var geojson;
 const searchForm = document.getElementById("search");
+const searchInput = document.getElementById("searchbox");
 
-// overall loaded data
+const searchSelect = document.getElementById("search-select");
+const choices = new Choices(searchSelect, {
+  itemSelectText: ""
+});
+
 var retailSearch = {};
 var combinedChartData = {};
 var salesTrendData = {};
@@ -75,20 +80,28 @@ map.addControl(new mapboxgl.NavigationControl(), ["top-right"]);
 map.addControl(new mapboxgl.AttributionControl(), "bottom-right");
 
 const populateOptions = function (obj) {
-  const datalist = document.getElementById("retail-districts-list");
-  const frag = document.createDocumentFragment();
-
+  // const datalist = document.getElementById("retail-districts-list");
+  // const frag = document.createDocumentFragment();
+  const selectOptions = []
   Object.keys(obj)
     .sort((a, b) => a > b)
-    .forEach(function (el) {
-      const option = document.createElement("option");
-      option.value = el;
-      frag.appendChild(option);
+    .forEach(function (el, i) {
+      selectOptions.push({
+        value: el,
+        label: el,
+        id: i
+      })
+      // const option = document.createElement("option");
+      // option.value = el;
+      // frag.appendChild(option);
     });
 
-  console.log(frag);
 
-  datalist.appendChild(frag);
+  choices.setValue(selectOptions)
+  choices.removeActiveItems()
+
+  // searchSelect.appendChild(frag)
+  // datalist.appendChild(frag);
 };
 
 // Zoom to Extent
@@ -381,6 +394,8 @@ map.on("load", function () {
     var coordinates = marker.features[0].geometry.coordinates;
     var FID = marker.features[0].id;
 
+    choices.removeActiveItems()
+
     if (props.RD_Year == "2021") {
       // alert ("nope");
       $("#chart2013").css("display", "none");
@@ -396,39 +411,6 @@ map.on("load", function () {
       handleHighlight(FID);
     }
   });
-
-  searchForm.onsubmit = function (e) {
-    e.preventDefault();
-    const input = e.target.children[0].children[0];
-    const searched = input.value;
-    const location = retailSearch[searched];
-
-    if (!location) {
-      alert("Please select a value from the dropdown list");
-      input.value = "";
-      return;
-    }
-
-    // non-mapbox function calling the geojson properties and coordinates that get pushed to the handleDisctrict function
-    var props = location.properties;
-    var coordinates = location.geometry.coordinates;
-    var FID = props.RETAIL_ID;
-
-    if (props.RD_Year == "2021") {
-      // alert ("nope");
-      $("#chart2013").css("display", "none");
-      $("#data-wrapper").css("display", "none");
-      handleSidebarDisplay();
-      handleDistrict(props, coordinates, map);
-      handleHighlight(FID - 1);
-    } else {
-      $("#chart2013").css("display", "block");
-      $("#data-wrapper").css("display", "block");
-      handleSidebarDisplay();
-      handleDistrict(props, coordinates, map);
-      handleHighlight(FID - 1);
-    }
-  };
 
   const handleHighlight = function (FID) {
     if (FID > 0) {
@@ -675,10 +657,46 @@ map.on("load", function () {
 
     // add typeahead
   };
+
+  choices.passedElement.element.addEventListener(
+    'change',
+    function(e) {
+      // do something creative here...
+      const input = e.target[0];
+      const searched = input.value;
+      const location = retailSearch[searched];
+
+      if (!location) {
+        alert("Please select a value from the dropdown list");
+        input.value = "";
+        return;
+      }
+  
+      // non-mapbox function calling the geojson properties and coordinates that get pushed to the handleDisctrict function
+      var props = location.properties;
+      var coordinates = location.geometry.coordinates;
+      var FID = props.RETAIL_ID;
+    
+      if (props.RD_Year == "2021") {
+        // alert ("nope");
+        $("#chart2013").css("display", "none");
+        $("#data-wrapper").css("display", "none");
+        handleSidebarDisplay();
+        handleDistrict(props, coordinates, map);
+        handleHighlight(FID - 1);
+      } else {
+        $("#chart2013").css("display", "block");
+        $("#data-wrapper").css("display", "block");
+        handleSidebarDisplay();
+        handleDistrict(props, coordinates, map);
+        handleHighlight(FID - 1);
+      }
+    },
+    false,
+  );
 });
 
 function updateRetailChart(chartData) {
-  console.log(chartData);
   const retailUsesCategoryFieldMapping = {
     Civic: "civic",
     Cultural: "cultural",

@@ -20,20 +20,17 @@
         integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css">
-
     <link rel="stylesheet" type="text/css" href="assets/css/main.css">
     <link rel="stylesheet" type="text/css" href="assets/css/print.css">
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
         integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
         crossorigin="anonymous"></script>
-
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <style>
     </style>
 </head>
@@ -61,16 +58,8 @@
                             data-target=".navbar-collapse.in">
                             <i class="fa fa-info-circle" style="color:#39398e"></i>&nbsp;&nbsp;<b>About</b>
                         </button>
-                        <!--  <button type="button" class="btn about-btn" onclick="PrintElem();" data-toggle="collapse" data-target=".navbar-collapse.in">
-                                <i class="fa fa-info-circle" style="color:#39398e"></i>&nbsp;&nbsp;<b>Print</b>
-                            </button>
-                            <button href="#" onclick="window.print();return false" class="print btn btn-primary pull-right"><i class="glyphicon glyphicon-print"></i> PRINT</button>
-                  -->
                     </div>
-
-
                 </div>
-
             </div>
 
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
@@ -78,17 +67,11 @@
 
                 <div class="nav navbar-nav navbar-right">
                     <div class="input-group search-container">
-                        <form id="search">
-                            <label>
-                                Search by district:
-                                <input list="retail-districts-list" id="searchbox" name="searchbox"
-                                    autocomplete="new-password" />
-
-                                <datalist id="retail-districts-list"></datalist>
-                            </label>
-
-                            <button type="submit" class="btn">search</button>
-                        </form>
+                        <label class="search-label">
+                            Search by district:
+                        </label>
+                        <select id="search-select" class="">
+                          </select>
                     </div>
                 </div>
 
@@ -105,23 +88,9 @@
                     <!-- Info Section-->
                     <div class='infoLeft' style="height:100vh;">
                         <div id='resultsHeader'></div>
-
-                        <!-- <div class='data-wrapper' id='data-wrapper'>
-                            <h2 class='data-subheader'>
-                                Accessibility and Demographics
-                                <span class='data-heading-small'><br>(within 1/2 mile) as of 2013</span>
-                            </h2>
-                            <div id='info-wrapper' class='info-wrapper'>
-                                <div id='info1' class='info1'></div>
-                                <div id='info2' class='info2'></div>
-                            </div>
-                        </div> -->
-
                         <div class='chart-wrapper' id='retail-chart-wrapper'>
                             <div>
                                 <h3 class='chart-subheader'>Mix of Uses and Retail Types</h3>
-                                <!-- <i class='glyphicon glyphicon-info-sign' id='info-icon' data-toggle='tooltip'
-                                    title='Category Info' onclick='catShow()'></i> -->
                             </div>
                             <div id="retail-chart-button-wrapper" class="retail-chart-button-wrapper">
                                 <button id='retail-chart-btn-2013' class='chart-btn'>2013</button>
@@ -145,6 +114,9 @@
                             </div>
 
                             <div id="retail-types-chart"></div>
+                            <div class="sidebar-chart-paragraphs">                                
+                                <p class="chart-source"><i>Source: DVRPC</i></p>
+                            </div>
                         </div>
 
                         <div class='chart-wrapper' id='web-and-social-chart-wrapper'>
@@ -154,7 +126,8 @@
                                 <button id='social-chart-btn-2022' class='chart-btn active'>2022</button>
                             </div>
                             <div id="web-and-social-chart"></div>
-                            <div class="sidebar-chart-paragraphs">
+                            <div class="sidebar-chart-paragraphs">                                
+                                <p class="chart-source"><i>Source: DVRPC</i></p>
                                 <p><span>Prior to the pandemic, increased competition from
                                         e-commerce prompted traditional brick-and-mortar retail businesses to curate
                                         their own online presence, and during the pandemic e-commerce was a lifeline for
@@ -181,7 +154,7 @@
                             <h3 class='chart-subheader'>Total Bank Branches</h3>
                             <div id="bank-chart"></div>
                             <div class="sidebar-chart-paragraphs">
-
+                                <p class="chart-source"><i>Source: DVRPC</i></p>
                                 <p><span>Between 2012 and 2022, there was a net loss of 405 bank
                                         branches in all of Greater Philadelphia, mirroring a national trend commonly
                                         referred to as the Great Consolidation. The socioeconomic implications of the
@@ -211,6 +184,7 @@
                             </div>
                             <div id="tenancy-chart"></div>
                             <div class="sidebar-chart-paragraphs">
+                                <p class="chart-source"><i>Source: DVRPC</i></p>
                                 <p><span>What constitutes a healthy mix of chain and
                                         locally owned businesses will be unique for every community. But it is
                                         important that local retail be a part of the retail mix for the health of
@@ -260,7 +234,7 @@
 
                             <div id="sales-trend-chart"></div>
                             <div class="sidebar-chart-paragraphs">
-                                <p><i>Source: Buxton Co., 2020 & 2023</i></p>
+                                <p class="chart-source"><i>Source: Buxton Co., 2020 & 2023</i></p>
                                 <p><span>In the retail industry, gap analyses are used to
                                         determine when a &ldquo;surplus&rdquo; or &ldquo;leakage&rdquo; exists. A
                                         surplus indicates that sales in a specific retail category exceed local demand,
@@ -284,7 +258,7 @@
                             <h3 class='chart-subheader'>Total Visits by Quarter, 2022-2024</h3>
                             <div id="quarterly-visits-chart"></div>
                             <div class="sidebar-chart-paragraphs">
-                                <p><i>Source: Buxton Co., 2022-2024</i></p>
+                                <p class="chart-source"><i>Source: Buxton Co., 2022-2024</i></p>
                                 <p id="quarterly-visits-sidebar-chart-paragraph"><span>In an era
                                         with greater telework capacity and
                                         competition from e-commerce, proactively working to attract visitors to a
@@ -332,12 +306,15 @@
                     <div id="aboutTabsContent" class="tab-content" style="padding-top: 10px;">
                         <div class="tab-pane fade active in" id="about">
                             <div class="about-one">
-                                <p><span>DVRPC&rsquo;s Downtown Revitalization work highlights,
+                                <img src="assets/img/dvrpc_full_log_small.png" alt="DVRPC logo" class="dvrpc_full_logo" />
+
+                                <p class="emphasized-paragraph"><span>DVRPC&rsquo;s Downtown Revitalization work highlights,
                                         and discusses, a variety of evolving issues related to downtowns, main streets,
                                         and retail districts. This web map explores the subtle ways that these various
                                         issues impact and manifest across Greater Philadelphia, by leveraging insights
                                         gleaned from an inventory of the region&rsquo;s retail districts, as well as
                                         location analytics efforts.</span></p>
+                                </br>
                                 <h4><strong><span>The Retail District Inventory</span></strong></h4>
                                 <p><span>Since 2013, a sample of retail districts across Greater Philadelphia have been
                                         regularly inventoried, with updates in 2020 and 2022
@@ -418,14 +395,6 @@
                                             class="one" href="mailto:sgober@dvrpc.org">sgober@dvrpc.org</a></span>
 
                                 </address>
-                                <p>
-                                    <a href="https://docs.google.com/spreadsheets/d/14XkV5ZtUksOLhaN-fduw64EmvSZSelpU/edit?usp=sharing&ouid=102156523593448688672&rtpof=true&sd=true"
-                                        target="_blank"><i
-                                            class="glyphicon glyphicon-download-alt"></i>&nbsp;&nbsp;Download
-                                        Spreadsheet <small>[0.1 MB xls]</small></a>
-                                </p>
-
-
                             </div>
                             <div id="about_footer">
                                 <p>The information provided through this web application is the culmination of field
@@ -433,6 +402,12 @@
                                     used to support and develop strategies for these retail districts, please visit our
                                     <a href="https://www.dvrpc.org/communityrevitalization" target="_blank"
                                         id="about-footer">Downtown Revitalization webpage</a>.
+                                <p>
+                                    <a href="https://docs.google.com/spreadsheets/d/14XkV5ZtUksOLhaN-fduw64EmvSZSelpU/edit?usp=sharing&ouid=102156523593448688672&rtpof=true&sd=true"
+                                        target="_blank"><i
+                                            class="glyphicon glyphicon-download-alt"></i>&nbsp;&nbsp;Download
+                                        Spreadsheet <small>[0.1 MB xls]</small></a>
+                                </p>
                                 <p>For more information, visit <a href="https://www.dvrpc.org/Policies/" target="_blank"
                                         class="one">Policies</a> |
                                     <a href="https://www.dvrpc.org/Products/WEB19521" target="_blank"
@@ -442,8 +417,7 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="disclaimer">
-                            <img src="https://www.dvrpc.org/img/homepage/dvrpclogo70px.png" alt="DVRPC logo"
-                                class="dvrpc_full_logo" />
+                            <img src="assets/img/dvrpc_full_log_small.png" alt="DVRPC logo" class="dvrpc_full_logo" />
                             <p style="margin: -5px 0px 0px 45px;display:block"><span><span>This web page is a public
                                         resource of general information. The Delaware Valley Regional Planning
                                         Commission (DVRPC) makes no warranty,
