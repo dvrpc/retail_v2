@@ -65,8 +65,8 @@ body {
 }
 
 #dvrpc-logo {
-  margin: 5px 0px 0px 0px;
-  height: 30px;
+  margin: 5px 5px 0px 0px;
+  height: 36px;
 }
 
 .wrapper {
@@ -77,7 +77,7 @@ body {
 
 #header-link-text {
   font-size: 20px;
-  margin: 4px 0px 0px 10px;
+  margin: 0px 0px 0px 10px;
 }
 
 .container-fluid {
@@ -390,6 +390,12 @@ h3 small {
   border: 1px solid transparent;
   margin-top: 25px;
   font-style: italic;
+}
+
+.vertical {
+  border-left: 1px solid white;
+  height: 30px;
+  margin: 5px;
 }
 
 #about_footer p {
