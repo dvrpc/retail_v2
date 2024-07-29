@@ -229,11 +229,8 @@ a:hover {
 }
 
 .emphasized-paragraph {
-  font-size: 15.5px;
-}
-
-#about-footer {
-  color: #396ab2;
+  font-size: 18px;
+  margin-bottom: 0px;
 }
 
 /* Layer Information */
@@ -391,6 +388,8 @@ h3 small {
   background-color: #eef9ff;
   border-radius: 4px;
   border: 1px solid transparent;
+  color: #396ab2;
+  margin-top: 25px;
 }
 
 #about_footer p {
@@ -572,13 +571,11 @@ ul.a {
   background-color: #fff;
 }
 
-
 .search-label {
   color: white;
   font-size: 16px;
   margin-bottom: 0px;
 }
-
 
 .choices {
   width: 310px;
@@ -586,7 +583,8 @@ ul.a {
   margin-bottom: 8px;
 }
 
-.choices__list--dropdown .choices__item--selectable, .choices__list[aria-expanded] .choices__item--selectable {
+.choices__list--dropdown .choices__item--selectable,
+.choices__list[aria-expanded] .choices__item--selectable {
   padding-right: 0px;
 }
 
