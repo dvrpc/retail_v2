@@ -389,6 +389,7 @@ h3 small {
   border-radius: 4px;
   border: 1px solid transparent;
   margin-top: 25px;
+  font-style: italic;
 }
 
 #about_footer p {
