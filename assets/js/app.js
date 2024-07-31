@@ -1302,7 +1302,7 @@ function updateQuarterlyVisitsChart(
         color: "#b9318e",
       },
       {
-        name: "Median",
+        name: "Regional Median",
         data: medianQuarterlyVisits,
         color: "#393a8f",
       },
