@@ -5,7 +5,7 @@ const searchInput = document.getElementById("searchbox");
 
 const searchSelect = document.getElementById("search-select");
 const choices = new Choices(searchSelect, {
-  itemSelectText: ""
+  itemSelectText: "",
 });
 
 var retailSearch = {};
@@ -82,23 +82,22 @@ map.addControl(new mapboxgl.AttributionControl(), "bottom-right");
 const populateOptions = function (obj) {
   // const datalist = document.getElementById("retail-districts-list");
   // const frag = document.createDocumentFragment();
-  const selectOptions = []
+  const selectOptions = [];
   Object.keys(obj)
     .sort((a, b) => a > b)
     .forEach(function (el, i) {
       selectOptions.push({
         value: el,
         label: el,
-        id: i
-      })
+        id: i,
+      });
       // const option = document.createElement("option");
       // option.value = el;
       // frag.appendChild(option);
     });
 
-
-  choices.setValue(selectOptions)
-  choices.removeActiveItems()
+  choices.setValue(selectOptions);
+  choices.removeActiveItems();
 
   // searchSelect.appendChild(frag)
   // datalist.appendChild(frag);
@@ -394,7 +393,7 @@ map.on("load", function () {
     var coordinates = marker.features[0].geometry.coordinates;
     var FID = marker.features[0].id;
 
-    choices.removeActiveItems()
+    choices.removeActiveItems();
 
     if (props.RD_Year == "2021") {
       // alert ("nope");
@@ -659,8 +658,8 @@ map.on("load", function () {
   };
 
   choices.passedElement.element.addEventListener(
-    'change',
-    function(e) {
+    "change",
+    function (e) {
       // do something creative here...
       const input = e.target[0];
       const searched = input.value;
@@ -671,12 +670,12 @@ map.on("load", function () {
         input.value = "";
         return;
       }
-  
+
       // non-mapbox function calling the geojson properties and coordinates that get pushed to the handleDisctrict function
       var props = location.properties;
       var coordinates = location.geometry.coordinates;
       var FID = props.RETAIL_ID;
-    
+
       if (props.RD_Year == "2021") {
         // alert ("nope");
         $("#chart2013").css("display", "none");
@@ -692,11 +691,11 @@ map.on("load", function () {
         handleHighlight(FID - 1);
       }
     },
-    false,
+    false
   );
 });
 
-function updateRetailChart(chartData) {
+function updateRetailChart(chartData, yearChange = false) {
   const retailUsesCategoryFieldMapping = {
     Civic: "civic",
     Cultural: "cultural",
@@ -829,6 +828,7 @@ function updateRetailChart(chartData) {
           enableMouseTracking: false,
           groupPadding: 0.05,
           pointPadding: 0.05,
+          animation: !yearChange,
         },
       },
       series: [
@@ -859,7 +859,7 @@ function updateRetailChart(chartData) {
   const chart2 = new Highcharts.Chart(retailTypesChart);
 }
 
-function updateWebAndSocialChart(districtRow) {
+function updateWebAndSocialChart(districtRow, yearChange = false) {
   function getFieldPercentage(fieldName) {
     return Math.round(districtRow[fieldName] * 100);
   }
@@ -924,6 +924,7 @@ function updateWebAndSocialChart(districtRow) {
           },
           enabled: true,
         },
+        animation: !yearChange,
       },
     },
     series: [
@@ -1034,7 +1035,7 @@ function updateBanksChart(chartData, has2013) {
   var chart = new Highcharts.Chart(banksChart);
 }
 
-function updateRetailTenancyChart(districtRow) {
+function updateRetailTenancyChart(districtRow, yearChange = false) {
   const districtName = districtRow.district;
 
   function getFieldPercentage(fieldName) {
@@ -1097,6 +1098,9 @@ function updateRetailTenancyChart(districtRow) {
           },
           showInLegend: false,
         },
+      },
+      series: {
+        animation: !yearChange,
       },
     },
     series: [
@@ -1320,10 +1324,10 @@ function handleClick(year, type, btn) {
   btn.className = "chart-btn active";
 
   if (type === "retail") {
-    updateRetailChart(districtChartData[year]);
+    updateRetailChart(districtChartData[year], true);
   } else if (type === "tenancy") {
-    updateRetailTenancyChart(districtChartData[year]);
+    updateRetailTenancyChart(districtChartData[year], true);
   } else {
-    updateWebAndSocialChart(districtChartData[year]);
+    updateWebAndSocialChart(districtChartData[year], true);
   }
 }
