@@ -78,6 +78,7 @@ body {
 #header-link-text {
   font-size: 20px;
   margin: 0px 0px 0px 10px;
+  color: white;
 }
 
 .container-fluid {
@@ -224,7 +225,7 @@ a:hover {
 .dvrpc_full_logo {
   width: 174px;
   height: 70px;
-  margin: 10px 15px 6px 5px;
+  margin: 14px 28px 6px 5px;
   float: left;
 }
 
@@ -388,14 +389,14 @@ h3 small {
   background-color: #eef9ff;
   border-radius: 4px;
   border: 1px solid transparent;
-  margin-top: 25px;
+  margin-top: 40px;
   font-style: italic;
 }
 
 .vertical {
   border-left: 1px solid white;
   height: 30px;
-  margin: 5px;
+  margin: 5px 5px 5px 10px;
 }
 
 #about_footer p {
@@ -572,7 +573,7 @@ ul.a {
 }
 
 .about-btn {
-  margin: 5px 10px 0px 10px;
+  margin: 5px 10px 0px 15px;
   color: var(--theme-retail);
   background-color: #fff;
 }
