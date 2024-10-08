@@ -31,6 +31,7 @@
         crossorigin="anonymous"></script>
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="multiselect-dropdown.js" ></script>
     <style>
     </style>
 </head>
@@ -69,7 +70,12 @@
                 <div class="nav navbar-nav navbar-right">
                     <div class="input-group search-container">
                         <label class="search-label">
-                            Search by district:
+                            Filter Typologies
+                        </label>                        
+                        <select multiple id="typology-select" class="">
+                        </select>
+                        <label class="search-label">
+                            Search District:
                         </label>
                         <select id="search-select" class="">
                           </select>

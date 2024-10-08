@@ -4,10 +4,38 @@ const searchForm = document.getElementById("search");
 const searchInput = document.getElementById("searchbox");
 
 const searchSelect = document.getElementById("search-select");
-const choices = new Choices(searchSelect, {
+const typologySelect = document.getElementById("typology-select");
+
+const searchChoices = new Choices(searchSelect, {
   itemSelectText: "",
 });
 
+const typologyChoices = new Choices(typologySelect, {
+  itemSelectText: "",
+  removeItemButton: true,
+});
+typologyChoices.setValue([
+    "Brewery",
+    "Circuit",
+    "Classic",
+    "Core",
+    "College",
+    "Expanding",
+    "Historic",
+    "Opportunity",
+    "Transit-Oriented",
+  ])
+// typologyChoices.setValue([
+//   "BREW",
+//   "CIRC",
+//   "CLAS",
+//   "CORE",
+//   "COL",
+//   "EXP",
+//   "HIST",
+//   "OPP",
+//   "T-O",
+// ])
 var retailSearch = {};
 var combinedChartData = {};
 var salesTrendData = {};
@@ -96,8 +124,8 @@ const populateOptions = function (obj) {
       // frag.appendChild(option);
     });
 
-  choices.setValue(selectOptions);
-  choices.removeActiveItems();
+  searchChoices.setValue(selectOptions);
+  searchChoices.removeActiveItems();
 
   // searchSelect.appendChild(frag)
   // datalist.appendChild(frag);
@@ -393,7 +421,7 @@ map.on("load", function () {
     var coordinates = marker.features[0].geometry.coordinates;
     var FID = marker.features[0].id;
 
-    choices.removeActiveItems();
+    searchChoices.removeActiveItems();
 
     if (props.RD_Year == "2021") {
       // alert ("nope");
@@ -657,12 +685,67 @@ map.on("load", function () {
     // add typeahead
   };
 
-  choices.passedElement.element.addEventListener(
+  const typologyCaseMap = {
+    "Brewery": ["==", ["get", "BREW"], 1],
+    "Circuit": ["==", ["get", "CIRCUIT"], 1],
+    "Classic": ["==", ["get", "CLASSIC"], 1],
+    "Core": ["==", ["get", "CORE"], 1],
+    "College": ["==", ["get", "COLLEGE"], 1],
+    "Expanding": ["==", ["get", "EXPAND"], 1],
+    "Historic": ["==", ["get", "HIST"], 1],
+    "Opportunity": ["==", ["get", "OPP"], 1],
+    "Transit-Oriented": ["==", ["get", "TRANSIT_1"], 1],
+  }
+
+  typologyChoices.passedElement.element.addEventListener(
+    "change",
+    function (e) {
+      const selectedValues = []
+      const typologyCases = ['all']
+
+      const target = e.target;
+      for(let i = 0; i < 9; i++) {
+        if(target[i].selected) {
+          typologyCases.push(typologyCaseMap[target[i].value])
+        }
+      }
+      
+      const defaultExpression = [
+        "case",
+        ["boolean", ["feature-state", "hover"], false],
+        "#ad0074",
+        "#39398e"
+      ]
+      
+      const expression = [
+        "case",
+        ["boolean", ["feature-state", "hover"], false],
+        //  '#fbb040',
+        "#ad0074",
+        typologyCases, 
+        "#39398e", 
+        "#bbbbbb"
+      ]
+
+      const multiSelectDropdown = document.getElementsByClassName("choices__list--dropdown")[0]
+      const multiSelectHeight = document.getElementsByClassName("choices__inner")[0].clientHeight;
+
+      console.log(multiSelectDropdown)
+
+      multiSelectDropdown.clientTop = multiSelectHeight
+
+      console.log(multiSelectDropdown.clientTop)
+      // map.setPaintProperty('districts', 'circle-color', "bbbbbb")
+      map.setPaintProperty('retail', 'circle-color', typologyCases.length > 1 ? expression : defaultExpression)
+      console.log(selectedValues)
+    }
+  )
+
+  searchChoices.passedElement.element.addEventListener(
     "change",
     function (e) {
       // do something creative here...
-      const input = e.target[0];
-      const searched = input.value;
+      const searched = e.detail.value;
       const location = retailSearch[searched];
 
       if (!location) {
