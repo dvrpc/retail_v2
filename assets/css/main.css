@@ -624,11 +624,6 @@ ul.a {
 .choices[data-type*="select-multiple"] .choices__inner,
 .choices[data-type*="text"] .choices__inner {
   padding: 2px;
-  margin-top: 12px;
-}
-
-.is-open .choices__inner {
-  margin-top: 0px !important;
 }
 
 .search-container {
