@@ -500,7 +500,7 @@ map.on("load", function () {
     const CIRCUIT =
       props.CIRCUIT === 0 ? hiddenTooltipHTML : getTooltipHTML("Circuit");
     const CTOWN =
-      props.CTOWN === 0 ? hiddenTooltipHTML : getTooltipHTML("Classic");
+      props.CLASSIC === 0 ? hiddenTooltipHTML : getTooltipHTML("Classic");
     const COLLEGE =
       props.COLLEGE === 0 ? hiddenTooltipHTML : getTooltipHTML("College");
     const CORE = props.CORE === 0 ? hiddenTooltipHTML : getTooltipHTML("Core");
