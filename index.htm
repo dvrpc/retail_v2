@@ -70,7 +70,7 @@
                 <div class="nav navbar-nav navbar-right">
                     <div class="input-group search-container">
                         <label class="search-label">
-                            Filter Typologies
+                            Filter Typologies:
                         </label>                        
                         <select multiple id="typology-select" class="">
                         </select>
@@ -288,7 +288,29 @@
         </div>
         <!-- Map -->
         <div class="col-sm-12 col-md-12 col-lg-12" id="map" style="overflow:hidden"></div>
+        <div id="legend">
+            <div class="legend-item">
+                <svg width="16" height="16">
+                    <circle cx="8" cy="8" r="8" fill="#39398E"></circle>
+                </svg>
 
+                Retail District
+            </div>
+            <!-- <div class="legend-item">
+                <svg width="16" height="16">
+                    <circle cx="8" cy="8" r="8" fill="#bbbbbb"></circle>
+                </svg>
+
+                Retail District
+            </div> -->
+            <div class="legend-item">
+                <svg width="16" height="16">
+                    <rect x="0" y="0" width="16" height="16" fill="#B4B4D1" stroke-width="3" stroke="#0078AE"></rect>
+                </svg>
+                Retail District Boundary
+            </div>
+
+        </div>
     </div>
     <!-- Zoom -->
      <button id="zoom-to-region-button">

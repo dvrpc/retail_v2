@@ -15,16 +15,16 @@ const typologyChoices = new Choices(typologySelect, {
   removeItemButton: true,
 });
 typologyChoices.setValue([
-    "Brewery",
-    "Circuit",
-    "Classic",
-    "Core",
-    "College",
-    "Expanding",
-    "Historic",
-    "Opportunity",
-    "Transit-Oriented",
-  ])
+  "Brewery",
+  "Circuit",
+  "Classic",
+  "Core",
+  "College",
+  "Expanding",
+  "Historic",
+  "Opportunity",
+  "Transit-Oriented",
+]);
 // typologyChoices.setValue([
 //   "BREW",
 //   "CIRC",
@@ -686,60 +686,66 @@ map.on("load", function () {
   };
 
   const typologyCaseMap = {
-    "Brewery": ["==", ["get", "BREW"], 1],
-    "Circuit": ["==", ["get", "CIRCUIT"], 1],
-    "Classic": ["==", ["get", "CLASSIC"], 1],
-    "Core": ["==", ["get", "CORE"], 1],
-    "College": ["==", ["get", "COLLEGE"], 1],
-    "Expanding": ["==", ["get", "EXPAND"], 1],
-    "Historic": ["==", ["get", "HIST"], 1],
-    "Opportunity": ["==", ["get", "OPP"], 1],
+    Brewery: ["==", ["get", "BREW"], 1],
+    Circuit: ["==", ["get", "CIRCUIT"], 1],
+    Classic: ["==", ["get", "CLASSIC"], 1],
+    Core: ["==", ["get", "CORE"], 1],
+    College: ["==", ["get", "COLLEGE"], 1],
+    Expanding: ["==", ["get", "EXPAND"], 1],
+    Historic: ["==", ["get", "HIST"], 1],
+    Opportunity: ["==", ["get", "OPP"], 1],
     "Transit-Oriented": ["==", ["get", "TRANSIT_1"], 1],
-  }
+  };
 
   typologyChoices.passedElement.element.addEventListener(
     "change",
     function (e) {
-      const selectedValues = []
-      const typologyCases = ['all']
+      const selectedValues = [];
+      const typologyCases = ["all"];
 
       const target = e.target;
-      for(let i = 0; i < 9; i++) {
-        if(target[i].selected) {
-          typologyCases.push(typologyCaseMap[target[i].value])
+      for (let i = 0; i < 9; i++) {
+        if (target[i].selected) {
+          typologyCases.push(typologyCaseMap[target[i].value]);
         }
       }
-      
+
       const defaultExpression = [
         "case",
         ["boolean", ["feature-state", "hover"], false],
         "#ad0074",
-        "#39398e"
-      ]
-      
+        "#39398e",
+      ];
+
       const expression = [
         "case",
         ["boolean", ["feature-state", "hover"], false],
         //  '#fbb040',
         "#ad0074",
-        typologyCases, 
-        "#39398e", 
-        "#bbbbbb"
-      ]
+        typologyCases,
+        "#39398e",
+        "#bbbbbb",
+      ];
 
-      const multiSelectDropdown = document.getElementsByClassName("choices__list--dropdown")[0]
-      const multiSelectHeight = document.getElementsByClassName("choices__inner")[0].clientHeight;
+      const multiSelectDropdown = document.getElementsByClassName(
+        "choices__list--dropdown"
+      )[0];
+      const multiSelectHeight =
+        document.getElementsByClassName("choices__inner")[0].clientHeight;
 
-      console.log(multiSelectDropdown)
+      console.log(multiSelectDropdown);
 
-      multiSelectDropdown.clientTop = multiSelectHeight
-
-      console.log(multiSelectDropdown.clientTop)
+      multiSelectDropdown.style.top = multiSelectHeight + "px";
+      console.log(multiSelectDropdown.clientTop);
       // map.setPaintProperty('districts', 'circle-color', "bbbbbb")
-      map.setPaintProperty('retail', 'circle-color', typologyCases.length > 1 ? expression : defaultExpression)
-      console.log(selectedValues)
+      map.setPaintProperty(
+        "retail",
+        "circle-color",
+        typologyCases.length > 1 ? expression : defaultExpression
+      );
+      console.log(selectedValues);
     }
-  )
+  );
 
   searchChoices.passedElement.element.addEventListener(
     "change",
